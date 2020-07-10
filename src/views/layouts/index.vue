@@ -1,3 +1,9 @@
+<!--
+ * @Date: 2020-07-10 09:43:26
+ * @LastEditors: zhuqiu
+ * @LastEditTime: 2020-07-10 10:15:55
+ * @FilePath: \project\src\views\layouts\index.vue
+--> 
 <template>
   <div class="app-container">
     <div class="layout-content">
@@ -27,11 +33,25 @@ export default {
           icon: 'home-o'
         },
         {
-          title: '关于我',
+          title: '企业',
           to: {
-            name: 'About'
+            name: 'Enterprise'
           },
-          icon: 'user-o'
+          icon: 'friends-o'
+        },
+        {
+          title: '批次',
+          to: {
+            name: 'Management'
+          },
+          icon: 'todo-list-o'
+        },
+        {
+          title: '通知',
+          to: {
+            name: 'Notification'
+          },
+          icon: 'volume-o'
         }
       ]
     }
