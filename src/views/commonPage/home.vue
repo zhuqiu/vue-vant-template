@@ -1,17 +1,23 @@
 <!--
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-07-10 14:11:45
+ * @LastEditTime: 2020-07-16 19:04:58
  * @FilePath: \project\src\views\commonPage\home.vue
 --> 
 <template>
   <div>
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
       <van-swipe-item>
-        <img src="../../assets/images/banner01.jpg" style="width:100%" alt="">
+        <img src="../../assets/images/banner01.png" style="width:100%" alt="">
       </van-swipe-item>
       <van-swipe-item>
-        <img src="../../assets/images/banner01.jpg" style="width:100%" alt="">
+        <img src="../../assets/images/banner02.png" style="width:100%" alt="">
+      </van-swipe-item>
+      <van-swipe-item>
+        <img src="../../assets/images/banner03.png" style="width:100%" alt="">
+      </van-swipe-item>
+      <van-swipe-item>
+        <img src="../../assets/images/banner04.png" style="width:100%" alt="">
       </van-swipe-item>
     </van-swipe>
     <div class="margin-top">

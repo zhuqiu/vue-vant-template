@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-07-10 10:40:34
+ * @LastEditTime: 2020-07-16 16:23:14
  * @FilePath: \project\src\views\commonPage\enterprise.vue
 --> 
 <template>
@@ -20,12 +20,17 @@
 
 <script>
 
+import { listCorp } from '../../api/application.apis'
+
 export default {
   name: 'Enterprise',
   data() {
     return {
       
     }
+  },
+  created(){
+    listCorp();
   },
   methods: {
     
