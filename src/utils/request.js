@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-07-17 18:43:18
+ * @LastEditTime: 2020-07-17 19:50:53
  * @FilePath: \project\src\utils\request.js
  */ 
 import axios from 'axios'
@@ -26,9 +26,8 @@ service.interceptors.request.use(
         forbidClick: true
       })
     }
-    console.log(store.getters)
     if (store.getters.token) {
-      config.headers['X-Token'] = ''
+      config.headers['token'] = `${store.getters.token}`;
     }
     return config
   },

@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-07-17 19:13:12
+ * @LastEditTime: 2020-07-17 19:51:02
  * @FilePath: \project\src\views\commonPage\home.vue
 --> 
 <template>
@@ -74,7 +74,6 @@ export default {
   },
   async created(){
     let res = await wxLogin({code:"test_code"});
-    console.log(res);
     if(res.code === "0"){
       this.$store.dispatch('setToken', res.data.token)
     }
