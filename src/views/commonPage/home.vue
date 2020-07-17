@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-07-16 19:04:58
+ * @LastEditTime: 2020-07-17 19:13:12
  * @FilePath: \project\src\views\commonPage\home.vue
 --> 
 <template>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-
+import { wxLogin } from '../../api/application.apis'
 export default {
   name: 'Home',
   data() {
@@ -70,6 +70,13 @@ export default {
           color: "#99FFCC"
         }
       ]
+    }
+  },
+  async created(){
+    let res = await wxLogin({code:"test_code"});
+    console.log(res);
+    if(res.code === "0"){
+      this.$store.dispatch('setToken', res.data.token)
     }
   },
   methods: {

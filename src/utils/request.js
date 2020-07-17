@@ -1,3 +1,9 @@
+/*
+ * @Date: 2020-07-10 09:43:26
+ * @LastEditors: zhuqiu
+ * @LastEditTime: 2020-07-17 18:43:18
+ * @FilePath: \project\src\utils\request.js
+ */ 
 import axios from 'axios'
 import store from '@/store'
 import { Toast } from 'vant'
@@ -20,6 +26,7 @@ service.interceptors.request.use(
         forbidClick: true
       })
     }
+    console.log(store.getters)
     if (store.getters.token) {
       config.headers['X-Token'] = ''
     }
