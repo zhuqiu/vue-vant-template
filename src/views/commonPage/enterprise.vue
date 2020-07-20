@@ -56,7 +56,9 @@ export default {
   },
   created(){
     this.getList(this.params);
-    this.selevtionId = Number(localStorage.getItem('select_id'))
+    if(JSON.parse(localStorage.getItem('select_enterprise'))){
+      this.selevtionId = JSON.parse(localStorage.getItem('select_enterprise')).id;
+    }
   },
   computed: {
 
@@ -84,7 +86,8 @@ export default {
       }
     },
     enterpriseChange(id){
-      localStorage.setItem('select_id',id);
+      let source = this.list.find((l) => l.id === id);
+      localStorage.setItem('select_enterprise',JSON.stringify(source));
       this.selevtionId = id;
     },
 
@@ -109,6 +112,8 @@ export default {
       .title{
         font-weight: 500;
         font-size: 16px;
+        margin: 0;
+        margin-bottom: 0.32rem;
       }
     }
     .content-right{

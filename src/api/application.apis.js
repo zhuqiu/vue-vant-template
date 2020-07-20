@@ -27,6 +27,26 @@ export function listToDoEvents(params) {
 }
 
 /**
+ * 批次接口服务
+ */
+export function findBatchNoList(params) {
+  return request({
+    url: api.eventBatch.FindBatchNo,
+    method: 'get',
+    params
+  })
+}
+
+export function getBatchDetail(params) {
+  return request({
+    url: api.eventBatch.Get,
+    method: 'get',
+    params
+  })
+}
+
+
+/**
  * 会议培训接口服务
  */
 

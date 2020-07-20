@@ -66,7 +66,7 @@ export default {
         },
         {
           icon: "comment-circle",
-          text: "培训主题",
+          text: "在线培训",
           color: "#6666CC"
         }
       ]
@@ -79,7 +79,7 @@ export default {
     }
   },
   methods: {
-
+    
   }
 }
 </script>
