@@ -79,7 +79,7 @@ export default {
     }
   },
   methods: {
-    
+    test(){}
   }
 }
 </script>
