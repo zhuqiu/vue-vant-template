@@ -3,7 +3,7 @@
  * @LastEditors: zhuqiu
  * @LastEditTime: 2020-07-10 10:43:50
  * @FilePath: \project\src\views\commonPage\management.vue
---> 
+-->
 <template>
   <div>
     <div>
@@ -30,15 +30,18 @@
             <div>创建时间：{{ batchInfo.startTime }}</div>
           </div>
         </van-collapse-item>
-        
       </van-collapse>
+      <div class="margin">
+        <van-button type="primary" @click="addBatch" block>新增批次号</van-button>
+      </div>
+
     </div>
   </div>
 </template>
 
 <script>
 
-import { findBatchNoList, getBatchDetail } from '../../api/application.apis'
+import { createBatchNo, findBatchNoList, getBatchDetail } from '../../api/application.apis'
 
 export default {
   name: 'Management',
@@ -90,6 +93,18 @@ export default {
       }else{
         this.$toast(res.msg);
         this.batchInfo = {};
+      }
+    },
+    async addBatch(){
+      if(!this.params.corpId){
+        this.$toast('请选择企业后再新增批次号');
+        return;
+      }
+      let res = await createBatchNo({ corpId: this.params.corpId });
+      if(res.code === "0"){
+        this.getList(this.params);
+      }else{
+        this.$toast(res.msg);
       }
     }
   }

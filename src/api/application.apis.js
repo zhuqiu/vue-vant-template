@@ -3,7 +3,7 @@
  * @LastEditors: zhuqiu
  * @LastEditTime: 2020-07-17 18:30:05
  * @FilePath: \project\src\api\application.apis.js
- */ 
+ */
 import api from './index'
 // axios
 import request from '@/utils/request'
@@ -29,6 +29,14 @@ export function listToDoEvents(params) {
 /**
  * 批次接口服务
  */
+export function createBatchNo(data) {
+  return request({
+    url: api.eventBatch.CreateBatchNo,
+    method: 'post',
+    data
+  })
+}
+
 export function findBatchNoList(params) {
   return request({
     url: api.eventBatch.FindBatchNo,
