@@ -3,7 +3,7 @@
  * @LastEditors: zhuqiu
  * @LastEditTime: 2020-07-17 19:51:02
  * @FilePath: \project\src\views\commonPage\home.vue
---> 
+-->
 <template>
   <div>
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
@@ -28,7 +28,7 @@
         </van-grid-item>
       </van-grid>
     </div>
-    
+
   </div>
 </template>
 
@@ -47,7 +47,7 @@ export default {
         {
           icon: "label",
           text: "驻场登记",
-          color: "#33FF99"
+          color: "#9933FF"
         },
         {
           icon: "todo-list",
@@ -62,12 +62,12 @@ export default {
         {
           icon: "todo-list",
           text: "待处理",
-          color: "#66FF99"
+          color: "#CC3399"
         },
         {
           icon: "comment-circle",
           text: "培训主题",
-          color: "#99FFCC"
+          color: "#6666CC"
         }
       ]
     }
@@ -79,7 +79,7 @@ export default {
     }
   },
   methods: {
-    
+
   }
 }
 </script>
