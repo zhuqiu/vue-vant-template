@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-07-17 19:51:02
+ * @LastEditTime: 2020-07-21 15:30:37
  * @FilePath: \project\src\views\commonPage\home.vue
 -->
 <template>
@@ -22,7 +22,7 @@
     </van-swipe>
     <div class="margin-top">
       <van-grid :column-num="3">
-        <van-grid-item v-for="(item, index) in gridList" :key="index" :use-slot="true">
+        <van-grid-item v-for="(item, index) in gridList" :key="index" :use-slot="true" @click="handleClick(item.path)">
           <van-icon :name="item.icon" size="30" :color="item.color"/>
           <span class="margin-top">{{item.text}}</span>
         </van-grid-item>
@@ -52,7 +52,8 @@ export default {
         {
           icon: "todo-list",
           text: "巡查记录",
-          color: "#6699FF"
+          color: "#6699FF",
+          path: "AllTodo"
         },
         {
           icon: "underway",
@@ -62,7 +63,8 @@ export default {
         {
           icon: "todo-list",
           text: "待处理",
-          color: "#CC3399"
+          color: "#CC3399",
+          path: "WaitTodo"
         },
         {
           icon: "comment-circle",
@@ -79,7 +81,16 @@ export default {
     }
   },
   methods: {
-    test(){}
+    handleClick(path){
+      let id = JSON.parse(localStorage.getItem('select_enterprise')).id;
+      if(!id){
+        this.$toast('请先选择企业');
+        return;
+      }
+      this.$router.push({
+        name: path
+      })
+    }
   }
 }
 </script>

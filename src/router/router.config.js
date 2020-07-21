@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-07-10 09:57:31
+ * @LastEditTime: 2020-07-21 15:14:35
  * @FilePath: \project\src\router\router.config.js
  */ 
 /**
@@ -41,7 +41,19 @@ export const constantRouterMap = [
         name: 'Notification',
         component: () => import('@/views/commonPage/notification'),
         meta: { title: '通知', keepAlive: false }
-      }
+      },
+      {
+        path: '/allTodo',
+        name: 'AllTodo',
+        component: () => import('@/views/event/allTodo'),
+        meta: { title: '巡查记录', keepAlive: false }
+      },
+      {
+        path: '/waitTodo',
+        name: 'WaitTodo',
+        component: () => import('@/views/event/waitTodo'),
+        meta: { title: '代办事件', keepAlive: false }
+      },
     ]
   }
 ]
