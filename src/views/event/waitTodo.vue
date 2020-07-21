@@ -25,7 +25,7 @@
       </van-dropdown-item>
     </van-dropdown-menu>
     
-    <van-empty v-if="false" description="您已高效的完成任务..." />
+    <van-empty v-if="false" description="暂无数据" />
 
     <div>
       <common-list></common-list>

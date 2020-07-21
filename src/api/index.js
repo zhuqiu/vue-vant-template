@@ -41,7 +41,6 @@ const original = {
   checkType: {
     FindChildList: '/data/api/checkType/findChildList',
     FindRootList: '/data/api/checkType/findRootList',
-
   },
   user: {
     Login: '/user/login',

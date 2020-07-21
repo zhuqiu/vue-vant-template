@@ -7,7 +7,7 @@
 <template>
   <div>
     <van-dropdown-menu>
-      <van-dropdown-item v-model="params.status" :options="option" />
+      <van-dropdown-item v-model="params.status" :options="getOptions()" @change="handleChange"/>
       <van-dropdown-item title="筛选" ref="item">
         <van-form>
           <van-field
@@ -25,16 +25,20 @@
       </van-dropdown-item>
     </van-dropdown-menu>
     
-    <van-empty v-if="list.length === 0" description="暂无巡查记录..." />
+    <van-empty v-if="list.length === 0" description="暂无数据" />
 
-    <common-list :data="list" v-else></common-list>
+    <common-list :data="list" @click="handleClick" v-else></common-list>
+
+    <div class="addBtn" @click="add">
+      <van-icon name="plus" size="24" color="#ffffff"/>
+    </div>
     
   </div>
 </template>
 
 <script>
 
-import { StatusTypeItem } from '@/utils/status-typing'
+import StatusTypeItem from '@/utils/status-typing'
 
 import commonList from '../commonPage/commonList.vue'
 
@@ -56,11 +60,6 @@ export default {
         roomId: '',
         status: ''
       },
-      option: [
-        { text: '全部', value: "" },
-        { text: '企业已整改（结束）', value: 8 },
-        { text: '企业已确认（结束）', value: 4 },
-      ],
       list: []
     }
   },
@@ -78,12 +77,51 @@ export default {
         this.list = [];
       }
     },
+    handleClick(id){
+
+    },
+    handleChange(val){
+      this.getList(this.params);
+    },
     handleSearch(){
       this.$refs.item.toggle();
+      this.getList(this.params)
+    },
+    getOptions(){
+      return [
+        { text: '全部', value: "" },
+        { text: '进行中', value: StatusTypeItem.Pending },
+        { text: '检查不合格', value: StatusTypeItem.CheckNotPass },
+        { text: '检查合格', value: StatusTypeItem.CheckPass },
+        { text: '企业已确认(结束)', value: StatusTypeItem.EnterpriseConfirmed },
+        { text: '待企业整改', value: StatusTypeItem.WaitRectification },
+        { text: '企业驳回', value: StatusTypeItem.EnterpriseReject },
+        { text: '预期未整改', value: StatusTypeItem.NotRectification },
+        { text: '企业已整改(结束)', value: StatusTypeItem.EnterpriseRectified }
+      ]
+    },
+    add(){
+      this.$router.push({
+        name: 'AddEvent'
+      })
     }
   }
 }
 </script>
 <style lang="scss">
-
+.addBtn{
+  width: 0.8rem;
+  height: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: #0066FF;
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  i{
+    font-weight: 600;
+  }
+}
 </style>

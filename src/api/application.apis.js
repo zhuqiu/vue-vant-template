@@ -39,6 +39,25 @@ export function listToDoEvents(params) {
   })
 }
 
+//查询企业下的车间列表
+export function findRoomList(params) {
+  return request({
+    url: api.event.FindRoomList,
+    method: 'get',
+    params
+  })
+}
+
+//为车间新增巡查项目
+export function addEvent(data) {
+  return request({
+    url: api.event.AddEvent4Room,
+    method: 'post',
+    data
+  })
+}
+
+
 /**
  * 批次接口服务
  */
@@ -88,3 +107,15 @@ export function wxLogin(data) {
   })
 }
 
+/**
+ * 巡查类型接口服务
+ */
+
+//查询根节点巡查类型
+export function findRootList(params) {
+  return request({
+    url: api.checkType.FindRootList,
+    method: 'get',
+    params
+  })
+}

@@ -43,6 +43,12 @@ export const constantRouterMap = [
         meta: { title: '通知', keepAlive: false }
       },
       {
+        path: '/addEvent',
+        name: 'AddEvent',
+        component: () => import('@/views/event/addEvent'),
+        meta: { title: '添加巡查记录', keepAlive: false }
+      },
+      {
         path: '/allTodo',
         name: 'AllTodo',
         component: () => import('@/views/event/allTodo'),
