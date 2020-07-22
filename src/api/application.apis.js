@@ -66,6 +66,16 @@ export function getEventDetail(params) {
   })
 }
 
+//上传附件
+export function uploadImg(data) {
+  return request({
+    url: api.event.UploadImg,
+    method: 'post',
+    data
+  })
+}
+
+
 /**
  * 批次接口服务
  */

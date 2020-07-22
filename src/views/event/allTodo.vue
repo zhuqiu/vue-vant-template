@@ -89,24 +89,13 @@ export default {
       }
     },
     handleClick(val) {
-      if(val.status === StatusTypeItem.Pending || val.status === StatusTypeItem.CheckNotPass || val.status === StatusTypeItem.WaitRectification){
-        this.$router.push({
-          name: 'Event',
-          params: {
-            id: val.id
-          }
-        })
-      }else{
-        this.$router.push({
-          name: 'Event',
-          params: {
-            id: val.id,
-            status: val.status
-          }
-        })
-      }
-      
-      //debugger
+      this.$router.push({
+        name: 'Event',
+        params: {
+          id: val.id,
+          status: val.status
+        }
+      })
     },
     handleChange(val) {
       this.getList(this.params)

@@ -21,6 +21,7 @@
         @click="handleClick(2)"
       />
       <van-field
+        v-if="status === statusTypeItem.Pending"
         v-model="submitEventParam.checkContext"
         rows="2"
         autosize
@@ -37,12 +38,13 @@
         placeholder="点击选择巡查车间"
         @click="handleClick(3)"
       />
-      <van-field name="uploader" label="现场图片">
+      <van-field name="uploader" label="现场图片" v-if="status === statusTypeItem.Pending">
         <template #input>
-          <van-uploader v-model="uploader" />
+          <van-uploader v-model="fileList" :after-read="afterRead" :before-delete="beforeDelete"/>
         </template>
       </van-field>
       <van-field
+        v-if="status === statusTypeItem.Pending"
         v-model="submitEventParam.checkRemark"
         rows="2"
         autosize
@@ -64,7 +66,14 @@
 
 import StatusTypeItem from '@/utils/status-typing'
 
-import { findBatchNoList, findRoomList, findRootList, addEvent, getEventDetail } from '../../api/application.apis'
+import {
+  findBatchNoList,
+  findRoomList,
+  findRootList,
+  addEvent,
+  getEventDetail,
+  uploadImg
+} from '../../api/application.apis'
 
 export default {
   name: 'AddEvent',
@@ -88,7 +97,7 @@ export default {
       roomList: [],
       edit: false,
       status: '',
-      uploader: [],
+      fileList: [],
       disabled: false,
       statusTypeItem: ''
     }
@@ -105,6 +114,28 @@ export default {
     onClickLeft() {
       history.go(-1)
     },
+    afterRead(file) {
+      file.status = 'uploading';
+      file.message = '上传中...';
+      this.uploadImg(file);
+    },
+    async uploadImg(file){
+      let formdata = new FormData();
+      formdata.append('file',file.file);
+      formdata.append('eventId',this.$route.params.id);
+      let res = await uploadImg(formdata);
+      if(res.code === '0'){
+        file.status = 'done';
+        file.message = 'done'
+      }else{
+        file.status = 'failed';
+        file.message = '上传失败';
+      }
+    },
+    beforeDelete(file){
+      debugger
+    },
+
     handleClick(val) {
       if(this.edit){
         return
@@ -203,6 +234,16 @@ export default {
         this.parmas.roomId = res.data.roomId;
         this.checkType = res.data.checkName;
         this.room = res.data.roomName;
+        if(res.data.imgs){
+          this.fileList = res.data.imgs.map((m) => {
+            return {
+              status: 'done',
+              message: 'done',
+              id: m.id,
+              url: m.imgPath
+            }
+          })
+        }
       }else {
         this.$toast(res.msg)
       }
