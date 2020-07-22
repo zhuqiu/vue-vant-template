@@ -34,7 +34,6 @@
       <div class="margin">
         <van-button type="primary" @click="addBatch" block>新增批次号</van-button>
       </div>
-
     </div>
   </div>
 </template>

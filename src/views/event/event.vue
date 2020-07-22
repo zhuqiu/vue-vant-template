@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar title="新增巡查记录" left-text="返回" left-arrow @click-left="onClickLeft" />
+    <van-nav-bar :title="edit ? '巡查记录' : '新增巡查记录'" left-text="返回" left-arrow @click-left="onClickLeft" />
     <van-form @submit="onSubmit">
       <van-field
         readonly
@@ -21,6 +21,14 @@
         @click="handleClick(2)"
       />
       <van-field
+        v-model="submitEventParam.checkContext"
+        rows="2"
+        autosize
+        label="巡查内容"
+        type="textarea"
+        placeholder="请输入巡查内容"
+      />
+      <van-field
         readonly
         clickable
         name="picker"
@@ -29,18 +37,35 @@
         placeholder="点击选择巡查车间"
         @click="handleClick(3)"
       />
+      <van-field name="uploader" label="现场图片">
+        <template #input>
+          <van-uploader v-model="uploader" />
+        </template>
+      </van-field>
+      <van-field
+        v-model="submitEventParam.checkRemark"
+        rows="2"
+        autosize
+        label="隐患内容"
+        type="textarea"
+        placeholder="请输入隐患内容"
+      />
       <van-popup v-model="showPicker" position="bottom">
         <van-picker show-toolbar :columns="columns" @confirm="onConfirm" @cancel="showPicker = false" />
       </van-popup>
       <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit">新增</van-button>
+        <van-button round block type="info" native-type="submit" :disabled="disabled">新增</van-button>
       </div>
     </van-form>
   </div>
 </template>
 
 <script>
-import { findBatchNoList, findRoomList, findRootList, addEvent } from '../../api/application.apis'
+
+import StatusTypeItem from '@/utils/status-typing'
+
+import { findBatchNoList, findRoomList, findRootList, addEvent, getEventDetail } from '../../api/application.apis'
+
 export default {
   name: 'AddEvent',
   data() {
@@ -50,6 +75,10 @@ export default {
         checkTypeId: '',
         roomId: ''
       },
+      submitEventParam: {
+        checkContext: '',
+        checkRemark: ''
+      },
       checkType: '',
       room: '',
       columns: [],
@@ -57,7 +86,19 @@ export default {
       currentSelect: 1,
       checkTypeList: [],
       roomList: [],
-      uploader: [{ url: 'https://img.yzcdn.cn/vant/leaf.jpg' }]
+      edit: false,
+      status: '',
+      uploader: [],
+      disabled: false,
+      statusTypeItem: ''
+    }
+  },
+  created(){
+    this.statusTypeItem = StatusTypeItem;
+    this.edit = !!this.$route.params.id;
+    if(this.edit){
+      this.status = this.$route.params.status;
+      this.getEventDetail()
     }
   },
   methods: {
@@ -65,6 +106,9 @@ export default {
       history.go(-1)
     },
     handleClick(val) {
+      if(this.edit){
+        return
+      }
       this.showPicker = true
       this.currentSelect = val
       switch (val) {
@@ -96,6 +140,7 @@ export default {
       this.showPicker = false
     },
     async onSubmit() {
+      this.disabled = true;
       const res = await addEvent(this.parmas)
       if (res.code === '0') {
         this.$toast('新增成功')
@@ -105,6 +150,7 @@ export default {
           })
         }, 1000)
       } else {
+        this.disabled = false;
         this.$toast(res.msg)
       }
     },
@@ -147,6 +193,18 @@ export default {
         this.$toast(res.msg)
         this.columns = []
         this.roomList = []
+      }
+    },
+    async getEventDetail(){
+      let res = await getEventDetail({id: this.$route.params.id});
+      if(res.code === '0'){
+        this.parmas.batchNo = res.data.batchNo;
+        this.parmas.checkTypeId = res.data.checkTypeId;
+        this.parmas.roomId = res.data.roomId;
+        this.checkType = res.data.checkName;
+        this.room = res.data.roomName;
+      }else {
+        this.$toast(res.msg)
       }
     }
   }

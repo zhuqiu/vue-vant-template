@@ -26,7 +26,10 @@
               <van-picker show-toolbar :columns="columns" @confirm="onConfirm" @cancel="showPicker = false" />
             </van-popup>
           </van-form>
-          <van-button block type="info" @click="handleSearch">查询</van-button>
+          <div class="btn-content">
+            <van-button class="btn-width" type="primary" @click="handleReset">重置</van-button>
+            <van-button class="btn-width" type="info" @click="handleSearch">查询</van-button>
+          </div>
         </van-dropdown-item>
       </van-dropdown-menu>
     </van-sticky>
@@ -85,9 +88,34 @@ export default {
         this.list = []
       }
     },
-    handleClick(id) {},
+    handleClick(val) {
+      if(val.status === StatusTypeItem.Pending || val.status === StatusTypeItem.CheckNotPass || val.status === StatusTypeItem.WaitRectification){
+        this.$router.push({
+          name: 'Event',
+          params: {
+            id: val.id
+          }
+        })
+      }else{
+        this.$router.push({
+          name: 'Event',
+          params: {
+            id: val.id,
+            status: val.status
+          }
+        })
+      }
+      
+      //debugger
+    },
     handleChange(val) {
       this.getList(this.params)
+    },
+    handleReset(){
+      this.params.batchNo = '';
+      this.params.checkName = '';
+      this.params.roomId = '';
+      this.room = '';
     },
     handleSearch() {
       this.$refs.item.toggle()
@@ -116,7 +144,7 @@ export default {
     },
     add() {
       this.$router.push({
-        name: 'AddEvent'
+        name: 'Event'
       })
     },
     async getRoomList() {
@@ -137,6 +165,13 @@ export default {
 }
 </script>
 <style lang="scss">
+.btn-content{
+  display: flex;
+  justify-content: space-around;
+  .btn-width{
+    width: 4rem;
+  }
+}
 .addBtn {
   width: 0.8rem;
   height: 0.8rem;

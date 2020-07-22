@@ -7,7 +7,7 @@
 <template>
   <div>
     <van-row class="common-list">
-      <van-col span="24" @click="handleClick(item.id)" v-for="(item,index) in data" :key="index">
+      <van-col span="24" @click="handleClick(item)" v-for="(item,index) in data" :key="index">
         <div class="common-content">
           <div>
             <div class="content-title">{{ item.checkContext }}</div>
@@ -46,8 +46,8 @@ export default {
     }
   },
   methods: {
-    handleClick(id){
-      this.$emit('click', id)
+    handleClick(item){
+      this.$emit('click', item)
     }
   }
 }

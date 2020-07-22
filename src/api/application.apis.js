@@ -57,6 +57,14 @@ export function addEvent(data) {
   })
 }
 
+//查询企业下的车间列表
+export function getEventDetail(params) {
+  return request({
+    url: api.event.Get,
+    method: 'get',
+    params
+  })
+}
 
 /**
  * 批次接口服务

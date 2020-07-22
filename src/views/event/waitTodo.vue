@@ -21,7 +21,10 @@
             placeholder="请输入检查类型"
           />
         </van-form>
-        <van-button block type="info" @click="handleSearch">查询</van-button>
+        <div class="btn-content">
+          <van-button class="btn-width" type="primary" @click="handleReset">重置</van-button>
+          <van-button class="btn-width" type="info" @click="handleSearch">查询</van-button>
+        </div>
       </van-dropdown-item>
     </van-dropdown-menu>
     
@@ -56,6 +59,10 @@ export default {
     }
   },
   methods: {
+    handleReset(){
+      this.params.batchNo = '';
+      this.params.checkName = '';
+    },
     handleSearch(){
       this.$refs.item.toggle();
     }
@@ -63,5 +70,11 @@ export default {
 }
 </script>
 <style lang="scss">
-
+.btn-content{
+  display: flex;
+  justify-content: space-around;
+  .btn-width{
+    width: 4rem;
+  }
+}
 </style>

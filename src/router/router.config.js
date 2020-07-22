@@ -43,9 +43,9 @@ export const constantRouterMap = [
         meta: { title: '通知', keepAlive: false }
       },
       {
-        path: '/addEvent',
-        name: 'AddEvent',
-        component: () => import('@/views/event/addEvent'),
+        path: '/event',
+        name: 'Event',
+        component: () => import('@/views/event/event'),
         meta: { title: '添加巡查记录', keepAlive: false }
       },
       {
@@ -59,6 +59,12 @@ export const constantRouterMap = [
         name: 'WaitTodo',
         component: () => import('@/views/event/waitTodo'),
         meta: { title: '代办事件', keepAlive: false }
+      },
+      {
+        path: '/eventDetail',
+        name: 'EventDetail',
+        component: () => import('@/views/event/eventDetail'),
+        meta: { title: '记录详情', keepAlive: false }
       },
     ]
   }
