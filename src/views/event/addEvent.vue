@@ -1,11 +1,6 @@
 <template>
   <div>
-    <van-nav-bar
-      title="新增巡查记录"
-      left-text="返回"
-      left-arrow
-      @click-left="onClickLeft"
-    />
+    <van-nav-bar title="新增巡查记录" left-text="返回" left-arrow @click-left="onClickLeft" />
     <van-form @submit="onSubmit">
       <van-field
         readonly
@@ -35,12 +30,7 @@
         @click="handleClick(3)"
       />
       <van-popup v-model="showPicker" position="bottom">
-        <van-picker
-          show-toolbar
-          :columns="columns"
-          @confirm="onConfirm"
-          @cancel="showPicker = false"
-        />
+        <van-picker show-toolbar :columns="columns" @confirm="onConfirm" @cancel="showPicker = false" />
       </van-popup>
       <div style="margin: 16px;">
         <van-button round block type="info" native-type="submit">新增</van-button>
@@ -50,9 +40,9 @@
 </template>
 
 <script>
-import {findBatchNoList, findRoomList, findRootList, addEvent } from '../../api/application.apis'
+import { findBatchNoList, findRoomList, findRootList, addEvent } from '../../api/application.apis'
 export default {
-  name: 'addEvent',
+  name: 'AddEvent',
   data() {
     return {
       parmas: {
@@ -62,96 +52,104 @@ export default {
       },
       checkType: '',
       room: '',
-      columns:[],
+      columns: [],
       showPicker: false,
       currentSelect: 1,
       checkTypeList: [],
       roomList: [],
-      uploader: [{ url: 'https://img.yzcdn.cn/vant/leaf.jpg' }],
+      uploader: [{ url: 'https://img.yzcdn.cn/vant/leaf.jpg' }]
     }
   },
   methods: {
-    onClickLeft(){
+    onClickLeft() {
       history.go(-1)
     },
-    handleClick(val){
-      this.showPicker = true;
-      this.currentSelect = val;
-      switch(val){
-        case 1: 
-          this.getBatchNoList();
-          break;
+    handleClick(val) {
+      this.showPicker = true
+      this.currentSelect = val
+      switch (val) {
+        case 1:
+          this.getBatchNoList()
+          break
         case 2:
-          this.getCheckTypeList();
-          break;
+          this.getCheckTypeList()
+          break
         case 3:
-          this.getRoomList();
-          break;
+          this.getRoomList()
+          break
       }
     },
-    onConfirm(value, index){
-      switch(this.currentSelect){
-        case 1: 
-          this.parmas.batchNo = value;
-          break;
-        case 2: 
-          this.parmas.checkTypeId = value.id;
-          this.checkType = value.text;
-          break;
-        case 3: 
-          this.parmas.roomId = value.id;
-          this.room = value.text;
-          break;
+    onConfirm(value, index) {
+      switch (this.currentSelect) {
+        case 1:
+          this.parmas.batchNo = value
+          break
+        case 2:
+          this.parmas.checkTypeId = value.id
+          this.checkType = value.text
+          break
+        case 3:
+          this.parmas.roomId = value.id
+          this.room = value.text
+          break
       }
-      this.showPicker = false;
+      this.showPicker = false
     },
-    onSubmit(){
-      addEvent({addEventParam: this.parmas})
-    },
-    async getBatchNoList(){
-      let res = await findBatchNoList({corpId: JSON.parse(localStorage.getItem('select_enterprise')).id});
-      if(res.code === "0"){
-        this.columns = res.data;
-      }else{
-        this.$toast(res.msg);
-        this.columns = [];
+    async onSubmit() {
+      const res = await addEvent(this.parmas)
+      if (res.code === '0') {
+        this.$toast('新增成功')
+        setTimeout(() => {
+          this.$router.push({
+            name: 'AllTodo'
+          })
+        }, 1000)
+      } else {
+        this.$toast(res.msg)
       }
     },
-    async getCheckTypeList(){
-      let res = await findRootList({checkName: ''});
-      if(res.code === "0"){
-        this.columns = res.data.map((d) => {
+    async getBatchNoList() {
+      const res = await findBatchNoList({ corpId: JSON.parse(localStorage.getItem('select_enterprise')).id })
+      if (res.code === '0') {
+        this.columns = res.data
+      } else {
+        this.$toast(res.msg)
+        this.columns = []
+      }
+    },
+    async getCheckTypeList() {
+      const res = await findRootList({ checkName: '' })
+      if (res.code === '0') {
+        this.columns = res.data.map(d => {
           return {
             text: d.checkName,
             id: d.id
-          };
-        });
-        this.checkTypeList = res.data; 
-      }else{
-        this.$toast(res.msg);
-        this.columns = [];
-        this.checkTypeList = [];
+          }
+        })
+        this.checkTypeList = res.data
+      } else {
+        this.$toast(res.msg)
+        this.columns = []
+        this.checkTypeList = []
       }
     },
-    async getRoomList(){
-      let res = await findRoomList({corpId: JSON.parse(localStorage.getItem('select_enterprise')).id});
-      if(res.code === "0"){
-        this.columns = res.data.map((d) => {
+    async getRoomList() {
+      const res = await findRoomList({ corpId: JSON.parse(localStorage.getItem('select_enterprise')).id })
+      if (res.code === '0') {
+        this.columns = res.data.map(d => {
           return {
             text: d.roomName,
             id: d.id
-          };
-        });
-        this.roomList = res.data;
-      }else{
-        this.$toast(res.msg);
-        this.columns = [];
-        this.roomList = [];
+          }
+        })
+        this.roomList = res.data
+      } else {
+        this.$toast(res.msg)
+        this.columns = []
+        this.roomList = []
       }
-    },
+    }
   }
 }
 </script>
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
