@@ -5,6 +5,7 @@
       <van-field
         readonly
         clickable
+        :disabled="isOverStatus"
         name="picker"
         :value="parmas.batchNo"
         label="巡查批次号"
@@ -14,6 +15,7 @@
       <van-field
         readonly
         clickable
+        :disabled="isOverStatus"
         name="picker"
         :value="checkType"
         label="巡查类型"
@@ -21,7 +23,8 @@
         @click="handleClick(2)"
       />
       <van-field
-        v-if="status === statusTypeItem.Pending"
+        v-if="status"
+        :disabled="isOverStatus"
         v-model="submitEventParam.checkContext"
         rows="2"
         autosize
@@ -32,19 +35,21 @@
       <van-field
         readonly
         clickable
+        :disabled="isOverStatus"
         name="picker"
         :value="room"
         label="巡查车间"
         placeholder="点击选择巡查车间"
         @click="handleClick(3)"
       />
-      <van-field name="uploader" label="现场图片" v-if="status === statusTypeItem.Pending">
+      <van-field name="uploader" label="现场图片" v-if="status">
         <template #input>
-          <van-uploader v-model="fileList" :after-read="afterRead" :before-delete="beforeDelete"/>
+          <van-uploader :disabled="isOverStatus" v-model="fileList" :after-read="afterRead" :before-delete="beforeDelete"/>
         </template>
       </van-field>
       <van-field
-        v-if="status === statusTypeItem.Pending"
+        :disabled="isOverStatus"
+        v-if="status"
         v-model="submitEventParam.checkRemark"
         rows="2"
         autosize
@@ -52,11 +57,38 @@
         type="textarea"
         placeholder="请输入隐患内容"
       />
+      <van-field name="radio" label="检查结果" v-if="status === statusTypeItem.Pending || status === statusTypeItem.Pending.EnterpriseReject">
+        <template #input>
+          <van-radio-group :disabled="isOverStatus" v-model="submitEventParam.checkResult" direction="horizontal">
+            <van-radio :name="3">检查合格</van-radio>
+            <van-radio :name="2">检查不合格</van-radio>
+          </van-radio-group>
+        </template>
+      </van-field>
+      <van-field
+        v-if="status === statusTypeItem.Pending || status === statusTypeItem.Pending.EnterpriseReject"
+        readonly
+        clickable
+        name="datetimePicker"
+        :value="submitEventParam.expectRepairDate"
+        label="企业预估整改时间"
+        placeholder="请选择企业预估整改时间"
+        @click="timeClick"
+      />
+      <van-popup v-model="showTime" position="bottom">
+        <van-datetime-picker
+          :disabled="isOverStatus"
+          type="date"
+          :min-date="minDate"
+          @confirm="onTimeConfirm"
+          @cancel="showTime = false"
+        />
+      </van-popup>
       <van-popup v-model="showPicker" position="bottom">
         <van-picker show-toolbar :columns="columns" @confirm="onConfirm" @cancel="showPicker = false" />
       </van-popup>
       <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit" :disabled="disabled">新增</van-button>
+        <van-button round block type="info" native-type="submit" v-if="!isOverStatus" :disabled="disabled">{{ btnText }}</van-button>
       </div>
     </van-form>
   </div>
@@ -71,8 +103,10 @@ import {
   findRoomList,
   findRootList,
   addEvent,
+  submitEvent,
   getEventDetail,
-  uploadImg
+  uploadImg,
+  removeImg
 } from '../../api/application.apis'
 
 export default {
@@ -86,12 +120,16 @@ export default {
       },
       submitEventParam: {
         checkContext: '',
-        checkRemark: ''
+        checkRemark: '',
+        checkResult: 3,
+        expectRepairDate: '',
+        eventId: ''
       },
       checkType: '',
       room: '',
       columns: [],
       showPicker: false,
+      showTime: false,
       currentSelect: 1,
       checkTypeList: [],
       roomList: [],
@@ -99,7 +137,9 @@ export default {
       status: '',
       fileList: [],
       disabled: false,
-      statusTypeItem: ''
+      statusTypeItem: '',
+      btnText: '新增',
+      minDate: new Date(),
     }
   },
   created(){
@@ -107,7 +147,22 @@ export default {
     this.edit = !!this.$route.params.id;
     if(this.edit){
       this.status = this.$route.params.status;
+      if(this.status === StatusTypeItem.Pending || this.status === StatusTypeItem.EnterpriseReject){
+        this.submitEventParam.eventId = this.$route.params.id;
+        this.btnText = '提交';
+      }else if(this.status === StatusTypeItem.CheckNotPass || this.status === StatusTypeItem.CheckPass){
+        this.btnText = '企业确认';
+      }else if(this.status === StatusTypeItem.WaitRectification || this.status === StatusTypeItem.NotRectification){
+        this.btnText = '确认已整改';
+      }
       this.getEventDetail()
+    }else {
+      this.btnText = '新增';
+    }
+  },
+  computed:{
+    isOverStatus(){
+      return this.status === StatusTypeItem.EnterpriseConfirmed || this.status === StatusTypeItem.EnterpriseRectified;
     }
   },
   methods: {
@@ -133,9 +188,25 @@ export default {
       }
     },
     beforeDelete(file){
-      debugger
+      if(file.id){
+        this.$dialog.confirm({
+          title: '删除提示',
+          message: '确定删除吗？',
+          beforeClose,
+        });
+        async function beforeClose(action, done) {
+          if (action === 'confirm') {
+            let res = await removeImg({imgId: file.id});
+            if(res.code === '0'){
+              location.reload();
+            } 
+          }
+          done();
+        }
+      }else{
+        return true;
+      }
     },
-
     handleClick(val) {
       if(this.edit){
         return
@@ -172,18 +243,45 @@ export default {
     },
     async onSubmit() {
       this.disabled = true;
-      const res = await addEvent(this.parmas)
-      if (res.code === '0') {
-        this.$toast('新增成功')
-        setTimeout(() => {
-          this.$router.push({
-            name: 'AllTodo'
-          })
-        }, 1000)
-      } else {
-        this.disabled = false;
-        this.$toast(res.msg)
+      if(!this.edit){
+        const res = await addEvent(this.parmas)
+        if (res.code === '0') {
+          this.$toast('新增成功')
+          this.goToAllTodo();
+        } else {
+          this.disabled = false;
+          this.$toast(res.msg)
+        }
+      }else {
+        if(this.status === StatusTypeItem.Pending || this.status === StatusTypeItem.EnterpriseReject){
+          let res = await submitEvent(this.submitEventParam);
+          if(res.code === '0'){
+            this.$toast('提交成功')
+            this.goToAllTodo();
+          } else {
+          this.disabled = false;
+          this.$toast(res.msg)
+        }
+        }
       }
+      
+    },
+    goToAllTodo(){
+      setTimeout(() => {
+        this.$router.push({
+          name: 'AllTodo'
+        })
+      }, 1000)
+    },
+    timeClick(){
+      if(this.isOverStatus){
+        return;
+      }
+      this.showTime = true;
+    },
+    onTimeConfirm(time){
+      this.submitEventParam.expectRepairDate = this.$moment(time).format('YYYY-MM-DD');
+      this.showTime = false;
     },
     async getBatchNoList() {
       const res = await findBatchNoList({ corpId: JSON.parse(localStorage.getItem('select_enterprise')).id })
@@ -234,6 +332,9 @@ export default {
         this.parmas.roomId = res.data.roomId;
         this.checkType = res.data.checkName;
         this.room = res.data.roomName;
+        this.submitEventParam.expectRepairDate = res.data.expectRepairDate;
+        this.submitEventParam.checkContext = res.data.checkContext
+        this.submitEventParam.checkRemark = res.data.checkRemark;
         if(res.data.imgs){
           this.fileList = res.data.imgs.map((m) => {
             return {

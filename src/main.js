@@ -9,10 +9,14 @@ import router from './router'
 import store from './store'
 import Vant from 'vant';
 import { Toast } from 'vant';
+import { Dialog } from 'vant';
+import moment from 'moment'//导入文件
 
 // 设置 js中可以访问 $cdn
 import { $cdn } from '@/config'
 Vue.prototype.$cdn = $cdn
+Vue.prototype.$moment = moment;//赋值使用
+moment.locale('zh-cn');//需要汉化
 
 import 'vant/lib/index.css';
 // 全局引入按需引入UI库 vant
@@ -25,6 +29,7 @@ import 'lib-flexible/flexible.js'
 Vue.use(Vant);
 
 Vue.use(Toast);
+Vue.use(Dialog);
 
 // filters
 import './filters'

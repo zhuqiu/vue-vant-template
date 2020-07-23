@@ -57,6 +57,15 @@ export function addEvent(data) {
   })
 }
 
+//提交检查结果
+export function submitEvent(data) {
+  return request({
+    url: api.event.SubmitEvent,
+    method: 'post',
+    data
+  })
+}
+
 //查询企业下的车间列表
 export function getEventDetail(params) {
   return request({
@@ -72,6 +81,15 @@ export function uploadImg(data) {
     url: api.event.UploadImg,
     method: 'post',
     data
+  })
+}
+
+//删除已上传的附件图片
+export function removeImg(params) {
+  return request({
+    url: api.event.RemoveImg,
+    method: 'get',
+    params
   })
 }
 
@@ -117,11 +135,11 @@ export function auditor(params) {
   })
 }
 
-export function wxLogin(data) {
+export function wxLogin(params) {
   return request({
     url: api.user.WxLogin,
-    method: 'post',
-    data
+    method: 'get',
+    params
   })
 }
 
