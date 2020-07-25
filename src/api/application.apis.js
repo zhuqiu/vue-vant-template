@@ -21,7 +21,7 @@ export function listCorp(params) {
   })
 }
 
-//查询待处理事件
+// 查询待处理事件
 export function listEvents(params) {
   return request({
     url: api.event.ListEvents,
@@ -30,7 +30,7 @@ export function listEvents(params) {
   })
 }
 
-//查询待处理事件
+// 查询待处理事件
 export function listToDoEvents(params) {
   return request({
     url: api.event.ListToDoEvents,
@@ -39,7 +39,7 @@ export function listToDoEvents(params) {
   })
 }
 
-//查询企业下的车间列表
+// 查询企业下的车间列表
 export function findRoomList(params) {
   return request({
     url: api.event.FindRoomList,
@@ -48,7 +48,7 @@ export function findRoomList(params) {
   })
 }
 
-//为车间新增巡查项目
+// 为车间新增巡查项目
 export function addEvent(data) {
   return request({
     url: api.event.AddEvent4Room,
@@ -57,7 +57,7 @@ export function addEvent(data) {
   })
 }
 
-//提交检查结果
+// 提交检查结果
 export function submitEvent(data) {
   return request({
     url: api.event.SubmitEvent,
@@ -66,7 +66,16 @@ export function submitEvent(data) {
   })
 }
 
-//查询企业下的车间列表
+// 企业确认检查结果
+export function confirmEvent(data) {
+  return request({
+    url: api.event.ConfirmEvent,
+    method: 'post',
+    data
+  })
+}
+
+// 查询企业下的车间列表
 export function getEventDetail(params) {
   return request({
     url: api.event.Get,
@@ -75,7 +84,7 @@ export function getEventDetail(params) {
   })
 }
 
-//上传附件
+// 上传附件
 export function uploadImg(data) {
   return request({
     url: api.event.UploadImg,
@@ -84,7 +93,7 @@ export function uploadImg(data) {
   })
 }
 
-//删除已上传的附件图片
+// 删除已上传的附件图片
 export function removeImg(params) {
   return request({
     url: api.event.RemoveImg,
@@ -92,7 +101,6 @@ export function removeImg(params) {
     params
   })
 }
-
 
 /**
  * 批次接口服务
@@ -120,13 +128,11 @@ export function getBatchDetail(params) {
     params
   })
 }
-
-
 /**
  * 会议培训接口服务
  */
 
-//审核通过
+// 审核通过
 export function auditor(params) {
   return request({
     url: api.auditor,
@@ -147,7 +153,7 @@ export function wxLogin(params) {
  * 巡查类型接口服务
  */
 
-//查询根节点巡查类型
+// 查询根节点巡查类型
 export function findRootList(params) {
   return request({
     url: api.checkType.FindRootList,
