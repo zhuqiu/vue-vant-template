@@ -27,12 +27,10 @@
         </div>
       </van-dropdown-item>
     </van-dropdown-menu>
-    
-    <van-empty v-if="false" description="暂无数据" />
 
-    <div>
-      <common-list></common-list>
-    </div>
+    <van-empty v-if="list.length === 0" description="暂无数据" />
+
+    <common-list :data="list" @click="handleClick" v-else></common-list>
     
   </div>
 </template>
@@ -40,6 +38,8 @@
 <script>
 
 import commonList from '../commonPage/commonList.vue'
+
+import { listToDoEvents } from '../../api/application.apis'
 
 export default {
   name: 'WaitTodo',
@@ -53,18 +53,40 @@ export default {
         batchNo: '',
         checkName: ''
       },
+      list: [],
       option: [
         { text: '待处理', value: 0 },
       ],
     }
   },
+  created(){
+    this.getList(this.params);
+  },
   methods: {
+    async getList(params) {
+      const res = await listToDoEvents(params)
+      if (res.code === '0') {
+        this.list = res.data
+      } else {
+        this.$toast(res.msg)
+        this.list = []
+      }
+    },
     handleReset(){
       this.params.batchNo = '';
       this.params.checkName = '';
     },
     handleSearch(){
       this.$refs.item.toggle();
+    },
+    handleClick(val){
+      this.$router.push({
+        name: 'Event',
+        params: {
+          id: val.id,
+          status: val.status
+        }
+      })
     }
   }
 }

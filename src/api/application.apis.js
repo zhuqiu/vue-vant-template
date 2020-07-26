@@ -105,11 +105,11 @@ export function removeImg(params) {
 /**
  * 批次接口服务
  */
-export function createBatchNo(data) {
+export function createBatchNo(params) {
   return request({
     url: api.eventBatch.CreateBatchNo,
-    method: 'post',
-    data
+    method: 'get',
+    params
   })
 }
 

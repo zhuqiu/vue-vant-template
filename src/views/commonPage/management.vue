@@ -27,7 +27,12 @@
             <div>批次号：{{ item }}</div>
           </template>
           <div>
+            <div>批次状态：
+              <span v-if="batchInfo.endTime">已结束</span>
+              <span v-else>进行中</span>
+            </div>
             <div>创建时间：{{ batchInfo.startTime }}</div>
+            <div v-if="batchInfo.endTime">结束时间：{{ batchInfo.endTime }}</div>
           </div>
         </van-collapse-item>
       </van-collapse>

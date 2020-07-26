@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { wxLogin } from '../../api/application.apis'
+import { wxLogin, listCorp } from '../../api/application.apis'
 export default {
   name: 'Home',
   data() {
@@ -78,10 +78,16 @@ export default {
     let res = await wxLogin({code:"test_code"});
     if(res.code === "0"){
       this.$store.dispatch('setToken', res.data.token)
+      this.getList({corpName: ''})
     }
+    
   },
   methods: {
     handleClick(path){
+      if(!localStorage.getItem('select_enterprise')){
+        this.$toast('请先选择企业');
+        return;
+      }
       let id = JSON.parse(localStorage.getItem('select_enterprise')).id;
       if(!id){
         this.$toast('请先选择企业');
@@ -90,7 +96,17 @@ export default {
       this.$router.push({
         name: path
       })
-    }
+    },
+    async getList(params){
+      let res = await listCorp(params);
+      if(res.code === "0"){
+        let id = JSON.parse(localStorage.getItem('select_enterprise')).id;
+        let source = res.data.find((d) => d.id === id);
+        if(!source){
+          localStorage.setItem('select_enterprise', '')
+        }
+      }
+    },
   }
 }
 </script>

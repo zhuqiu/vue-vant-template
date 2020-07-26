@@ -77,7 +77,6 @@ export default {
     },
     async getList(params){
       let res = await listCorp(params);
-      console.log(res);
       if(res.code === "0"){
         this.list = res.data;
       }else{

@@ -35,6 +35,10 @@
             </div>
           </div>
         </li>
+        <li v-if="status === statusTypeItem.EnterpriseReject">
+          <div class="content-label">企业驳回原因</div>
+          <div class="content-nav">{{ confirmEventParam.rejectReason }}</div>
+        </li>
       </ul>
     </div>
     <van-form @submit="onSubmit">
@@ -349,7 +353,7 @@ export default {
             this.disabled = false
             return
           }
-          if (this.confirmEventParam.replyStatus && !this.confirmEventParam.rejectReason) {
+          if (this.confirmEventParam.replyStatus === 2 && !this.confirmEventParam.rejectReason) {
             this.$toast('请填写驳回原因')
             this.disabled = false
             return
@@ -434,6 +438,7 @@ export default {
         this.submitEventParam.expectRepairDate = res.data.expectRepairDate
         this.submitEventParam.checkContext = res.data.checkContext
         this.submitEventParam.checkRemark = res.data.checkRemark
+        this.confirmEventParam.rejectReason = res.data.rejectReason
         if (res.data.imgs) {
           this.fileList = res.data.imgs.map(m => {
             return {
