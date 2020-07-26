@@ -27,8 +27,8 @@
             </van-popup>
           </van-form>
           <div class="btn-content">
-            <van-button class="btn-width" type="primary" @click="handleReset">重置</van-button>
-            <van-button class="btn-width" type="info" @click="handleSearch">查询</van-button>
+            <van-button class="btn-width" size="small" type="primary" @click="handleReset">重置</van-button>
+            <van-button class="btn-width" size="small" type="info" @click="handleSearch">查询</van-button>
           </div>
         </van-dropdown-item>
       </van-dropdown-menu>
@@ -157,6 +157,7 @@ export default {
 .btn-content{
   display: flex;
   justify-content: space-around;
+  margin: 0.32rem 0;
   .btn-width{
     width: 4rem;
   }

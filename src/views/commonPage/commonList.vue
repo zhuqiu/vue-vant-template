@@ -3,7 +3,7 @@
  * @LastEditors: zhuqiu
  * @LastEditTime: 2020-07-21 16:34:59
  * @FilePath: \project\src\views\commonPage\commonList.vue
---> 
+-->
 <template>
   <div>
     <van-row class="common-list">
@@ -18,7 +18,7 @@
           <div>
             <div class="content-info">
               <van-icon name="smile-o" size="24" color="#00FFCC"/>
-              <span>{{item.checkName}}</span>
+              <span>{{item.nickname}}</span>
             </div>
             <div class="content-time">{{ item.createTime }}</div>
           </div>
@@ -56,7 +56,7 @@ export default {
 .common-list{
   padding: 0.32rem;
   .common-content {
-    
+
     margin-bottom: 0.32rem;
     & > div {
       display: flex;
@@ -65,7 +65,7 @@ export default {
       padding: 0.32rem;
       background: #ffffff;
       border-radius: 0.1rem;
-      
+
     }
     .content-title{
       font-weight: 600;

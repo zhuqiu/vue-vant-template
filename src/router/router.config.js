@@ -3,7 +3,7 @@
  * @LastEditors: zhuqiu
  * @LastEditTime: 2020-07-21 15:14:35
  * @FilePath: \project\src\router\router.config.js
- */ 
+ */
 /**
  * 基础路由
  * @type { *[] }
@@ -65,6 +65,18 @@ export const constantRouterMap = [
         name: 'EventDetail',
         component: () => import('@/views/event/eventDetail'),
         meta: { title: '记录详情', keepAlive: false }
+      },
+      {
+        path: '/workRecordList',
+        name: 'WorkRecordList',
+        component: () => import('@/views/workRecord/list'),
+        meta: { title: '驻场登记列表', keepAlive: false }
+      },
+      {
+        path: '/workRecordDetail',
+        name: 'WorkRecordetail',
+        component: () => import('@/views/workRecord/detail'),
+        meta: { title: '驻场登记详情', keepAlive: false }
       },
     ]
   }

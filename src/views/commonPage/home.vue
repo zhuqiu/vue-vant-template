@@ -47,7 +47,8 @@ export default {
         {
           icon: "label",
           text: "驻场登记",
-          color: "#9933FF"
+          color: "#9933FF",
+          path: "WorkRecordList"
         },
         {
           icon: "todo-list",
@@ -80,7 +81,7 @@ export default {
       this.$store.dispatch('setToken', res.data.token)
       this.getList({corpName: ''})
     }
-    
+
   },
   methods: {
     handleClick(path){

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <van-nav-bar :title="edit ? '巡查记录' : '新增巡查记录'" left-text="返回" left-arrow @click-left="onClickLeft" />
+    <van-sticky>
+      <van-nav-bar :title="edit ? '巡查记录' : '新增巡查记录'" left-text="返回" left-arrow @click-left="onClickLeft" />
+    </van-sticky>
     <div class="content-view" v-if="edit">
       <ul class="content-detail">
         <li>
@@ -84,9 +86,9 @@
         type="textarea"
         placeholder="请输入巡查内容"
       />
-      <van-field name="uploader" label="现场图片" v-if="isPending">
+      <van-field name="uploader" :label="isWaitEnteriseRectification ? '整改图片' : '现场图片'" v-if="isPending || isWaitEnteriseRectification">
         <template #input>
-          <van-uploader v-model="fileList" :after-read="afterRead" :before-delete="beforeDelete" />
+          <van-uploader v-model="imgList" :after-read="afterRead" :before-delete="beforeDelete" />
         </template>
       </van-field>
       <van-field
@@ -145,7 +147,7 @@
       <van-popup v-model="showPicker" position="bottom">
         <van-picker show-toolbar :columns="columns" @confirm="onConfirm" @cancel="showPicker = false" />
       </van-popup>
-      <div style="margin: 16px;">
+      <div style="margin: 0.32rem;">
         <van-button round block type="info" native-type="submit" v-if="!isOverStatus" :disabled="disabled">{{
           btnText
         }}</van-button>
@@ -166,6 +168,7 @@ import {
   addEvent,
   submitEvent,
   confirmEvent,
+  finishRepair,
   getEventDetail,
   uploadImg,
   removeImg
@@ -202,6 +205,7 @@ export default {
       edit: false,
       status: '',
       fileList: [],
+      imgList: [], // 当前图片组件中的文件信息
       disabled: false,
       statusTypeItem: '',
       btnText: '新增',
@@ -366,6 +370,18 @@ export default {
             this.disabled = false
             this.$toast(res.msg)
           }
+        } else if(this.isWaitEnteriseRectification) {
+          let params = {
+            eventId: this.$route.params.id
+          }
+          const res = await finishRepair(params);
+          if (res.code === '0') {
+            this.$toast('提交成功')
+            this.goToAllTodo()
+          } else {
+            this.disabled = false
+            this.$toast(res.msg)
+          }
         }
       }
     },
@@ -448,6 +464,11 @@ export default {
               url: m.imgPath
             }
           })
+          if(this.isWaitEnteriseRectification){
+            this.imgList = []
+          }else {
+            this.imgList = this.fileList;
+          }
         }
       } else {
         this.$toast(res.msg)

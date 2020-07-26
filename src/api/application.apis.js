@@ -75,6 +75,15 @@ export function confirmEvent(data) {
   })
 }
 
+// 完成整改
+export function finishRepair(params) {
+  return request({
+    url: api.event.FinishRepair,
+    method: 'get',
+    params
+  })
+}
+
 // 查询企业下的车间列表
 export function getEventDetail(params) {
   return request({
@@ -161,3 +170,53 @@ export function findRootList(params) {
     params
   })
 }
+
+/**
+ * 驻场登记接口服务
+ */
+
+// 查询驻场登记
+export function findWorkRecord(params) {
+  return request({
+    url: api.workRecord.Find,
+    method: 'get',
+    params
+  })
+}
+
+// 新增驻场登记
+export function addWorkRecord(data) {
+  return request({
+    url: api.workRecord.Add,
+    method: 'post',
+    data
+  })
+}
+
+// 查询驻场登记详情
+export function getWorkRecord(params) {
+  return request({
+    url: api.workRecord.Get,
+    method: 'get',
+    params
+  })
+}
+
+// 查询驻场登记详情
+export function submitWorkRecord(params) {
+  return request({
+    url: api.workRecord.Submit,
+    method: 'get',
+    params
+  })
+}
+
+// 上传签名
+export function uploadSignImg(data) {
+  return request({
+    url: api.workRecord.UploadSignImg,
+    method: 'post',
+    data
+  })
+}
+
