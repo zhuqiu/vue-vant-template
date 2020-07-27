@@ -51,19 +51,36 @@
         type="textarea"
         placeholder="请输入随行人员"
       />
+      <div class="content-view">
+        <ul class="content-detail">
+          <li>
+            <div class="content-label">签名</div>
+            <div class="content-nav" @click="addSignature">
+              <van-icon name="add" size="24" color="#07c160"/>
+            </div>
+          </li>
+        </ul>
+      </div>
       <div style="margin: 0.32rem;">
         <van-button round block type="info" native-type="submit" :disabled="disabled">新增</van-button>
       </div>
     </van-form>
+
+    <signature :show="show"></signature>
   </div>
 </template>
 
 <script>
 
-import { addWorkRecord, getWorkRecord, submitWorkRecord } from '../../api/application.apis'
+import { addWorkRecord, getWorkRecord, submitWorkRecord } from '../../api/application.apis';
+
+import Signature from '../commonPage/signature.vue'
 
 export default {
   name: 'workRecordDetail',
+  components: {
+    Signature
+  },
   data() {
     return {
       edit: false,
@@ -74,7 +91,8 @@ export default {
         status: 1,
         vistReason: ''
       },
-      disabled: false
+      disabled: false,
+      show: false
     }
   },
   created(){
@@ -136,6 +154,9 @@ export default {
         default:
           return '未提交'
       }
+    },
+    addSignature(){
+      this.show = true;
     }
   }
 }
@@ -175,6 +196,10 @@ export default {
       vertical-align: middle;
       overflow: visible;
       word-wrap: break-word;
+      i{
+        position: relative;
+        top: 0.08rem;
+      }
     }
   }
 }

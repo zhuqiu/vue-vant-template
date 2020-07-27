@@ -12,6 +12,8 @@ import { Toast } from 'vant';
 import { Dialog } from 'vant';
 import moment from 'moment'//导入文件
 
+import vueSignature from "vue-signature"
+
 // 设置 js中可以访问 $cdn
 import { $cdn } from '@/config'
 Vue.prototype.$cdn = $cdn
@@ -30,6 +32,8 @@ Vue.use(Vant);
 
 Vue.use(Toast);
 Vue.use(Dialog);
+
+Vue.use(vueSignature);
 
 // filters
 import './filters'
