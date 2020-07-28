@@ -42,7 +42,8 @@ export default {
         {
           icon: "comment",
           text: "会议培训",
-          color: "#00FF99"
+          color: "#00FF99",
+          path: 'MeetingList'
         },
         {
           icon: "label",

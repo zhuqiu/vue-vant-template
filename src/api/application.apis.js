@@ -220,3 +220,61 @@ export function uploadSignImg(data) {
   })
 }
 
+/**
+ * 会议培训接口服务
+ */
+
+
+ // 分页查询会议培训
+export function getMeetingList(params) {
+  return request({
+    url: api.meeting.List,
+    method: 'get',
+    params
+  })
+}
+
+// 查询培训详情
+export function getMeetingDetail(params) {
+  return request({
+    url: api.meeting.Get,
+    method: 'get',
+    params
+  })
+}
+
+// 提交审核
+export function meetingFinish(params) {
+  return request({
+    url: api.meeting.Finish,
+    method: 'get',
+    params
+  })
+}
+
+// 审核通过
+export function meetingAuditor(params) {
+  return request({
+    url: api.meeting.Auditor,
+    method: 'get',
+    params
+  })
+}
+
+// 上传附件
+export function meetingUploadImg(data) {
+  return request({
+    url: api.meeting.UploadImg,
+    method: 'post',
+    data
+  })
+}
+
+// 删除已上传的附件图片
+export function meetingRemoveImg(params) {
+  return request({
+    url: api.meeting.RemoveImg,
+    method: 'get',
+    params
+  })
+}

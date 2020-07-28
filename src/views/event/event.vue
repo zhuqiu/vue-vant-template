@@ -263,6 +263,7 @@ export default {
       formdata.append('eventId', this.$route.params.id)
       const res = await uploadImg(formdata)
       if (res.code === '0') {
+        file.id = res.data.id;
         file.status = 'done'
         file.message = 'done'
       } else {
@@ -497,7 +498,7 @@ export default {
     flex-direction: row;
     align-items: center;
     position: relative;
-    ::after {
+    &::after {
       position: absolute;
       box-sizing: border-box;
       content: ' ';

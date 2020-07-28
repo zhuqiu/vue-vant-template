@@ -78,6 +78,18 @@ export const constantRouterMap = [
         component: () => import('@/views/workRecord/detail'),
         meta: { title: '驻场登记详情', keepAlive: false }
       },
+      {
+        path: '/meetingList',
+        name: 'MeetingList',
+        component: () => import('@/views/meeting/list'),
+        meta: { title: '会议培训列表', keepAlive: false }
+      },
+      {
+        path: '/meetingDetail',
+        name: 'MeetingDetail',
+        component: () => import('@/views/meeting/detail'),
+        meta: { title: '会议培训详情', keepAlive: false }
+      },
     ]
   }
 ]

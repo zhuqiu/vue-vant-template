@@ -21,6 +21,24 @@
           <div class="content-label">状态</div>
           <div class="content-nav">{{ getStatus(params.status) }}</div>
         </li>
+        <li>
+          <div class="content-label">签名</div>
+          <div class="content-nav" >
+            <van-icon @click="addSignature" name="add" size="24" color="#07c160" v-if="fileList.length === 0 && params.status !== 2"/>
+            <div :class="fileList.length > 0 ? 'img-view' : ''" v-else>
+              <van-image
+                style="margin-right: 0.32rem;"
+                width="100"
+                height="100"
+                v-for="(item, index) in fileList"
+                :key="index"
+                @click="previewImg(index)"
+                :src="item.url"
+              />
+              <van-icon v-if="params.status !== 2"  name="close" size="18" color="#ee0a24" @click="deletePic(index)"/>
+            </div>
+          </div>
+        </li>
       </ul>
       <div style="margin: 0.32rem;">
         <van-button round block type="info" v-if="params.status !== 2" @click="submitRecord">提交</van-button>
@@ -51,30 +69,24 @@
         type="textarea"
         placeholder="请输入随行人员"
       />
-      <div class="content-view">
-        <ul class="content-detail">
-          <li>
-            <div class="content-label">签名</div>
-            <div class="content-nav" @click="addSignature">
-              <van-icon name="add" size="24" color="#07c160"/>
-            </div>
-          </li>
-        </ul>
-      </div>
       <div style="margin: 0.32rem;">
         <van-button round block type="info" native-type="submit" :disabled="disabled">新增</van-button>
       </div>
     </van-form>
 
-    <signature :show="show"></signature>
+    <signature :show="show" @ok="handleOk" @close="handleClose"></signature>
   </div>
 </template>
 
 <script>
 
-import { addWorkRecord, getWorkRecord, submitWorkRecord } from '../../api/application.apis';
+import { addWorkRecord, getWorkRecord, submitWorkRecord, uploadSignImg } from '../../api/application.apis';
 
 import Signature from '../commonPage/signature.vue'
+
+import {dataURLtoBlob, blobToFile} from '@/utils/index'
+
+import { ImagePreview } from 'vant'
 
 export default {
   name: 'workRecordDetail',
@@ -92,7 +104,8 @@ export default {
         vistReason: ''
       },
       disabled: false,
-      show: false
+      show: false,
+      fileList: []
     }
   },
   created(){
@@ -109,7 +122,12 @@ export default {
     async getWorkRecord(params){
       let res = await getWorkRecord(params);
       if(res.code === '0'){
-        this.params = res.data
+        this.params = res.data;
+        if(res.data.signUrlPath){
+          this.fileList.push({
+            url: res.data.signUrlPath
+          })
+        }
       }else{
         this.$toast(res.msg)
       }
@@ -157,6 +175,37 @@ export default {
     },
     addSignature(){
       this.show = true;
+    },
+    async handleOk(val){
+      this.show = false;
+      let file = blobToFile(dataURLtoBlob(val),'签名.png');
+      const formdata = new FormData()
+      formdata.append('file', file)
+      formdata.append('workRecordId', this.$route.params.id)
+      let res = await uploadSignImg(formdata);
+      if (res.code === '0') {
+        this.fileList.push({
+          url: res.data
+        })
+      } else {
+        this.fileList = [];
+        this.$toast(res.msg)
+      }
+    },
+    handleClose(){
+      this.show = false;
+    },
+    previewImg(index) {
+      const list = this.fileList.map(f => {
+        return f.url
+      })
+      ImagePreview({
+        images: list,
+        startPosition: index
+      })
+    },
+    deletePic(index){
+      this.fileList.splice(index,1)
     }
   }
 }
@@ -172,18 +221,18 @@ export default {
     flex-direction: row;
     align-items: center;
     position: relative;
-    ::after {
-      position: absolute;
-      box-sizing: border-box;
-      content: ' ';
-      pointer-events: none;
-      right: 0.42667rem;
-      bottom: 0;
-      left: 0.42667rem;
-      border-bottom: 0.02667rem solid #ebedf0;
-      -webkit-transform: scaleY(0.5);
-      transform: scaleY(0.5);
-    }
+    &::after {
+    position: absolute;
+    box-sizing: border-box;
+    content: ' ';
+    pointer-events: none;
+    right: 0.42667rem;
+    bottom: 0;
+    left: 0.42667rem;
+    border-bottom: 0.02667rem solid #ebedf0;
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+  }
     .content-label {
       width: 3rem;
       margin-right: 0.32rem;
@@ -199,6 +248,18 @@ export default {
       i{
         position: relative;
         top: 0.08rem;
+      }
+    }
+    .img-view{
+      position: relative;
+      width: 100px;
+      height: 100px;
+      border: 1px dotted #ebedf0;
+      border-radius: 4px;
+      i{
+        position: absolute;
+        top: -0.2rem;
+        right: -0.2rem;
       }
     }
   }
