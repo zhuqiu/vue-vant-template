@@ -59,7 +59,7 @@ export default {
     handleClick(val){
       this.$router.push({
         name: 'MeetingDetail',
-        params: {
+        query: {
           id: val.id,
           status: val.status
         }
@@ -96,7 +96,7 @@ export default {
         color: #3300FF;
       }
       .status_2{
-        color: #6633FF;
+        color: #9900FF;
       }
       .status_3{
         color: #00FF99;

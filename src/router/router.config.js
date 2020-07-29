@@ -90,6 +90,12 @@ export const constantRouterMap = [
         component: () => import('@/views/meeting/detail'),
         meta: { title: '会议培训详情', keepAlive: false }
       },
+      {
+        path: '/videoList',
+        name: 'VideoList',
+        component: () => import('@/views/onlineVideo/list'),
+        meta: { title: '在线视频列表', keepAlive: false }
+      },
     ]
   }
 ]

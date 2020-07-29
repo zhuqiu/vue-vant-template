@@ -278,3 +278,16 @@ export function meetingRemoveImg(params) {
     params
   })
 }
+
+/**
+ * 在线视频接口服务
+ */
+
+ //分页查询在线视频列表
+ export function getListVideo(params) {
+  return request({
+    url: api.onlineVideo.ListVideo,
+    method: 'get',
+    params
+  })
+}

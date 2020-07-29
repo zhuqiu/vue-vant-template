@@ -25,6 +25,22 @@
           <div class="content-label">状态</div>
           <div class="content-nav">{{ getStatus(params.status) }}</div>
         </li>
+        <li v-if="status !== 1">
+          <div class="content-label">培训图片</div>
+          <div class="content-nav">
+            <div>
+              <van-image
+                style="margin-right: 0.32rem;"
+                width="100"
+                height="100"
+                v-for="(item, index) in fileList"
+                :key="index"
+                @click="previewImg(index)"
+                :src="item.url"
+              />
+            </div>
+          </div>
+        </li>
       </ul>
     </div>
     <van-form @submit="onSubmit" v-if="status === 1">
@@ -37,6 +53,9 @@
         <van-button round block type="info" native-type="submit" :disabled="disabled">发起审核</van-button>
       </div>
     </van-form>
+    <div style="margin: 0.32rem;" v-if="status === 2">
+      <van-button round block type="info" :disabled="disabled" @click="onSubmit">审核通过</van-button>
+    </div>
   </div>
 </template>
 
@@ -53,12 +72,14 @@ export default {
       params: {},
       disabled: false,
       fileList: [],
-      status: ''
+      status: '',
+      id: ''
     }
   },
   created(){
-    this.getMeetingDetail({id: this.$route.params.id})
-    this.status = this.$route.params.status
+    this.id = Number(this.$route.query.id);
+    this.getMeetingDetail({id: this.id})
+    this.status = Number(this.$route.query.status)
   },
   methods: {
     onClickLeft(){
@@ -88,7 +109,7 @@ export default {
     async uploadImg(file) {
       const formdata = new FormData()
       formdata.append('file', file.file)
-      formdata.append('meetingId', this.$route.params.id)
+      formdata.append('meetingId', this.id)
       const res = await meetingUploadImg(formdata)
       if (res.code === '0') {
         file.id = res.data.id;
@@ -110,9 +131,7 @@ export default {
           if (action === 'confirm') {
             const res = await meetingRemoveImg({ imgId: file.id })
             if (res.code === '0') {
-              //location.reload()
-              done()
-              
+              location.reload()
             }
           }
           done()
@@ -122,12 +141,14 @@ export default {
         return true
       }
     },
-    onSubmit(){
-
-    },
-    async submitCheck(){
+    async onSubmit(){
       this.disabled = true;
-      let res = await submitWorkRecord({workRecordId: this.$route.params.id});
+      let res = '';
+      if(this.status === 1){
+        res = await meetingFinish({id: this.id});
+      }else if(this.status === 2){
+        res = await meetingAuditor({id: this.id});
+      }
       if (res.code === '0') {
         this.$toast('提交成功')
         this.goToMeetingList()

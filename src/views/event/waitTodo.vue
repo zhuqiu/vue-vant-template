@@ -113,7 +113,7 @@ export default {
     handleClick(val){
       this.$router.push({
         name: 'Event',
-        params: {
+        query: {
           id: val.id,
           status: val.status
         }

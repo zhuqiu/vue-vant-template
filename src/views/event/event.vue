@@ -209,16 +209,18 @@ export default {
       disabled: false,
       statusTypeItem: '',
       btnText: '新增',
-      minDate: new Date()
+      minDate: new Date(),
+      id: ''
     }
   },
   created() {
+    this.id = Number(this.$route.query.id);
     this.statusTypeItem = StatusTypeItem
-    this.edit = !!this.$route.params.id
+    this.edit = !!this.id
     if (this.edit) {
-      this.status = this.$route.params.status
+      this.status = Number(this.$route.query.status);
       if (this.status === StatusTypeItem.Pending || this.status === StatusTypeItem.EnterpriseReject) {
-        this.submitEventParam.eventId = this.$route.params.id
+        this.submitEventParam.eventId = this.id
         this.btnText = '提交'
       } else if (this.status === StatusTypeItem.CheckNotPass || this.status === StatusTypeItem.CheckPass) {
         this.btnText = '企业确认'
@@ -260,7 +262,7 @@ export default {
     async uploadImg(file) {
       const formdata = new FormData()
       formdata.append('file', file.file)
-      formdata.append('eventId', this.$route.params.id)
+      formdata.append('eventId', this.id)
       const res = await uploadImg(formdata)
       if (res.code === '0') {
         file.id = res.data.id;
@@ -348,7 +350,7 @@ export default {
           }
         } else if (this.isWaitSure) {
           const params = {
-            eventId: this.$route.params.id,
+            eventId: this.id,
             expectRepairDate: this.submitEventParam.expectRepairDate,
             rejectReason: this.confirmEventParam.rejectReason,
             replyStatus: this.confirmEventParam.replyStatus
@@ -373,7 +375,7 @@ export default {
           }
         } else if(this.isWaitEnteriseRectification) {
           let params = {
-            eventId: this.$route.params.id
+            eventId: this.id
           }
           const res = await finishRepair(params);
           if (res.code === '0') {
@@ -445,7 +447,7 @@ export default {
       }
     },
     async getEventDetail() {
-      const res = await getEventDetail({ id: this.$route.params.id })
+      const res = await getEventDetail({ id: this.id })
       if (res.code === '0') {
         this.parmas.batchNo = res.data.batchNo
         this.parmas.checkTypeId = res.data.checkTypeId

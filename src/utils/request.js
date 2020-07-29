@@ -26,8 +26,8 @@ service.interceptors.request.use(
         forbidClick: true
       })
     }
-    if (store.getters.token) {
-      config.headers['token'] = `${store.getters.token}`;
+    if (localStorage.getItem('token')) {
+      config.headers['token'] = `${localStorage.getItem('token')}`;
     }
     return config
   },

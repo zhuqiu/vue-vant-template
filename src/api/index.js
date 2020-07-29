@@ -42,6 +42,9 @@ const original = {
     FindChildList: '/data/api/checkType/findChildList',
     FindRootList: '/data/api/checkType/findRootList',
   },
+  onlineVideo: {
+    ListVideo: '/data/api/onlineVideo/listVideo'
+  },
   user: {
     Login: '/user/login',
     GetPhoneCode: '/user/userinfo',

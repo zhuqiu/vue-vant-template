@@ -71,7 +71,8 @@ export default {
         {
           icon: "comment-circle",
           text: "在线培训",
-          color: "#6666CC"
+          color: "#6666CC",
+          path: 'VideoList'
         }
       ]
     }
@@ -79,7 +80,8 @@ export default {
   async created(){
     let res = await wxLogin({code:"test_code"});
     if(res.code === "0"){
-      this.$store.dispatch('setToken', res.data.token)
+      //this.$store.dispatch('setToken', res.data.token)
+      localStorage.setItem('token', res.data.token);
       this.getList({corpName: ''})
     }
 
@@ -93,6 +95,10 @@ export default {
       let id = JSON.parse(localStorage.getItem('select_enterprise')).id;
       if(!id){
         this.$toast('请先选择企业');
+        return;
+      }
+      if(!path){
+        this.$toast('该功能正在努力开发中');
         return;
       }
       this.$router.push({
