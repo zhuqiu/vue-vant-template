@@ -283,11 +283,34 @@ export function meetingRemoveImg(params) {
  * 在线视频接口服务
  */
 
- //分页查询在线视频列表
- export function getListVideo(params) {
+//分页查询在线视频列表
+export function getListVideo(params) {
   return request({
     url: api.onlineVideo.ListVideo,
     method: 'get',
     params
+  })
+}
+
+/**
+ * 通知接口服务
+ */
+
+
+//分页查询消息通知
+export function getListMsg(params) {
+  return request({
+    url: api.msg.ListMsg,
+    method: 'get',
+    params
+  })
+}
+
+//批量清空消息列表
+export function batchDeleteMsg(data) {
+  return request({
+    url: api.msg.BatchDeleteMsg,
+    method: 'post',
+    data
   })
 }

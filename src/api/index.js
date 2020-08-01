@@ -45,6 +45,10 @@ const original = {
   onlineVideo: {
     ListVideo: '/data/api/onlineVideo/listVideo'
   },
+  msg: {
+    ListMsg: '/data/api/msg/listMsg',
+    BatchDeleteMsg: '/data/api/msg/batchDel'
+  },
   user: {
     Login: '/user/login',
     GetPhoneCode: '/user/userinfo',
