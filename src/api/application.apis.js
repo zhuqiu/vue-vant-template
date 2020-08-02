@@ -150,14 +150,6 @@ export function auditor(params) {
   })
 }
 
-export function wxLogin(params) {
-  return request({
-    url: api.user.WxLogin,
-    method: 'get',
-    params
-  })
-}
-
 /**
  * 巡查类型接口服务
  */
@@ -312,5 +304,22 @@ export function batchDeleteMsg(data) {
     url: api.msg.BatchDeleteMsg,
     method: 'post',
     data
+  })
+}
+
+//用户登录
+export function wxLogin(params) {
+  return request({
+    url: api.user.WxLogin,
+    method: 'get',
+    params
+  })
+}
+
+export function getWxLoginUrl(params) {
+  return request({
+    url: api.user.GetWxLoginUrl,
+    method: 'get',
+    params
   })
 }

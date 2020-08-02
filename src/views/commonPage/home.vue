@@ -78,12 +78,15 @@ export default {
     }
   },
   async created(){
-    let res = await wxLogin({code:"test_code"});
-    if(res.code === "0"){
-      //this.$store.dispatch('setToken', res.data.token)
-      localStorage.setItem('token', res.data.token);
-      this.getList({corpName: ''})
-    }
+    // localStorage.removeItem('token');
+    this.getList({corpName: ''})
+    // let res = await wxLogin({code:"test_code"});
+    // if(res.code === "0"){
+    //   //this.$store.dispatch('setToken', res.data.token)
+    //   localStorage.setItem('token', res.data.token);
+    //   localStorage.setItem('user_type', res.data.userType);
+    //   this.getList({corpName: ''})
+    // }
 
   },
   methods: {

@@ -148,9 +148,12 @@
         <van-picker show-toolbar :columns="columns" @confirm="onConfirm" @cancel="showPicker = false" />
       </van-popup>
       <div style="margin: 0.32rem;">
-        <van-button round block type="info" native-type="submit" v-if="!isOverStatus" :disabled="disabled">{{
+        <!-- <van-button round block type="info" native-type="submit" v-if="!isOverStatus" :disabled="disabled">{{
           btnText
-        }}</van-button>
+        }}</van-button> -->
+        <van-button round block type="info" native-type="submit" v-if="isPending && isServer" :disabled="disabled">提交</van-button>
+        <van-button round block type="info" native-type="submit" v-if="isWaitEnteriseRectification && isServer" :disabled="disabled">确认已整改</van-button>
+        <van-button round block type="info" native-type="submit" v-if="isWaitSure && isAgent" :disabled="disabled">企业确认</van-button>
       </div>
     </van-form>
   </div>
@@ -160,6 +163,8 @@
 import { ImagePreview } from 'vant'
 
 import StatusTypeItem from '@/utils/status-typing'
+
+import UserType from '@/utils/user-typing'
 
 import {
   findBatchNoList,
@@ -210,10 +215,12 @@ export default {
       statusTypeItem: '',
       btnText: '新增',
       minDate: new Date(),
-      id: ''
+      id: '',
+      role: ''
     }
   },
   created() {
+    this.role = localStorage.getItem('user_type');
     this.id = Number(this.$route.query.id);
     this.statusTypeItem = StatusTypeItem
     this.edit = !!this.id
@@ -248,6 +255,14 @@ export default {
     // 企业已确认(结束) 企业已整改(结束)
     isOverStatus() {
       return this.status === StatusTypeItem.EnterpriseConfirmed || this.status === StatusTypeItem.EnterpriseRectified
+    },
+    //获取用户角色 -- 运维用户
+    isServer(){
+      return this.role === UserType.ADMIN || this.role === UserType.OPER_ADMIN;
+    },
+    //获取用户角色 -- 企业用户
+    isAgent(){
+      return this.role === UserType.AGENT_ADMIN || this.role === UserType.AGENT_XUNCHAYUAN;
     }
   },
   methods: {

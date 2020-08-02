@@ -19,6 +19,12 @@ export const constantRouterMap = [
     },
     children: [
       {
+        path: '/wxLogin',
+        name: 'WxLogin',
+        component: () => import('@/views/commonPage/wxLogin'),
+        meta: { title: '登录页', keepAlive: false }
+      },
+      {
         path: '/home',
         name: 'Home',
         component: () => import('@/views/commonPage/home'),

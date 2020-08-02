@@ -3,9 +3,10 @@
  * @LastEditors: zhuqiu
  * @LastEditTime: 2020-07-17 19:50:53
  * @FilePath: \project\src\utils\request.js
- */ 
+ */
 import axios from 'axios'
 import store from '@/store'
+import router from '@/router'
 import { Toast } from 'vant'
 // 根据环境不同引入不同api地址
 import { baseApi } from '@/config'
@@ -51,6 +52,11 @@ service.interceptors.response.use(
       }
       return Promise.reject(res || 'error')
     } else {
+      if(res.code === '1001'){
+        router.replace({
+          path: '/wxlogin'
+        })
+      }
       return Promise.resolve(res)
     }
   },

@@ -1,5 +1,5 @@
 
-const original = { 
+const original = {
   meeting: {
     Auditor: '/data/api/meeting/auditor',
     Finish: '/data/api/meeting/finish',
@@ -52,7 +52,8 @@ const original = {
   user: {
     Login: '/user/login',
     GetPhoneCode: '/user/userinfo',
-    WxLogin: '/data/api/user/wxLogin'
+    WxLogin: '/data/api/user/wxLogin',
+    GetWxLoginUrl: '/data/api/user/getWxLoginUrl'
   }
 }
 
