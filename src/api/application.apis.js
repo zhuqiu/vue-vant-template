@@ -323,3 +323,19 @@ export function getWxLoginUrl(params) {
     params
   })
 }
+
+export function bindPhone(params) {
+  return request({
+    url: api.user.BindPhone,
+    method: 'get',
+    params
+  })
+}
+
+export function getPhoneCode(params) {
+  return request({
+    url: api.user.GetPhoneCode,
+    method: 'get',
+    params
+  })
+}

@@ -53,7 +53,9 @@ const original = {
     Login: '/user/login',
     GetPhoneCode: '/user/userinfo',
     WxLogin: '/data/api/user/wxLogin',
-    GetWxLoginUrl: '/data/api/user/getWxLoginUrl'
+    GetWxLoginUrl: '/data/api/user/getWxLoginUrl',
+    BindPhone: '/data/api/user/bindPhone',
+    GetPhoneCode: '/data/api/user/getPhoneCode'
   }
 }
 

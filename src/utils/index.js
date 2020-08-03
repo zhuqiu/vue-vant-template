@@ -154,3 +154,8 @@ export function deepClone(obj) {
   let str = JSON.stringify(obj);
   return JSON.parse(str);
 }
+
+export function phone(str){
+	let regs = /^1\d{10}$/g;
+	return !regs.test(str);
+}

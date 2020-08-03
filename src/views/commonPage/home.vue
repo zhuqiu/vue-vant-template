@@ -78,7 +78,7 @@ export default {
     }
   },
   async created(){
-    // localStorage.removeItem('token');
+    localStorage.removeItem('token');
     this.getList({corpName: ''})
     // let res = await wxLogin({code:"test_code"});
     // if(res.code === "0"){
@@ -87,7 +87,6 @@ export default {
     //   localStorage.setItem('user_type', res.data.userType);
     //   this.getList({corpName: ''})
     // }
-
   },
   methods: {
     handleClick(path){

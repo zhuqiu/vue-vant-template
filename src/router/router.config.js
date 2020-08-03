@@ -12,7 +12,7 @@ export const constantRouterMap = [
   {
     path: '/',
     component: () => import('@/views/layouts/index'),
-    redirect: '/home',
+    redirect: '/wxLogin',
     meta: {
       title: '首页',
       keepAlive: false
@@ -102,6 +102,12 @@ export const constantRouterMap = [
         component: () => import('@/views/onlineVideo/list'),
         meta: { title: '在线视频列表', keepAlive: false }
       },
+      {
+        path: '/phone',
+        name: 'Phone',
+        component: () => import('@/views/commonPage/phone'),
+        meta: { title: '绑定手机号', keepAlive: false }
+      }
     ]
   }
 ]
