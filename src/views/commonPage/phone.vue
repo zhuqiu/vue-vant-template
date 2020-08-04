@@ -70,7 +70,8 @@ export default {
       this.errorData.errPhoneCode = '';
       let res = await bindPhone({
         phone: this.formData.loginName,
-        phoneCode: this.formData.phoneCode
+        phoneCode: this.formData.phoneCode,
+        openid: this.$route.query.openid
       })
       if(res.code === '0'){
         localStorage.setItem('token',res.data.token);

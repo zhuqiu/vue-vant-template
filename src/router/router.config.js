@@ -101,13 +101,13 @@ export const constantRouterMap = [
         name: 'VideoList',
         component: () => import('@/views/onlineVideo/list'),
         meta: { title: '在线视频列表', keepAlive: false }
-      },
-      {
-        path: '/phone',
-        name: 'Phone',
-        component: () => import('@/views/commonPage/phone'),
-        meta: { title: '绑定手机号', keepAlive: false }
       }
     ]
+  },
+  {
+    path: '/phone',
+    name: 'Phone',
+    component: () => import('@/views/commonPage/phone'),
+    meta: { title: '绑定手机号', keepAlive: false }
   }
 ]

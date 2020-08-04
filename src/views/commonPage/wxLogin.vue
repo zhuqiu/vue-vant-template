@@ -28,7 +28,12 @@ export default {
       });
       if(res.code === '0'){
         if(!res.data.token){
-          this.$router.push({name:'Phone'});
+          this.$router.push({
+            name:'Phone',
+            query: {
+              openid: res.data.openid
+            }
+          });
         }else{
           localStorage.setItem('token', res.data.token);
           localStorage.setItem('user_type', res.data.userType);
