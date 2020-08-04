@@ -78,7 +78,6 @@ export default {
     }
   },
   async created(){
-    localStorage.removeItem('token');
     this.getList({corpName: ''})
     // let res = await wxLogin({code:"test_code"});
     // if(res.code === "0"){
