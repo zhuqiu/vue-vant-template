@@ -6,6 +6,10 @@
     <div class="content-view" v-if="edit">
       <ul class="content-detail">
         <li>
+          <div class="content-label">企业</div>
+          <div class="content-nav">{{ corpName }}</div>
+        </li>
+        <li>
           <div class="content-label">巡查批次号</div>
           <div class="content-nav">{{ parmas.batchNo }}</div>
         </li>
@@ -44,6 +48,15 @@
       </ul>
     </div>
     <van-form @submit="onSubmit">
+      <div class="content-view">
+        <ul class="content-detail">
+          <li>
+            <div class="content-label">企业名称</div>
+            <div class="content-nav">{{ corpName }}</div>
+          </li>
+        </ul>
+      </div>
+
       <van-field
         v-if="!edit"
         readonly
@@ -199,6 +212,7 @@ export default {
         replyStatus: 1,
         rejectReason: ''
       },
+      corpName: '',
       checkType: '',
       room: '',
       columns: [],
@@ -221,6 +235,7 @@ export default {
   },
   created() {
     this.role = localStorage.getItem('user_type');
+    this.corpName = JSON.parse(localStorage.getItem('select_enterprise')).corpName;
     this.id = Number(this.$route.query.id);
     this.statusTypeItem = StatusTypeItem
     this.edit = !!this.id
@@ -469,6 +484,7 @@ export default {
         this.parmas.roomId = res.data.roomId
         this.checkType = res.data.checkName
         this.room = res.data.roomName
+        this.corpName = res.data.corpName
         this.submitEventParam.expectRepairDate = res.data.expectRepairDate
         this.submitEventParam.checkContext = res.data.checkContext
         this.submitEventParam.checkRemark = res.data.checkRemark
@@ -529,7 +545,7 @@ export default {
     }
     .content-label {
       width: 3rem;
-      margin-right: 0.32rem;
+      margin-right: 0.42rem;
       color: #646566;
       text-align: left;
       word-wrap: break-word;

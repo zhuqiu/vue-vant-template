@@ -27,6 +27,9 @@
             <div>批次号：{{ item }}</div>
           </template>
           <div>
+            <div>巡查总数：{{ batchInfo.eventTotal }}</div>
+            <div>合格数：{{ batchInfo.closedTotal }}</div>
+            <div>待处理数：{{ batchInfo.notCloseTotal }}</div>
             <div>批次状态：
               <span v-if="batchInfo.endTime">已结束</span>
               <span v-else>进行中</span>

@@ -18,7 +18,7 @@
           <div>
             <div class="content-info">
               <van-icon name="smile-o" size="24" color="#00FFCC"/>
-              <span>{{item.nickname}}</span>
+              <span>{{item.corpName}}</span>
             </div>
             <div class="content-time">{{ item.createTime }}</div>
           </div>

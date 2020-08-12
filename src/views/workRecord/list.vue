@@ -16,9 +16,11 @@
     </van-sticky>
     <ul class="work-list">
       <li v-for="(item, index) in list" :key="index" @click="handleClick(item)">
+        <div>巡查企业：{{ item.porpName }}</div>
+        <div>巡查日期：{{ item.workTime }}</div>
+        <div>巡查人员：{{ item.retinue }}</div>
+        <div>巡查事由：{{ item.vistReason }}</div>
         <div>登记说明：{{ item.remark }}</div>
-        <div>随行人员：{{ item.retinue }}</div>
-        <div>进驻事由：{{ item.vistReason }}</div>
         <div>登记状态：<span :class="item.status === 2 ? 'success' : 'fail'">{{ getStatus(item.status) }}</span></div>
       </li>
     </ul>

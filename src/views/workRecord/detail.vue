@@ -6,6 +6,10 @@
     <div class="content-view" v-if="edit">
       <ul class="content-detail">
         <li>
+          <div class="content-label">巡查企业</div>
+          <div class="content-nav">{{ params.porpName }}</div>
+        </li>
+        <li>
           <div class="content-label">详细说明</div>
           <div class="content-nav">{{ params.remark }}</div>
         </li>
@@ -45,14 +49,14 @@
       </div>
     </div>
     <van-form @submit="onSubmit" v-else>
-      <van-field
-        v-model="params.remark"
-        rows="2"
-        autosize
-        label="详细说明"
-        type="textarea"
-        placeholder="请输入详细说明"
-      />
+      <div class="content-view">
+        <ul class="content-detail">
+          <li>
+            <div class="content-label">企业名称</div>
+            <div class="content-nav">{{ porpName }}</div>
+          </li>
+        </ul>
+      </div>
       <van-field
         v-model="params.vistReason"
         rows="2"
@@ -68,6 +72,14 @@
         label="随行人员"
         type="textarea"
         placeholder="请输入随行人员"
+      />
+      <van-field
+        v-model="params.remark"
+        rows="2"
+        autosize
+        label="详细说明"
+        type="textarea"
+        placeholder="请输入详细说明"
       />
       <div style="margin: 0.32rem;">
         <van-button round block type="info" native-type="submit" :disabled="disabled">新增</van-button>
@@ -103,12 +115,14 @@ export default {
         status: 1,
         vistReason: ''
       },
+      porpName: '',
       disabled: false,
       show: false,
       fileList: []
     }
   },
   created(){
+    this.porpName = JSON.parse(localStorage.getItem('select_enterprise')).corpName;
     this.edit = !!this.$route.params.id;
     if(this.edit){
       this.getWorkRecord({id: this.$route.params.id})
@@ -235,7 +249,7 @@ export default {
   }
     .content-label {
       width: 3rem;
-      margin-right: 0.32rem;
+      margin-right: 0.42rem;
       color: #646566;
       text-align: left;
       word-wrap: break-word;
