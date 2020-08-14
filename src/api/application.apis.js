@@ -130,11 +130,27 @@ export function findBatchNoList(params) {
   })
 }
 
+export function getBatchList(params) {
+  return request({
+    url: api.eventBatch.List,
+    method: 'get',
+    params
+  })
+}
+
 export function getBatchDetail(params) {
   return request({
     url: api.eventBatch.Get,
     method: 'get',
     params
+  })
+}
+
+export function uploadBatchSignImg(data) {
+  return request({
+    url: api.eventBatch.UploadSignImg,
+    method: 'post',
+    data
   })
 }
 /**
@@ -163,6 +179,15 @@ export function findRootList(params) {
   })
 }
 
+// 查询子节点列表
+export function findChildList(params) {
+  return request({
+    url: api.checkType.FindChildList,
+    method: 'get',
+    params
+  })
+}
+
 /**
  * 驻场登记接口服务
  */
@@ -170,7 +195,7 @@ export function findRootList(params) {
 // 查询驻场登记
 export function findWorkRecord(params) {
   return request({
-    url: api.workRecord.Find,
+    url: api.workRecord.List,
     method: 'get',
     params
   })

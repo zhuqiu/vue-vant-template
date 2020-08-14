@@ -16,7 +16,7 @@
     </van-sticky>
     <ul class="work-list">
       <li v-for="(item, index) in list" :key="index" @click="handleClick(item)">
-        <div>巡查企业：{{ item.porpName }}</div>
+        <div>巡查企业：{{ item.corpName }}</div>
         <div>巡查日期：{{ item.workTime }}</div>
         <div>巡查人员：{{ item.retinue }}</div>
         <div>巡查事由：{{ item.vistReason }}</div>
@@ -105,7 +105,7 @@ export default {
     border-radius: 0.1rem;
     margin: 0.32rem;
     background: #ffffff;
-    color: #999;
+    color: #666;
     padding: 0.32rem;
     line-height: 0.52rem;
     div{

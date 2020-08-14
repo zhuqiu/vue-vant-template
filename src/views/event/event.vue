@@ -6,7 +6,7 @@
     <div class="content-view" v-if="edit">
       <ul class="content-detail">
         <li>
-          <div class="content-label">企业</div>
+          <div class="content-label">企业名称</div>
           <div class="content-nav">{{ corpName }}</div>
         </li>
         <li>
@@ -45,10 +45,30 @@
           <div class="content-label">企业驳回原因</div>
           <div class="content-nav">{{ confirmEventParam.rejectReason }}</div>
         </li>
+        <li>
+          <div class="content-label">创建时间</div>
+          <div class="content-nav">{{ data.createTime }}</div>
+        </li>
+        <li>
+          <div class="content-label">检查人</div>
+          <div class="content-nav">{{ data.nickname }}</div>
+        </li>
+        <li v-if="data.expectRepairDate">
+          <div class="content-label">预期整改时间</div>
+          <div class="content-nav">{{ data.expectRepairDate }}</div>
+        </li>
+        <li v-if="data.corpConfirmCheckResultTime">
+          <div class="content-label">实际整改时间</div>
+          <div class="content-nav">{{ data.corpConfirmCheckResultTime }}</div>
+        </li>
+        <li v-if="data.checkTime">
+          <div class="content-label">验收时间</div>
+          <div class="content-nav">{{ data.checkTime }}</div>
+        </li>
       </ul>
     </div>
     <van-form @submit="onSubmit">
-      <div class="content-view">
+      <div class="content-view" v-if="!edit">
         <ul class="content-detail">
           <li>
             <div class="content-label">企业名称</div>
@@ -76,8 +96,30 @@
         name="picker"
         :value="checkType"
         label="巡查类型"
-        placeholder="点击选择巡查类型"
+        placeholder="点击选择一级巡查类型"
         @click="handleClick(2)"
+      />
+      <van-field
+        v-if="!edit && checkType"
+        readonly
+        clickable
+        :disabled="isOverStatus"
+        name="picker"
+        :value="secondName"
+        label=" "
+        placeholder="点击选择二级巡查类型"
+        @click="handleClick(4)"
+      />
+      <van-field
+        v-if="!edit && secondName"
+        readonly
+        clickable
+        :disabled="isOverStatus"
+        name="picker"
+        :value="thirdName"
+        label=" "
+        placeholder="点击选择三级巡查类型"
+        @click="handleClick(5)"
       />
       <van-field
         v-if="!edit"
@@ -105,7 +147,7 @@
         </template>
       </van-field>
       <van-field
-        v-if="status"
+        v-if="!edit"
         v-model="submitEventParam.checkRemark"
         rows="2"
         autosize
@@ -161,9 +203,7 @@
         <van-picker show-toolbar :columns="columns" @confirm="onConfirm" @cancel="showPicker = false" />
       </van-popup>
       <div style="margin: 0.32rem;">
-        <!-- <van-button round block type="info" native-type="submit" v-if="!isOverStatus" :disabled="disabled">{{
-          btnText
-        }}</van-button> -->
+        <van-button round block type="info" native-type="submit" v-if="!edit" :disabled="disabled">新增</van-button>
         <van-button round block type="info" native-type="submit" v-if="isPending && isServer" :disabled="disabled">提交</van-button>
         <van-button round block type="info" native-type="submit" v-if="isWaitEnteriseRectification && isServer" :disabled="disabled">确认已整改</van-button>
         <van-button round block type="info" native-type="submit" v-if="isWaitSure && isAgent" :disabled="disabled">企业确认</van-button>
@@ -183,6 +223,7 @@ import {
   findBatchNoList,
   findRoomList,
   findRootList,
+  findChildList,
   addEvent,
   submitEvent,
   confirmEvent,
@@ -212,6 +253,7 @@ export default {
         replyStatus: 1,
         rejectReason: ''
       },
+      data: '',
       corpName: '',
       checkType: '',
       room: '',
@@ -220,6 +262,12 @@ export default {
       showTime: false,
       currentSelect: 1,
       checkTypeList: [],
+      secondTypeList: [],
+      thirdTypeList: [],
+      secondId: '',
+      secondName: '',
+      thirdId: '',
+      thirdName: '',
       roomList: [],
       edit: false,
       status: '',
@@ -334,11 +382,18 @@ export default {
           this.getBatchNoList()
           break
         case 2:
+
           this.getCheckTypeList()
           break
         case 3:
           this.getRoomList()
-          break
+          break;
+        case 4:
+          this.findChildList(this.parmas.checkTypeId,4);
+          break;
+        case 5:
+          this.findChildList(this.secondId,5)
+          break;
       }
     },
     onConfirm(value, index) {
@@ -349,18 +404,40 @@ export default {
         case 2:
           this.parmas.checkTypeId = value.id
           this.checkType = value.text
+          this.secondName = '';
+          this.secondId = '';
+          this.thirdId = '';
+          this.thirdName = ''
           break
         case 3:
           this.parmas.roomId = value.id
           this.room = value.text
           break
+        case 4:
+          this.secondId = value.id
+          this.secondName = value.text
+          this.thirdId = '';
+          this.thirdName = ''
+          break
+        case 5:
+          this.thirdId = value.id
+          this.thirdName = value.text
+          break
       }
       this.showPicker = false
     },
     async onSubmit() {
+      if(!this.thirdId){
+        this.$toast('请选择第三级巡查类型');
+        return;
+      }
       this.disabled = true
       if (!this.edit) {
-        const res = await addEvent(this.parmas)
+        const res = await addEvent({
+          batchNo: this.parmas.batchNo,
+          checkTypeId: this.thirdId,
+          roomId: this.parmas.roomId
+        })
         if (res.code === '0') {
           this.$toast('新增成功')
           this.goToAllTodo()
@@ -460,6 +537,30 @@ export default {
         this.checkTypeList = []
       }
     },
+    async findChildList(id, type){
+      const res = await findChildList({ id: id })
+      if (res.code === '0') {
+        this.columns = res.data.map(d => {
+          return {
+            text: d.checkName,
+            id: d.id
+          }
+        })
+        if(type === 4){
+          this.secondTypeList = res.data;
+        }else if(type === 5){
+          this.thirdTypeList = res.data;
+        }
+      } else {
+        this.$toast(res.msg)
+        this.columns = []
+        if(type === 4){
+          this.secondTypeList = [];
+        }else if(type === 5){
+          this.thirdTypeList = [];
+        }
+      }
+    },
     async getRoomList() {
       const res = await findRoomList({ corpId: JSON.parse(localStorage.getItem('select_enterprise')).id })
       if (res.code === '0') {
@@ -485,6 +586,7 @@ export default {
         this.checkType = res.data.checkName
         this.room = res.data.roomName
         this.corpName = res.data.corpName
+        this.data = res.data
         this.submitEventParam.expectRepairDate = res.data.expectRepairDate
         this.submitEventParam.checkContext = res.data.checkContext
         this.submitEventParam.checkRemark = res.data.checkRemark

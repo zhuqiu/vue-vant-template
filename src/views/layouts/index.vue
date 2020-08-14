@@ -3,7 +3,7 @@
  * @LastEditors: zhuqiu
  * @LastEditTime: 2020-07-10 10:15:55
  * @FilePath: \project\src\views\layouts\index.vue
---> 
+-->
 <template>
   <div class="app-container">
     <div class="layout-content">
@@ -42,7 +42,7 @@ export default {
         {
           title: '批次',
           to: {
-            name: 'Management'
+            name: 'BatchList'
           },
           icon: 'todo-list-o'
         },

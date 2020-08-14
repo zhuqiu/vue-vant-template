@@ -16,6 +16,7 @@
     </van-sticky> -->
     <ul class="meeting-list">
       <li v-for="(item, index) in list" :key="index" @click="handleClick(item)">
+        <div>企业名称：{{ item.corpName }}</div>
         <div>培训主题：{{ item.theme }}</div>
         <div>培训人：{{ item.speakUser }}</div>
         <div>培训开始时间：{{ item.beginTime }}</div>
@@ -86,7 +87,7 @@ export default {
     border-radius: 0.1rem;
     margin: 0.32rem;
     background: #ffffff;
-    color: #999;
+    color: #666;
     padding: 0.32rem;
     line-height: 0.52rem;
     div{

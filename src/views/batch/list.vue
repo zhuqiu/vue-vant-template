@@ -94,7 +94,27 @@ export default {
         this.getList(this.params);
       }
     },
-    getStatus(){},
+    handleClick(val){
+      this.$router.push({
+        name: 'BatchDetail',
+        query: {
+          id: val.batchNo,
+          status: val.status
+        }
+      })
+    },
+    getStatus(status){
+      switch(status){
+        case 1:
+          return '发起'
+        case 2:
+          return '待审核'
+        case 3:
+          return '已审核'
+        case 4:
+          return '已延期'
+      }
+    },
     async getList(params){
       let res = await getBatchList(params);
       if(res.code === "0"){

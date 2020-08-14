@@ -37,10 +37,16 @@ export const constantRouterMap = [
         meta: { title: '企业', keepAlive: false }
       },
       {
-        path: '/management',
-        name: 'Management',
-        component: () => import('@/views/commonPage/management'),
-        meta: { title: '批次', keepAlive: false }
+        path: '/batchList',
+        name: 'BatchList',
+        component: () => import('@/views/batch/list'),
+        meta: { title: '批次列表', keepAlive: false }
+      },
+      {
+        path: '/batchDetail',
+        name: 'BatchDetail',
+        component: () => import('@/views/batch/detail'),
+        meta: { title: '批次详情', keepAlive: false }
       },
       {
         path: '/notification',

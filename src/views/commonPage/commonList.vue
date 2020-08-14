@@ -10,17 +10,23 @@
       <van-col span="24" @click="handleClick(item)" v-for="(item,index) in data" :key="index">
         <div class="common-content">
           <div>
-            <div class="content-title">{{ item.checkContext }}</div>
+            <div class="content-title">{{ item.batchNo }}</div>
             <div class="content-status">
               <div :class="'status_' + item.status">{{ $getStatus(item.status) }}</div>
             </div>
           </div>
           <div>
             <div class="content-info">
-              <van-icon name="smile-o" size="24" color="#00FFCC"/>
+              <!-- <van-icon name="smile-o" size="24" color="#00FFCC"/> -->
               <span>{{item.corpName}}</span>
             </div>
             <div class="content-time">{{ item.createTime }}</div>
+          </div>
+          <div>
+            <div class="content-info">
+              <span>{{item.checkContext}}</span>
+            </div>
+            <!-- <div class="content-time">{{ item.roomName }}</div> -->
           </div>
         </div>
       </van-col>
@@ -56,7 +62,8 @@ export default {
 .common-list{
   padding: 0.32rem;
   .common-content {
-
+    //border: 1px solid #CC0099;
+    border-radius: 4px;
     margin-bottom: 0.32rem;
     & > div {
       display: flex;
@@ -106,7 +113,7 @@ export default {
       align-items: center;
       span {
         margin-left: 0.12rem;
-        color: #999999;
+        color: #666666;
       }
     }
     .content-time{

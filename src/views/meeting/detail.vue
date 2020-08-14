@@ -6,6 +6,10 @@
     <div class="content-view">
       <ul class="content-detail">
         <li>
+          <div class="content-label">企业名称</div>
+          <div class="content-nav">{{ params.corpName }}</div>
+        </li>
+        <li>
           <div class="content-label">培训主题</div>
           <div class="content-nav">{{ params.theme }}</div>
         </li>
@@ -40,6 +44,22 @@
               />
             </div>
           </div>
+        </li>
+        <li>
+          <div class="content-label">发起人</div>
+          <div class="content-nav">{{ params.faqiUser }}</div>
+        </li>
+        <li>
+          <div class="content-label">发起时间</div>
+          <div class="content-nav">{{ params.faqiTime }}</div>
+        </li>
+        <li v-if="params.auditorUser">
+          <div class="content-label">审核人</div>
+          <div class="content-nav">{{ params.auditorUser }}</div>
+        </li>
+        <li v-if="params.auditorTime">
+          <div class="content-label">审核时间</div>
+          <div class="content-nav">{{ params.auditorTime }}</div>
         </li>
       </ul>
     </div>
