@@ -27,15 +27,15 @@
         </li>
         <li>
           <div class="content-label">签名</div>
-          <div class="content-nav" >
+          <div class="content-nav">
             <van-button
               type="primary"
               size="mini"
               @click="addSignature"
               style="width:60px;"
-              v-if="fileList.length === 0 && params.status !== 2"
-
-            >签名</van-button>
+              v-if="fileList.length === 0 && params.status === 1"
+              >签名</van-button
+            >
             <div :class="fileList.length > 0 ? 'img-view' : ''" v-else>
               <van-image
                 style="margin-right: 0.32rem;"
@@ -46,7 +46,7 @@
                 @click="previewImg(index)"
                 :src="item.url"
               />
-              <van-icon v-if="params.status !== 2"  name="close" size="18" color="#ee0a24" @click="deletePic(index)"/>
+              <van-icon v-if="params.status !== 2" name="close" size="18" color="#ee0a24" @click="deletePic(index)" />
             </div>
           </div>
         </li>
@@ -57,12 +57,11 @@
 </template>
 
 <script>
-
-import { getBatchDetail, uploadBatchSignImg } from '../../api/application.apis';
+import { getBatchDetail, uploadBatchSignImg } from '../../api/application.apis'
 
 import Signature from '../commonPage/signature.vue'
 
-import {dataURLtoBlob, blobToFile} from '@/utils/index'
+import { dataURLtoBlob, blobToFile } from '@/utils/index'
 
 import { ImagePreview } from 'vant'
 
@@ -80,69 +79,65 @@ export default {
       fileList: []
     }
   },
-  created(){
-    this.edit = !!this.$route.query.id;
-    if(this.edit){
+  created() {
+    this.edit = !!this.$route.query.id
+    if (this.edit) {
       this.getBatchDetail({ batchNo: this.$route.query.id })
     }
-
   },
   methods: {
-    onClickLeft(){
+    onClickLeft() {
       history.go(-1)
     },
-    async getBatchDetail(params){
-      let res = await getBatchDetail(params);
-      if(res.code === '0'){
-        this.params = res.data;
-        if(res.data.signUrlPath){
+    async getBatchDetail(params) {
+      const res = await getBatchDetail(params)
+      if (res.code === '0') {
+        this.params = res.data
+        if (res.data.signUrlPath) {
           this.fileList.push({
             url: res.data.signUrlPath
           })
         }
-      }else{
+      } else {
         this.$toast(res.msg)
       }
     },
-
-
-
-    goToBatchList(){
+    goToBatchList() {
       setTimeout(() => {
         this.$router.push({
           name: 'BatchList'
         })
       }, 1000)
     },
-    getStatus(status){
-      switch(status){
+    getStatus(status) {
+      switch (status) {
         case 2:
-          return '已提交'
+          return '已完成'
         default:
-          return '未提交'
+          return '进行中'
       }
     },
-    addSignature(){
-      this.show = true;
+    addSignature() {
+      this.show = true
     },
-    async handleOk(val){
-      this.show = false;
-      let file = blobToFile(dataURLtoBlob(val),'签名.png');
+    async handleOk(val) {
+      this.show = false
+      const file = blobToFile(dataURLtoBlob(val), '签名.png')
       const formdata = new FormData()
       formdata.append('file', file)
       formdata.append('batchNo', this.$route.params.id)
-      let res = await uploadBatchSignImg(formdata);
+      const res = await uploadBatchSignImg(formdata)
       if (res.code === '0') {
         this.fileList.push({
           url: res.data
         })
       } else {
-        this.fileList = [];
+        this.fileList = []
         this.$toast(res.msg)
       }
     },
-    handleClose(){
-      this.show = false;
+    handleClose() {
+      this.show = false
     },
     previewImg(index) {
       const list = this.fileList.map(f => {
@@ -153,8 +148,8 @@ export default {
         startPosition: index
       })
     },
-    deletePic(index){
-      this.fileList.splice(index,1)
+    deletePic(index) {
+      this.fileList.splice(index, 1)
     }
   }
 }
@@ -171,17 +166,17 @@ export default {
     align-items: center;
     position: relative;
     &::after {
-    position: absolute;
-    box-sizing: border-box;
-    content: ' ';
-    pointer-events: none;
-    right: 0.42667rem;
-    bottom: 0;
-    left: 0.42667rem;
-    border-bottom: 0.02667rem solid #ebedf0;
-    -webkit-transform: scaleY(0.5);
-    transform: scaleY(0.5);
-  }
+      position: absolute;
+      box-sizing: border-box;
+      content: ' ';
+      pointer-events: none;
+      right: 0.42667rem;
+      bottom: 0;
+      left: 0.42667rem;
+      border-bottom: 0.02667rem solid #ebedf0;
+      -webkit-transform: scaleY(0.5);
+      transform: scaleY(0.5);
+    }
     .content-label {
       width: 3rem;
       margin-right: 0.42rem;
@@ -194,18 +189,18 @@ export default {
       vertical-align: middle;
       overflow: visible;
       word-wrap: break-word;
-      i{
+      i {
         position: relative;
         top: 0.08rem;
       }
     }
-    .img-view{
+    .img-view {
       position: relative;
       width: 100px;
       height: 100px;
       border: 1px dotted #ebedf0;
       border-radius: 4px;
-      i{
+      i {
         position: absolute;
         top: -0.2rem;
         right: -0.2rem;
