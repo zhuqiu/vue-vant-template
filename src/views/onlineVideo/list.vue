@@ -1,31 +1,44 @@
 <template>
   <div>
-    <!-- <van-grid :border="false" :column-num="4">
-      <van-grid-item v-for="(item,index) in list" :key="index" style="margin-bottom:0.23rem;">
-        <van-icon name="play-circle" size="40" color="#00CCFF"/>
-        <div style="margin-top:0.23rem">{{ item.title }}</div>
-      </van-grid-item>
+    <van-sticky>
+      <van-nav-bar title="在线培训" left-text="返回" left-arrow @click-left="onClickLeft" />
+    </van-sticky>
+    <van-pull-refresh
+      v-model="refreshing"
+      @refresh="onRefresh"
+    >
+      <van-empty v-if="list.length === 0" description="暂无数据" />
+      <van-list
+        v-else
+        :immediate-check="false"
+        :offset="0"
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <ul class="video-list">
+          <li v-for="(item,index) in list" :key="index">
+            <div class="video-content">
+              <video :src="item.url" controls="controls">
+              </video>
+            </div>
+            <div class="video-title">
+              {{ item.title }}
+            </div>
 
-    </van-grid> -->
-    <ul class="video-list">
-      <li v-for="(item,index) in list" :key="index">
-        <div class="video-content">
-          <video :src="item.url" controls="controls">
-          </video>
-        </div>
-        <div class="video-title">
-          {{ item.title }}
-        </div>
+            <div class="video-mark">
+              <span style="color:#CC3399">在线人数：{{ item.todayOnlineUsers }}</span>
+              <span style="color:#66CCFF">播放次数：{{ item.palyTimes }}</span>
+            </div>
+            <div class="video-dec">
+              {{ item.remark }}
+            </div>
+          </li>
+        </ul>
+      </van-list>
+    </van-pull-refresh>
 
-        <div class="video-mark">
-          <span style="color:#CC3399">在线人数：{{ item.todayOnlineUsers }}</span>
-          <span style="color:#66CCFF">播放次数：{{ item.palyTimes }}</span>
-        </div>
-        <div class="video-dec">
-          {{ item.remark }}
-        </div>
-      </li>
-    </ul>
   </div>
 </template>
 
@@ -37,17 +50,51 @@ export default {
   name: 'VideoList',
   data() {
     return {
-      list: []
+      list: [],
+      params: {
+        limit: 6,
+        page: 1
+      },
+      loading: false,
+      finished: false,
+      refreshing: false,
+      totalSize: 0,
     }
   },
   created(){
-    this.getList();
+    this.getList(this.params);
   },
   methods: {
-    async getList(){
-      let res = await getListVideo();
+    onClickLeft() {
+      history.go(-1)
+    },
+    onLoad(){
+      if (this.refreshing) {
+        this.list = [];
+        this.params.limit = 6
+        this.refreshing = false;
+      }
+      this.params.limit = this.params.limit + 6;
+      this.getList(this.params);
+      if(this.params.limit >= this.totalSize){
+        this.finished = true;
+      }
+    },
+    onRefresh(){
+      // 清空列表数据
+      this.finished = false;
+      // 重新加载数据
+      // 将 loading 设置为 true，表示处于加载状态
+      this.loading = true;
+      this.onLoad();
+    },
+    async getList(params){
+      let res = await getListVideo(params);
       if(res.code === '0'){
         this.list = res.data;
+        this.totalSize = res.count
+        // 加载状态结束
+        this.loading = false;
       }else {
         this.$toast(res.msg)
         this.list = []

@@ -60,7 +60,8 @@ export default {
         {
           icon: "underway",
           text: "巡查类型",
-          color: "#66CCFF"
+          color: "#66CCFF",
+          path: "OneLevel"
         },
         {
           icon: "todo-list",
@@ -96,10 +97,6 @@ export default {
       let id = JSON.parse(localStorage.getItem('select_enterprise')).id;
       if(!id){
         this.$toast('请先选择企业');
-        return;
-      }
-      if(!path){
-        this.$toast('该功能正在努力开发中');
         return;
       }
       this.$router.push({

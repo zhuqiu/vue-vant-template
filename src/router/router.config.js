@@ -107,6 +107,24 @@ export const constantRouterMap = [
         name: 'VideoList',
         component: () => import('@/views/onlineVideo/list'),
         meta: { title: '在线视频列表', keepAlive: false }
+      },
+      {
+        path: '/oneLevel',
+        name: 'OneLevel',
+        component: () => import('@/views/check/oneLevel'),
+        meta: { title: '一级巡查累心列表', keepAlive: false }
+      },
+      {
+        path: '/secondLevel',
+        name: 'SecondLevel',
+        component: () => import('@/views/check/secondLevel'),
+        meta: { title: '二级巡查累心列表', keepAlive: false }
+      },
+      {
+        path: '/thirdLevel',
+        name: 'ThirdLevel',
+        component: () => import('@/views/check/thirdLevel'),
+        meta: { title: '三级巡查累心列表', keepAlive: false }
       }
     ]
   },

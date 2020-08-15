@@ -3,24 +3,42 @@
  * @LastEditors: zhuqiu
  * @LastEditTime: 2020-07-10 10:43:59
  * @FilePath: \project\src\views\commonPage\notification.vue
---> 
+-->
 <template>
   <div>
-    <van-row class="msg-list">
-      <van-col span="24" v-for="(item, index) in list" :key="index" @click="selectMsg(item.id)">
-        <div class="content">
-          <div class="content-left">
-            <div class="title">消息内容： {{ item.content }}</div>
-            <div class="title">创建时间：{{ item.ctime }}</div>
-            <div class="title">创建人：{{ item.nickname }}</div>
-          </div>
-          <div class="content-right">
-            <van-icon name="checked" size="24" color="#07c160" v-if="ids.includes(item.id)"/>
-          </div>
-        </div>
-      </van-col>
-    </van-row>
-    <van-empty v-if="list.length === 0" description="暂无数据" />
+    <van-sticky>
+      <van-nav-bar title="消息" left-text="返回" left-arrow @click-left="onClickLeft" />
+    </van-sticky>
+    <van-pull-refresh
+      v-model="refreshing"
+      @refresh="onRefresh"
+    >
+      <van-empty v-if="list.length === 0" description="暂无数据" />
+      <van-list
+        v-else
+        :immediate-check="false"
+        :offset="0"
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <van-row class="msg-list">
+          <van-col span="24" v-for="(item, index) in list" :key="index" @click="selectMsg(item.id)">
+            <div class="content">
+              <div class="content-left">
+                <div class="title">消息内容： {{ item.content }}</div>
+                <div class="title">创建时间：{{ item.ctime }}</div>
+                <div class="title">创建人：{{ item.nickname }}</div>
+              </div>
+              <div class="content-right">
+                <van-icon name="checked" size="24" color="#07c160" v-if="ids.includes(item.id)"/>
+              </div>
+            </div>
+          </van-col>
+        </van-row>
+      </van-list>
+    </van-pull-refresh>
     <div style="margin: 0.32rem;" v-if="list.length > 0">
       <van-button round block type="info" @click="batchDeleteMsg" :disabled="ids.length === 0">批量清空</van-button>
     </div>
@@ -36,17 +54,51 @@ export default {
   data() {
     return {
       list: [],
-      ids: []
+      ids: [],
+      params: {
+        limit: 6,
+        page: 1
+      },
+      loading: false,
+      finished: false,
+      refreshing: false,
+      totalSize: 0,
     }
   },
   created(){
-    this.getList();
+    this.getList(this.params);
   },
   methods: {
-    async getList() {
-      const res = await getListMsg()
+    onClickLeft() {
+      history.go(-1)
+    },
+    onLoad(){
+      if (this.refreshing) {
+        this.list = [];
+        this.params.limit = 6
+        this.refreshing = false;
+      }
+      this.params.limit = this.params.limit + 6;
+      this.getList(this.params);
+      if(this.params.limit >= this.totalSize){
+        this.finished = true;
+      }
+    },
+    onRefresh(){
+      // 清空列表数据
+      this.finished = false;
+      // 重新加载数据
+      // 将 loading 设置为 true，表示处于加载状态
+      this.loading = true;
+      this.onLoad();
+    },
+    async getList(params) {
+      const res = await getListMsg(params)
       if (res.code === '0') {
         this.list = res.data
+        this.totalSize = res.count
+        // 加载状态结束
+        this.loading = false;
       } else {
         this.$toast(res.msg)
         this.list = []

@@ -33,10 +33,24 @@
         </van-dropdown-item>
       </van-dropdown-menu>
     </van-sticky>
-    <van-empty v-if="list.length === 0" description="暂无数据" />
 
-    <common-list :data="list" @click="handleClick" v-else></common-list>
-
+    <van-pull-refresh
+      v-model="refreshing"
+      @refresh="onRefresh"
+    >
+      <van-empty v-if="list.length === 0" description="暂无数据" />
+      <van-list
+        v-else
+        :immediate-check="false"
+        :offset="0"
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <common-list :data="list" @click="handleClick"></common-list>
+      </van-list>
+    </van-pull-refresh>
     <div class="addBtn" @click="add">
       <van-icon name="plus" size="22" color="#ffffff" />
     </div>
@@ -61,7 +75,7 @@ export default {
         batchNo: '',
         checkName: '',
         corpId: '',
-        limit: 10,
+        limit: 6,
         page: 1,
         roomId: '',
         status: ''
@@ -69,20 +83,46 @@ export default {
       room: '',
       showPicker: false,
       columns: [],
-
-      list: []
+      list: [],
+      loading: false,
+      finished: false,
+      refreshing: false,
+      totalSize: 0,
     }
   },
   created() {
-    this.getList(this.params)
+    this.getList(this.params);
     this.getRoomList()
     this.params.corpId = JSON.parse(localStorage.getItem('select_enterprise')).id
   },
   methods: {
+    onLoad(){
+      if (this.refreshing) {
+        this.list = [];
+        this.params.limit = 6
+        this.refreshing = false;
+      }
+      this.params.limit = this.params.limit + 6;
+      this.getList(this.params);
+      if(this.params.limit >= this.totalSize){
+        this.finished = true;
+      }
+    },
+    onRefresh(){
+      // 清空列表数据
+      this.finished = false;
+      // 重新加载数据
+      // 将 loading 设置为 true，表示处于加载状态
+      this.loading = true;
+      this.onLoad();
+    },
     async getList(params) {
       const res = await listEvents(params)
       if (res.code === '0') {
         this.list = res.data
+        this.totalSize = res.count
+        // 加载状态结束
+        this.loading = false;
       } else {
         this.$toast(res.msg)
         this.list = []

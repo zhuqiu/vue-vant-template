@@ -20,17 +20,34 @@
           <div @click="onSearch">搜索</div>
         </template>
       </van-search>
-      <ul class="work-list">
-        <li v-for="(item, index) in list" :key="index" @click="handleClick(item)">
-          <div>巡查企业：{{ item.corpName }}</div>
-          <div>批次号：{{ item.batchNo }}</div>
-          <div>开始时间：{{ item.startTime }}</div>
-          <div>结束时间：{{ item.endTime }}</div>
-          <div>
-            状态：<span :class="item.status === 2 ? 'success' : 'fail'">{{ getStatus(item.status) }}</span>
-          </div>
-        </li>
-      </ul>
+      <van-pull-refresh
+      v-model="refreshing"
+      @refresh="onRefresh"
+    >
+      <van-empty v-if="list.length === 0" description="暂无数据" />
+      <van-list
+        v-else
+        :immediate-check="false"
+        :offset="0"
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <ul class="work-list">
+            <li v-for="(item, index) in list" :key="index" @click="handleClick(item)">
+              <div>巡查企业：{{ item.corpName }}</div>
+              <div>批次号：{{ item.batchNo }}</div>
+              <div>开始时间：{{ item.startTime }}</div>
+              <div>结束时间：{{ item.endTime }}</div>
+              <div>
+                状态：<span :class="item.status === 2 ? 'success' : 'fail'">{{ getStatus(item.status) }}</span>
+              </div>
+            </li>
+          </ul>
+      </van-list>
+    </van-pull-refresh>
+
       <div class="margin">
         <div class="addBtn" @click="addBatch">
           <van-icon name="plus" size="22" color="#ffffff" />
@@ -49,11 +66,17 @@ export default {
     return {
       params: {
         batchNo: '',
-        corpId: ''
+        corpId: '',
+        limit: 6,
+        page: 1
       },
       activeName: '',
       list: [],
-      batchInfo: {}
+      batchInfo: {},
+      loading: false,
+      finished: false,
+      refreshing: false,
+      totalSize: 0,
     }
   },
   created() {
@@ -91,10 +114,33 @@ export default {
           return '已完成'
       }
     },
+    onLoad(){
+      if (this.refreshing) {
+        this.list = [];
+        this.params.limit = 6
+        this.refreshing = false;
+      }
+      this.params.limit = this.params.limit + 6;
+      this.getList(this.params);
+      if(this.params.limit >= this.totalSize){
+        this.finished = true;
+      }
+    },
+    onRefresh(){
+      // 清空列表数据
+      this.finished = false;
+      // 重新加载数据
+      // 将 loading 设置为 true，表示处于加载状态
+      this.loading = true;
+      this.onLoad();
+    },
     async getList(params) {
       const res = await getBatchList(params)
       if (res.code === '0') {
         this.list = res.data
+        this.totalSize = res.count
+        // 加载状态结束
+        this.loading = false;
       } else {
         this.$toast(res.msg)
         this.list = []

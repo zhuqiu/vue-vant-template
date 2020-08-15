@@ -19,23 +19,35 @@
         <div @click="onSearch">搜索</div>
       </template>
     </van-search>
-
-    <van-row class="enterprise-list">
-      <van-col span="24" v-for="(item, index) in list" :key="index" @click="enterpriseChange(item.id)">
-        <div class="content">
-          <div class="content-left">
-            <p class="title">公司名称：</p>
-            <span class="name">{{ item.corpName }}</span>
-          </div>
-          <div class="content-right">
-            <van-icon name="checked" size="24" color="#07c160" v-if="selevtionId === item.id"/>
-          </div>
-        </div>
-      </van-col>
-    </van-row>
-
-    <!-- 搜索提示 -->
-    <van-empty v-if="list.length === 0" image="search" description="未查询到内容" />
+    <van-pull-refresh
+      v-model="refreshing"
+      @refresh="onRefresh"
+    >
+      <van-empty v-if="list.length === 0" description="暂无数据" />
+      <van-list
+        v-else
+        :immediate-check="false"
+        :offset="0"
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <van-row class="enterprise-list">
+          <van-col span="24" v-for="(item, index) in list" :key="index" @click="enterpriseChange(item.id)">
+            <div class="content">
+              <div class="content-left">
+                <p class="title">公司名称：</p>
+                <span class="name">{{ item.corpName }}</span>
+              </div>
+              <div class="content-right">
+                <van-icon name="checked" size="24" color="#07c160" v-if="selevtionId === item.id"/>
+              </div>
+            </div>
+          </van-col>
+        </van-row>
+      </van-list>
+    </van-pull-refresh>
   </div>
 </template>
 
@@ -49,9 +61,15 @@ export default {
     return {
       list: [],
       params: {
-        corpName: ''
+        corpName: '',
+        limit: 6,
+        page: 1
       },
-      selevtionId: ''
+      selevtionId: '',
+      loading: false,
+      finished: false,
+      refreshing: false,
+      totalSize: 0,
     }
   },
   created(){
@@ -64,6 +82,7 @@ export default {
 
   },
   methods: {
+
     onSearch(){
       this.getList(this.params);
     },
@@ -75,10 +94,33 @@ export default {
         this.getList(this.params);
       }
     },
+    onLoad(){
+      if (this.refreshing) {
+        this.list = [];
+        this.params.limit = 6
+        this.refreshing = false;
+      }
+      this.params.limit = this.params.limit + 6;
+      this.getList(this.params);
+      if(this.params.limit >= this.totalSize){
+        this.finished = true;
+      }
+    },
+    onRefresh(){
+      // 清空列表数据
+      this.finished = false;
+      // 重新加载数据
+      // 将 loading 设置为 true，表示处于加载状态
+      this.loading = true;
+      this.onLoad();
+    },
     async getList(params){
       let res = await listCorp(params);
       if(res.code === "0"){
         this.list = res.data;
+        this.totalSize = res.count
+        // 加载状态结束
+        this.loading = false;
       }else{
         this.$toast(res.msg);
         this.list = [];

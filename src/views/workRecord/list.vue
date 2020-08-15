@@ -14,16 +14,32 @@
         </van-dropdown-item>
       </van-dropdown-menu>
     </van-sticky>
-    <ul class="work-list">
-      <li v-for="(item, index) in list" :key="index" @click="handleClick(item)">
-        <div>巡查企业：{{ item.corpName }}</div>
-        <div>巡查日期：{{ item.workTime }}</div>
-        <div>巡查人员：{{ item.retinue }}</div>
-        <div>巡查事由：{{ item.vistReason }}</div>
-        <div>登记说明：{{ item.remark }}</div>
-        <div>登记状态：<span :class="item.status === 2 ? 'success' : 'fail'">{{ getStatus(item.status) }}</span></div>
-      </li>
-    </ul>
+    <van-pull-refresh
+      v-model="refreshing"
+      @refresh="onRefresh"
+    >
+      <van-empty v-if="list.length === 0" description="暂无数据" />
+      <van-list
+        v-else
+        :immediate-check="false"
+        :offset="0"
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <ul class="work-list">
+          <li v-for="(item, index) in list" :key="index" @click="handleClick(item)">
+            <div>巡查企业：{{ item.corpName }}</div>
+            <div>巡查日期：{{ item.workTime }}</div>
+            <div>巡查人员：{{ item.retinue }}</div>
+            <div>巡查事由：{{ item.vistReason }}</div>
+            <div>登记说明：{{ item.remark }}</div>
+            <div>登记状态：<span :class="item.status === 2 ? 'success' : 'fail'">{{ getStatus(item.status) }}</span></div>
+          </li>
+        </ul>
+      </van-list>
+    </van-pull-refresh>
 
     <div class="addBtn" @click="add">
       <van-icon name="plus" size="22" color="#ffffff" />
@@ -47,19 +63,48 @@ export default {
       ],
       params: {
         status: '',
-        keyword: ''
+        keyword: '',
+        limit: 6,
+        page: 1
       },
-      list:[]
+      list:[],
+      loading: false,
+      finished: false,
+      refreshing: false,
+      totalSize: 0,
     }
   },
   created(){
-    this.getList();
+    this.getList(this.params);
   },
   methods: {
-    async getList(){
-      let res = await findWorkRecord(this.params);
+    onLoad(){
+      if (this.refreshing) {
+        this.list = [];
+        this.params.limit = 6
+        this.refreshing = false;
+      }
+      this.params.limit = this.params.limit + 6;
+      this.getList(this.params);
+      if(this.params.limit >= this.totalSize){
+        this.finished = true;
+      }
+    },
+    onRefresh(){
+      // 清空列表数据
+      this.finished = false;
+      // 重新加载数据
+      // 将 loading 设置为 true，表示处于加载状态
+      this.loading = true;
+      this.onLoad();
+    },
+    async getList(params){
+      let res = await findWorkRecord(params);
       if(res.code === '0'){
         this.list = res.data;
+        this.totalSize = res.count
+        // 加载状态结束
+        this.loading = false;
       }else {
         this.$toast(res.msg)
         this.list = []
