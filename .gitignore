@@ -5,6 +5,7 @@ node_modules
 # local env files
 .env.local
 .env.*.local
+dist.zip
 
 # Log files
 npm-debug.log*
@@ -19,7 +20,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
-*.zip
+
 
 package-lock.json
 yarn.lock

@@ -17,9 +17,21 @@
           <div class="content-label">开始时间</div>
           <div class="content-nav">{{ params.startTime }}</div>
         </li>
-        <li>
+        <li v-if="params.endTime">
           <div class="content-label">结束时间</div>
           <div class="content-nav">{{ params.endTime }}</div>
+        </li>
+        <li>
+          <div class="content-label">巡查总数</div>
+          <div class="content-nav">{{ params.eventTotal }}</div>
+        </li>
+        <li>
+          <div class="content-label">合格数</div>
+          <div class="content-nav">{{ params.closedTotal }}</div>
+        </li>
+        <li>
+          <div class="content-label">待处理数</div>
+          <div class="content-nav">{{ params.notCloseTotal }}</div>
         </li>
         <li>
           <div class="content-label">状态</div>
@@ -46,7 +58,7 @@
                 @click="previewImg(index)"
                 :src="item.url"
               />
-              <van-icon v-if="params.status !== 2" name="close" size="18" color="#ee0a24" @click="deletePic(index)" />
+              <van-icon name="close" size="18" color="#ee0a24" @click="deletePic(index)" />
             </div>
           </div>
         </li>
