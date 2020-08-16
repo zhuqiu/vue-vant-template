@@ -58,8 +58,8 @@ export default {
     return {
       options: [
         {text: '全部', value: ''},
-        // {text: '已提交', value: 2},
-        // {text: '未提交', value: 1}
+        {text: '已提交', value: 2},
+        {text: '未提交', value: 1}
       ],
       params: {
         status: '',
@@ -111,13 +111,14 @@ export default {
       }
     },
     handleChange(){
-      this.getList();
+      this.getList(this.params);
     },
     handleReset(){
       this.params.keyword = '';
     },
     handleSearch(){
-      this.getList();
+      this.$refs.item.toggle()
+      this.getList(this.params);
     },
     handleClick(val){
       this.$router.push({

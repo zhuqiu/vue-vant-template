@@ -7,7 +7,7 @@
       <ul class="content-detail">
         <li>
           <div class="content-label">巡查企业</div>
-          <div class="content-nav">{{ params.porpName }}</div>
+          <div class="content-nav">{{ params.corpName }}</div>
         </li>
         <li>
           <div class="content-label">详细说明</div>
@@ -257,7 +257,7 @@ export default {
   }
     .content-label {
       width: 3rem;
-      margin-right: 0.42rem;
+      margin-right: 0.44rem;
       color: #646566;
       text-align: left;
       word-wrap: break-word;
