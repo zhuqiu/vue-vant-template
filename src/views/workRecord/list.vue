@@ -34,8 +34,8 @@
               <div>
                 <div class="content-title">{{ item.corpName }}</div>
                 <div class="content-status">
-                  <img src="../../assets/images/未提交.png" alt="" v-if="item.status === 1">
-                  <img src="../../assets/images/已提交.png" alt="" v-if="item.status === 2">
+                  <img src="../../assets/images/weitijiao.png" alt="" v-if="item.status === 1">
+                  <img src="../../assets/images/yitijiao.png" alt="" v-if="item.status === 2">
                 </div>
               </div>
               <div>

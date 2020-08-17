@@ -23,10 +23,10 @@
               <div>
                 <div class="content-title">{{ item.corpName }}</div>
                 <div class="content-status">
-                  <img src="../../assets/images/发起.png" alt="" v-if="item.status === 1">
-                  <img src="../../assets/images/待审核.png" alt="" v-if="item.status === 2">
-                  <img src="../../assets/images/已审核.png" alt="" v-if="item.status === 3">
-                  <img src="../../assets/images/已延期.png" alt="" v-if="item.status === 4">
+                  <img src="../../assets/images/faqi.png" alt="" v-if="item.status === 1">
+                  <img src="../../assets/images/daishenghe.png" alt="" v-if="item.status === 2">
+                  <img src="../../assets/images/yishenghe.png" alt="" v-if="item.status === 3">
+                  <img src="../../assets/images/yiyanqi.png" alt="" v-if="item.status === 4">
                 </div>
               </div>
               <div>
