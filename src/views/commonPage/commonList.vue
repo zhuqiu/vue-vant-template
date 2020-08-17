@@ -10,15 +10,21 @@
       <van-col span="24" @click="handleClick(item)" v-for="(item,index) in data" :key="index">
         <div class="common-content">
           <div>
-            <div class="content-title">{{ item.batchNo }}</div>
+            <div class="content-title">{{ item.corpName }}</div>
             <div class="content-status">
-              <div :class="'status_' + item.status">{{ $getStatus(item.status) }}</div>
+              <img src="../../assets/images/新建.png" alt="" v-if="item.status === 1">
+              <img src="../../assets/images/不合格.png" alt="" v-if="item.status === 2">
+              <img src="../../assets/images/合格.png" alt="" v-if="item.status === 3">
+              <img src="../../assets/images/已完成.png" alt="" v-if="item.status === 4">
+              <img src="../../assets/images/待整改.png" alt="" v-if="item.status === 5">
+              <img src="../../assets/images/驳回.png" alt="" v-if="item.status === 6">
+              <img src="../../assets/images/已延期.png" alt="" v-if="item.status === 7">
+              <img src="../../assets/images/已结束.png" alt="" v-if="item.status === 8">
             </div>
           </div>
           <div>
             <div class="content-info">
-              <!-- <van-icon name="smile-o" size="24" color="#00FFCC"/> -->
-              <span>{{item.corpName}}</span>
+              <span>{{item.batchNo}}</span>
             </div>
             <div class="content-time">{{ item.createTime }}</div>
           </div>
@@ -26,7 +32,6 @@
             <div class="content-info">
               <span>{{item.checkContext}}</span>
             </div>
-            <!-- <div class="content-time">{{ item.roomName }}</div> -->
           </div>
         </div>
       </van-col>
@@ -62,7 +67,6 @@ export default {
 .common-list{
   padding: 0.32rem;
   .common-content {
-    //border: 1px solid #CC0099;
     border-radius: 4px;
     margin-bottom: 0.32rem;
     & > div {
@@ -70,9 +74,12 @@ export default {
       justify-content: space-between;
       align-items: center;
       padding: 0.32rem;
+      padding-bottom: 0;
       background: #ffffff;
       border-radius: 0.1rem;
-
+    }
+    & > div:last-of-type{
+      padding-bottom: 0.32rem;
     }
     .content-title{
       font-weight: 600;
@@ -82,28 +89,13 @@ export default {
       text-overflow: ellipsis;
     }
     .content-status{
-      flex: 4;
+      flex: 1.5;
       display: flex;
       justify-content: flex-end;
-      & > div.status_1,  & > div.status_5{
-        color: #0099FF;
-      }
-      & > div.status_2, & > div.status_6, & > div.status_7{
-        color: #999999;
-      }
-      & > div.status_3, & > div.status_4, & > div.status_5, & > div.status_8{
-        color: #33CC33;
-      }
-      & > div{
-        font-size: 0.32rem;
-        // width: 1.2rem;
-        // height: 1.2rem;
-        // text-align: center;
-        // line-height: 1.2rem;
-        // border-radius: 50%;
-        // background: #00FFCC;
-        // color: #ffffff;
-        // font-size: 0.32rem;
+      img{
+        display: block;
+        width: 100%;
+        height: auto;
       }
     }
     .content-info{

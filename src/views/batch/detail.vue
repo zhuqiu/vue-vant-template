@@ -48,7 +48,7 @@
               v-if="fileList.length === 0 && params.status === 1"
               >签名</van-button
             >
-            <div :class="fileList.length > 0 ? 'img-view' : ''" v-else>
+            <div :class="fileList.length > 0 ? 'img-view' : ''" v-if="fileList.length > 0">
               <van-image
                 style="margin-right: 0.32rem;"
                 width="100"
@@ -63,13 +63,16 @@
           </div>
         </li>
       </ul>
+      <div style="margin: 0.32rem;" v-if="params.status === 1">
+        <van-button round block type="info" @click="submitBatch">提交</van-button>
+      </div>
     </div>
     <signature :show="show" @ok="handleOk" @close="handleClose"></signature>
   </div>
 </template>
 
 <script>
-import { getBatchDetail, uploadBatchSignImg } from '../../api/application.apis'
+import { getBatchDetail, uploadBatchSignImg, submitBatch } from '../../api/application.apis'
 
 import Signature from '../commonPage/signature.vue'
 
@@ -137,7 +140,7 @@ export default {
       const file = blobToFile(dataURLtoBlob(val), '签名.png')
       const formdata = new FormData()
       formdata.append('file', file)
-      formdata.append('batchNo', this.$route.params.id)
+      formdata.append('batchNo', this.$route.query.id)
       const res = await uploadBatchSignImg(formdata)
       if (res.code === '0') {
         this.fileList.push({
@@ -162,6 +165,18 @@ export default {
     },
     deletePic(index) {
       this.fileList.splice(index, 1)
+    },
+    async submitBatch(){
+      let res = await submitBatch({batchNo: this.$route.query.id});
+      if (res.code === '0') {
+        setTimeout(() => {
+        this.$router.push({
+          name: 'BatchList'
+        })
+      }, 1000)
+      } else {
+        this.$toast(res.msg)
+      }
     }
   }
 }

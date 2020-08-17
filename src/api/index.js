@@ -23,7 +23,8 @@ const original = {
     FindBatchNo: '/data/api/eventBatch/findBatchNo',
     Get: '/data/api/eventBatch/get',
     List: '/data/api/eventBatch/list',
-    UploadSignImg: '/data/api/eventBatch/uploadSignImg'
+    UploadSignImg: '/data/api/eventBatch/uploadSignImg',
+    Submit: '/data/api/eventBatch/submit'
   },
   event: {
     AddEvent4Room: '/data/api/event/addEvent4Room',

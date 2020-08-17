@@ -17,7 +17,33 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <ul class="meeting-list">
+        <van-row class="common-list">
+          <van-col span="24" @click="handleClick(item)" v-for="(item,index) in list" :key="index">
+            <div class="common-content">
+              <div>
+                <div class="content-title">{{ item.corpName }}</div>
+                <div class="content-status">
+                  <img src="../../assets/images/发起.png" alt="" v-if="item.status === 1">
+                  <img src="../../assets/images/待审核.png" alt="" v-if="item.status === 2">
+                  <img src="../../assets/images/已审核.png" alt="" v-if="item.status === 3">
+                  <img src="../../assets/images/已延期.png" alt="" v-if="item.status === 4">
+                </div>
+              </div>
+              <div>
+                <div class="content-info">
+                  <span>{{item.speakUser}}</span>
+                </div>
+                <div class="content-time">{{ item.beginTime }}</div>
+              </div>
+              <div>
+                <div class="content-info">
+                  <span>{{item.theme}}</span>
+                </div>
+              </div>
+            </div>
+          </van-col>
+        </van-row>
+        <!-- <ul class="meeting-list">
           <li v-for="(item, index) in list" :key="index" @click="handleClick(item)">
             <div>企业名称：{{ item.corpName }}</div>
             <div>培训主题：{{ item.theme }}</div>
@@ -26,7 +52,7 @@
             <div>培训结束时间：{{ item.endTime }}</div>
             <div>状态：<span :class="'status_' + item.status">{{ getStatus(item.status) }}</span></div>
           </li>
-        </ul>
+        </ul> -->
       </van-list>
     </van-pull-refresh>
 

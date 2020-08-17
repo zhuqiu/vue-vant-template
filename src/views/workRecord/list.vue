@@ -28,7 +28,31 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <ul class="work-list">
+        <van-row class="common-list">
+          <van-col span="24" @click="handleClick(item)" v-for="(item,index) in list" :key="index">
+            <div class="common-content">
+              <div>
+                <div class="content-title">{{ item.corpName }}</div>
+                <div class="content-status">
+                  <img src="../../assets/images/未提交.png" alt="" v-if="item.status === 1">
+                  <img src="../../assets/images/已提交.png" alt="" v-if="item.status === 2">
+                </div>
+              </div>
+              <div>
+                <div class="content-info">
+                  <span>{{item.retinue}}</span>
+                </div>
+                <div class="content-time">{{ item.workTime }}</div>
+              </div>
+              <div>
+                <div class="content-info">
+                  <span>{{item.vistReason}}</span>
+                </div>
+              </div>
+            </div>
+          </van-col>
+        </van-row>
+        <!-- <ul class="work-list">
           <li v-for="(item, index) in list" :key="index" @click="handleClick(item)">
             <div>巡查企业：{{ item.corpName }}</div>
             <div>巡查日期：{{ item.workTime }}</div>
@@ -37,7 +61,7 @@
             <div>登记说明：{{ item.remark }}</div>
             <div>登记状态：<span :class="item.status === 2 ? 'success' : 'fail'">{{ getStatus(item.status) }}</span></div>
           </li>
-        </ul>
+        </ul> -->
       </van-list>
     </van-pull-refresh>
 

@@ -153,6 +153,14 @@ export function uploadBatchSignImg(data) {
     data
   })
 }
+
+export function submitBatch(params) {
+  return request({
+    url: api.eventBatch.Submit,
+    method: 'get',
+    params
+  })
+}
 /**
  * 会议培训接口服务
  */

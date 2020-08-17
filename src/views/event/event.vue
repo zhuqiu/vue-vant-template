@@ -58,12 +58,16 @@
           <div class="content-nav">{{ data.expectRepairDate }}</div>
         </li>
         <li v-if="data.corpConfirmCheckResultTime">
-          <div class="content-label">实际整改时间</div>
+          <div class="content-label">验收时间</div>
           <div class="content-nav">{{ data.corpConfirmCheckResultTime }}</div>
         </li>
         <li v-if="data.checkTime">
-          <div class="content-label">验收时间</div>
+          <div class="content-label">检查时间</div>
           <div class="content-nav">{{ data.checkTime }}</div>
+        </li>
+        <li v-if="data.repairDate">
+          <div class="content-label">实际整改时间</div>
+          <div class="content-nav">{{ data.repairDate }}</div>
         </li>
       </ul>
     </div>
@@ -146,7 +150,7 @@
           <van-uploader v-model="imgList" :after-read="afterRead" :before-delete="beforeDelete" />
         </template>
       </van-field>
-      <van-field
+      <!-- <van-field
         v-if="!edit"
         v-model="submitEventParam.checkRemark"
         rows="2"
@@ -154,7 +158,7 @@
         label="隐患内容"
         type="textarea"
         placeholder="请输入隐患内容"
-      />
+      /> -->
       <van-field name="radio" label="检查结果" v-if="isPending">
         <template #input>
           <van-radio-group v-model="submitEventParam.checkResult" direction="horizontal">
@@ -427,10 +431,10 @@ export default {
       this.showPicker = false
     },
     async onSubmit() {
-      if(!this.thirdId){
-        this.$toast('请选择第三级巡查类型');
-        return;
-      }
+      // if(!this.thirdId){
+      //   this.$toast('请选择第三级巡查类型');
+      //   return;
+      // }
       this.disabled = true
       if (!this.edit) {
         const res = await addEvent({
