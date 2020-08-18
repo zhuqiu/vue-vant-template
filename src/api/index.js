@@ -1,4 +1,9 @@
-
+/*
+ * @Date: 2020-07-10 09:43:26
+ * @LastEditors: zhuqiu
+ * @LastEditTime: 2020-08-18 11:18:43
+ * @FilePath: \project\src\api\index.js
+ */
 const original = {
   meeting: {
     Auditor: '/data/api/meeting/auditor',
@@ -41,10 +46,11 @@ const original = {
   },
   checkType: {
     FindChildList: '/data/api/checkType/findChildList',
-    FindRootList: '/data/api/checkType/findRootList',
+    FindRootList: '/data/api/checkType/findRootList'
   },
   onlineVideo: {
-    ListVideo: '/data/api/onlineVideo/listVideo'
+    ListVideo: '/data/api/onlineVideo/listVideo',
+    Play: '/data/api/onlineVideo/play'
   },
   msg: {
     ListMsg: '/data/api/msg/listMsg',
@@ -52,7 +58,7 @@ const original = {
   },
   user: {
     Login: '/user/login',
-    GetPhoneCode: '/user/userinfo',
+    //GetPhoneCode: '/user/userinfo',
     WxLogin: '/data/api/user/wxLogin',
     GetWxLoginUrl: '/data/api/user/getWxLoginUrl',
     BindPhone: '/data/api/user/bindPhone',
@@ -60,7 +66,6 @@ const original = {
   }
 }
 
-let api = Object.assign({}, original);
-
+let api = Object.assign({}, original)
 
 export default api

@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-16 16:14:34
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-07-21 15:21:26
+ * @LastEditTime: 2020-08-18 11:18:22
  * @FilePath: \project\src\api\application.apis.js
  */
 import api from './index'
@@ -249,8 +249,7 @@ export function uploadSignImg(data) {
  * 会议培训接口服务
  */
 
-
- // 分页查询会议培训
+// 分页查询会议培训
 export function getMeetingList(params) {
   return request({
     url: api.meeting.List,
@@ -317,10 +316,17 @@ export function getListVideo(params) {
   })
 }
 
+export function playVideo(params) {
+  return request({
+    url: api.onlineVideo.Play,
+    method: 'get',
+    params
+  })
+}
+
 /**
  * 通知接口服务
  */
-
 
 //分页查询消息通知
 export function getListMsg(params) {

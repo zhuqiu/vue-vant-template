@@ -1,3 +1,9 @@
+<!--
+ * @Date: 2020-07-10 09:43:26
+ * @LastEditors: zhuqiu
+ * @LastEditTime: 2020-08-18 10:38:58
+ * @FilePath: \project\src\App.vue
+-->
 <template>
   <div id="app">
     <router-view />
@@ -9,7 +15,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.common-list{
+.common-list {
   padding: 0.32rem;
   .common-content {
     border-radius: 4px;
@@ -23,27 +29,26 @@ export default {
       background: #ffffff;
       border-radius: 0.1rem;
     }
-    & > div:last-of-type{
+    & > div:last-of-type {
       padding-bottom: 0.32rem;
     }
-    .content-title{
+    .content-title {
       font-weight: 600;
       font-size: 14px;
       flex: 6;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .content-status{
+    .content-status {
       flex: 1.5;
       display: flex;
       justify-content: flex-end;
-      img{
-        display: block;
-        width: 100%;
-        height: auto;
+      img {
+        width: 60px;
+        height: 49px;
       }
     }
-    .content-info{
+    .content-info {
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
@@ -53,7 +58,7 @@ export default {
         color: #666666;
       }
     }
-    .content-time{
+    .content-time {
       color: #999999;
     }
   }
