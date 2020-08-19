@@ -58,7 +58,7 @@
                 @click="previewImg(index)"
                 :src="item.url"
               />
-              <van-icon name="close" size="18" color="#ee0a24" @click="deletePic(index)" />
+              <van-icon name="close" size="18" color="#ee0a24" v-if="params.status === 1" @click="deletePic(index)" />
             </div>
           </div>
         </li>
@@ -166,14 +166,14 @@ export default {
     deletePic(index) {
       this.fileList.splice(index, 1)
     },
-    async submitBatch(){
-      let res = await submitBatch({batchNo: this.$route.query.id});
+    async submitBatch() {
+      let res = await submitBatch({ batchNo: this.$route.query.id })
       if (res.code === '0') {
         setTimeout(() => {
-        this.$router.push({
-          name: 'BatchList'
-        })
-      }, 1000)
+          this.$router.push({
+            name: 'BatchList'
+          })
+        }, 1000)
       } else {
         this.$toast(res.msg)
       }
