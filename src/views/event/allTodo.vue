@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-21 15:11:05
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-07-22 18:29:35
+ * @LastEditTime: 2020-08-19 17:05:56
  * @FilePath: \project\src\views\event\allTodo.vue
 -->
 <template>
@@ -34,10 +34,7 @@
       </van-dropdown-menu>
     </van-sticky>
 
-    <van-pull-refresh
-      v-model="refreshing"
-      @refresh="onRefresh"
-    >
+    <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
       <van-empty v-if="list.length === 0" description="暂无数据" />
       <van-list
         v-else
@@ -87,34 +84,34 @@ export default {
       loading: false,
       finished: false,
       refreshing: false,
-      totalSize: 0,
+      totalSize: 0
     }
   },
   created() {
-    this.getList(this.params);
+    this.getList(this.params)
     this.getRoomList()
     this.params.corpId = JSON.parse(localStorage.getItem('select_enterprise')).id
   },
   methods: {
-    onLoad(){
+    onLoad() {
       if (this.refreshing) {
-        this.list = [];
+        this.list = []
         this.params.limit = 6
-        this.refreshing = false;
+        this.refreshing = false
       }
-      this.params.limit = this.params.limit + 6;
-      this.getList(this.params);
-      if(this.params.limit >= this.totalSize){
-        this.finished = true;
+      this.params.limit = this.params.limit + 6
+      this.getList(this.params)
+      if (this.params.limit >= this.totalSize) {
+        this.finished = true
       }
     },
-    onRefresh(){
+    onRefresh() {
       // 清空列表数据
-      this.finished = false;
+      this.finished = false
       // 重新加载数据
       // 将 loading 设置为 true，表示处于加载状态
-      this.loading = true;
-      this.onLoad();
+      this.loading = true
+      this.onLoad()
     },
     async getList(params) {
       const res = await listEvents(params)
@@ -122,7 +119,7 @@ export default {
         this.list = res.data
         this.totalSize = res.count
         // 加载状态结束
-        this.loading = false;
+        this.loading = false
       } else {
         this.$toast(res.msg)
         this.list = []
@@ -137,14 +134,14 @@ export default {
         }
       })
     },
-    handleChange(val) {
+    handleChange() {
       this.getList(this.params)
     },
-    handleReset(){
-      this.params.batchNo = '';
-      this.params.checkName = '';
-      this.params.roomId = '';
-      this.room = '';
+    handleReset() {
+      this.params.batchNo = ''
+      this.params.checkName = ''
+      this.params.roomId = ''
+      this.room = ''
     },
     handleSearch() {
       this.$refs.item.toggle()
@@ -153,14 +150,14 @@ export default {
     getOptions() {
       return [
         { text: '全部', value: '' },
-        { text: '进行中', value: StatusTypeItem.Pending },
-        { text: '检查不合格', value: StatusTypeItem.CheckNotPass },
-        { text: '检查合格', value: StatusTypeItem.CheckPass },
-        { text: '企业已确认(结束)', value: StatusTypeItem.EnterpriseConfirmed },
-        { text: '待企业整改', value: StatusTypeItem.WaitRectification },
-        { text: '企业驳回', value: StatusTypeItem.EnterpriseReject },
-        { text: '预期未整改', value: StatusTypeItem.NotRectification },
-        { text: '企业已整改(结束)', value: StatusTypeItem.EnterpriseRectified }
+        { text: '新建', value: StatusTypeItem.Pending },
+        { text: '不合格', value: StatusTypeItem.CheckNotPass },
+        { text: '合格', value: StatusTypeItem.CheckPass },
+        { text: '已结束', value: StatusTypeItem.EnterpriseConfirmed },
+        { text: '待整改', value: StatusTypeItem.WaitRectification },
+        { text: '驳回', value: StatusTypeItem.EnterpriseReject },
+        { text: '已延期', value: StatusTypeItem.NotRectification },
+        { text: '已整改', value: StatusTypeItem.EnterpriseRectified }
       ]
     },
     roomClick() {
@@ -194,11 +191,11 @@ export default {
 }
 </script>
 <style lang="scss">
-.btn-content{
+.btn-content {
   display: flex;
   justify-content: space-around;
   margin: 0.32rem 0;
-  .btn-width{
+  .btn-width {
     width: 4rem;
   }
 }

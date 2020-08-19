@@ -2,7 +2,7 @@
   <div>
     <van-sticky>
       <van-dropdown-menu>
-        <van-dropdown-item v-model="params.status" :options="options"/>
+        <van-dropdown-item v-model="params.status" :options="options" @change="handleChange" />
         <van-dropdown-item title="筛选" ref="item">
           <van-form>
             <van-field v-model="params.keyword" placeholder="请输入详细说明/进驻事由" label="关键字" />
@@ -14,10 +14,7 @@
         </van-dropdown-item>
       </van-dropdown-menu>
     </van-sticky>
-    <van-pull-refresh
-      v-model="refreshing"
-      @refresh="onRefresh"
-    >
+    <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
       <van-empty v-if="list.length === 0" description="暂无数据" />
       <van-list
         v-else
@@ -29,24 +26,24 @@
         @load="onLoad"
       >
         <van-row class="common-list">
-          <van-col span="24" @click="handleClick(item)" v-for="(item,index) in list" :key="index">
+          <van-col span="24" @click="handleClick(item)" v-for="(item, index) in list" :key="index">
             <div class="common-content">
               <div>
                 <div class="content-title">{{ item.corpName }}</div>
                 <div class="content-status">
-                  <img src="../../assets/images/weitijiao.png" alt="" v-if="item.status === 1">
-                  <img src="../../assets/images/yitijiao.png" alt="" v-if="item.status === 2">
+                  <img src="../../assets/images/weitijiao.png" alt="" v-if="item.status === 1" />
+                  <img src="../../assets/images/yitijiao.png" alt="" v-if="item.status === 2" />
                 </div>
               </div>
               <div>
                 <div class="content-info">
-                  <span>{{item.retinue}}</span>
+                  <span>{{ item.retinue }}</span>
                 </div>
                 <div class="content-time">{{ item.workTime }}</div>
               </div>
               <div>
                 <div class="content-info">
-                  <span>{{item.vistReason}}</span>
+                  <span>{{ item.vistReason }}</span>
                 </div>
               </div>
             </div>
@@ -68,12 +65,10 @@
     <div class="addBtn" @click="add">
       <van-icon name="plus" size="22" color="#ffffff" />
     </div>
-
   </div>
 </template>
 
 <script>
-
 import { findWorkRecord } from '../../api/application.apis'
 
 export default {
@@ -81,9 +76,9 @@ export default {
   data() {
     return {
       options: [
-        {text: '全部', value: ''},
-        {text: '已提交', value: 2},
-        {text: '未提交', value: 1}
+        { text: '全部', value: '' },
+        { text: '已提交', value: 2 },
+        { text: '未提交', value: 1 }
       ],
       params: {
         status: '',
@@ -91,60 +86,60 @@ export default {
         limit: 6,
         page: 1
       },
-      list:[],
+      list: [],
       loading: false,
       finished: false,
       refreshing: false,
-      totalSize: 0,
+      totalSize: 0
     }
   },
-  created(){
-    this.getList(this.params);
+  created() {
+    this.getList(this.params)
   },
   methods: {
-    onLoad(){
+    onLoad() {
       if (this.refreshing) {
-        this.list = [];
+        this.list = []
         this.params.limit = 6
-        this.refreshing = false;
+        this.refreshing = false
       }
-      this.params.limit = this.params.limit + 6;
-      this.getList(this.params);
-      if(this.params.limit >= this.totalSize){
-        this.finished = true;
+      this.params.limit = this.params.limit + 6
+      this.getList(this.params)
+      if (this.params.limit >= this.totalSize) {
+        this.finished = true
       }
     },
-    onRefresh(){
+    onRefresh() {
       // 清空列表数据
-      this.finished = false;
+      this.finished = false
       // 重新加载数据
       // 将 loading 设置为 true，表示处于加载状态
-      this.loading = true;
-      this.onLoad();
+      this.loading = true
+      this.onLoad()
     },
-    async getList(params){
-      let res = await findWorkRecord(params);
-      if(res.code === '0'){
-        this.list = res.data;
+    async getList(params) {
+      let res = await findWorkRecord(params)
+      if (res.code === '0') {
+        this.list = res.data
         this.totalSize = res.count
         // 加载状态结束
-        this.loading = false;
-      }else {
+        this.loading = false
+      } else {
         this.$toast(res.msg)
         this.list = []
       }
     },
-    handleChange(){
-      this.getList(this.params);
+    handleChange() {
+      this.getList(this.params)
     },
-    handleReset(){
-      this.params.keyword = '';
+    handleReset() {
+      this.params.keyword = ''
     },
-    handleSearch(){
+    handleSearch() {
       this.$refs.item.toggle()
-      this.getList(this.params);
+      this.getList(this.params)
     },
-    handleClick(val){
+    handleClick(val) {
       this.$router.push({
         name: 'WorkRecordetail',
         params: {
@@ -158,8 +153,8 @@ export default {
         name: 'WorkRecordetail'
       })
     },
-    getStatus(status){
-      switch(status){
+    getStatus(status) {
+      switch (status) {
         case 2:
           return '已提交'
         default:
@@ -170,31 +165,31 @@ export default {
 }
 </script>
 <style lang="scss">
-.work-list{
-  li{
+.work-list {
+  li {
     border-radius: 0.1rem;
     margin: 0.32rem;
     background: #ffffff;
     color: #666;
     padding: 0.32rem;
     line-height: 0.52rem;
-    div{
+    div {
       overflow: hidden;
       text-overflow: ellipsis;
-      .fail{
-        color: #CC0033;
+      .fail {
+        color: #cc0033;
       }
-      .success{
-        color: #00FF99;
+      .success {
+        color: #00ff99;
       }
     }
   }
 }
-.btn-content{
+.btn-content {
   display: flex;
   justify-content: space-around;
   margin: 0.32rem 0;
-  .btn-width{
+  .btn-width {
     width: 4rem;
   }
 }

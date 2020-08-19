@@ -145,7 +145,11 @@
         type="textarea"
         placeholder="请输入巡查内容"
       />
-      <van-field name="uploader" :label="isWaitEnteriseRectification ? '整改图片' : '现场图片'" v-if="isPending || isWaitEnteriseRectification">
+      <van-field
+        name="uploader"
+        :label="isWaitEnteriseRectification ? '整改图片' : '现场图片'"
+        v-if="isPending || isWaitEnteriseRectification"
+      >
         <template #input>
           <van-uploader v-model="imgList" :after-read="afterRead" :before-delete="beforeDelete" />
         </template>
@@ -208,9 +212,21 @@
       </van-popup>
       <div style="margin: 0.32rem;">
         <van-button round block type="info" native-type="submit" v-if="!edit" :disabled="disabled">新增</van-button>
-        <van-button round block type="info" native-type="submit" v-if="isPending && isServer" :disabled="disabled">提交</van-button>
-        <van-button round block type="info" native-type="submit" v-if="isWaitEnteriseRectification && isServer" :disabled="disabled">确认已整改</van-button>
-        <van-button round block type="info" native-type="submit" v-if="isWaitSure && isAgent" :disabled="disabled">企业确认</van-button>
+        <van-button round block type="info" native-type="submit" v-if="isPending && isServer" :disabled="disabled"
+          >提交</van-button
+        >
+        <van-button
+          round
+          block
+          type="info"
+          native-type="submit"
+          v-if="isWaitEnteriseRectification && isServer"
+          :disabled="disabled"
+          >确认已整改</van-button
+        >
+        <van-button round block type="info" native-type="submit" v-if="isWaitSure && isAgent" :disabled="disabled"
+          >企业确认</van-button
+        >
       </div>
     </van-form>
   </div>
@@ -286,13 +302,13 @@ export default {
     }
   },
   created() {
-    this.role = localStorage.getItem('user_type');
-    this.corpName = JSON.parse(localStorage.getItem('select_enterprise')).corpName;
-    this.id = Number(this.$route.query.id);
+    this.role = localStorage.getItem('user_type')
+    this.corpName = JSON.parse(localStorage.getItem('select_enterprise')).corpName
+    this.id = Number(this.$route.query.id)
     this.statusTypeItem = StatusTypeItem
     this.edit = !!this.id
     if (this.edit) {
-      this.status = Number(this.$route.query.status);
+      this.status = Number(this.$route.query.status)
       if (this.status === StatusTypeItem.Pending || this.status === StatusTypeItem.EnterpriseReject) {
         this.submitEventParam.eventId = this.id
         this.btnText = '提交'
@@ -324,12 +340,12 @@ export default {
       return this.status === StatusTypeItem.EnterpriseConfirmed || this.status === StatusTypeItem.EnterpriseRectified
     },
     //获取用户角色 -- 运维用户
-    isServer(){
-      return this.role === UserType.ADMIN || this.role === UserType.OPER_ADMIN;
+    isServer() {
+      return this.role === UserType.ADMIN || this.role === UserType.OPER_ADMIN
     },
     //获取用户角色 -- 企业用户
-    isAgent(){
-      return this.role === UserType.AGENT_ADMIN || this.role === UserType.AGENT_XUNCHAYUAN;
+    isAgent() {
+      return this.role === UserType.AGENT_ADMIN || this.role === UserType.AGENT_XUNCHAYUAN
     }
   },
   methods: {
@@ -347,7 +363,7 @@ export default {
       formdata.append('eventId', this.id)
       const res = await uploadImg(formdata)
       if (res.code === '0') {
-        file.id = res.data.id;
+        file.id = res.data.id
         file.status = 'done'
         file.message = 'done'
       } else {
@@ -386,18 +402,17 @@ export default {
           this.getBatchNoList()
           break
         case 2:
-
           this.getCheckTypeList()
           break
         case 3:
           this.getRoomList()
-          break;
+          break
         case 4:
-          this.findChildList(this.parmas.checkTypeId,4);
-          break;
+          this.findChildList(this.parmas.checkTypeId, 4)
+          break
         case 5:
-          this.findChildList(this.secondId,5)
-          break;
+          this.findChildList(this.secondId, 5)
+          break
       }
     },
     onConfirm(value, index) {
@@ -408,9 +423,9 @@ export default {
         case 2:
           this.parmas.checkTypeId = value.id
           this.checkType = value.text
-          this.secondName = '';
-          this.secondId = '';
-          this.thirdId = '';
+          this.secondName = ''
+          this.secondId = ''
+          this.thirdId = ''
           this.thirdName = ''
           break
         case 3:
@@ -420,7 +435,7 @@ export default {
         case 4:
           this.secondId = value.id
           this.secondName = value.text
-          this.thirdId = '';
+          this.thirdId = ''
           this.thirdName = ''
           break
         case 5:
@@ -484,11 +499,11 @@ export default {
             this.disabled = false
             this.$toast(res.msg)
           }
-        } else if(this.isWaitEnteriseRectification) {
+        } else if (this.isWaitEnteriseRectification) {
           let params = {
             eventId: this.id
           }
-          const res = await finishRepair(params);
+          const res = await finishRepair(params)
           if (res.code === '0') {
             this.$toast('提交成功')
             this.goToAllTodo()
@@ -517,7 +532,10 @@ export default {
       this.showTime = false
     },
     async getBatchNoList() {
-      const res = await findBatchNoList({ corpId: JSON.parse(localStorage.getItem('select_enterprise')).id })
+      const res = await findBatchNoList({
+        corpId: JSON.parse(localStorage.getItem('select_enterprise')).id,
+        status: 1
+      })
       if (res.code === '0') {
         this.columns = res.data
       } else {
@@ -541,7 +559,7 @@ export default {
         this.checkTypeList = []
       }
     },
-    async findChildList(id, type){
+    async findChildList(id, type) {
       const res = await findChildList({ id: id })
       if (res.code === '0') {
         this.columns = res.data.map(d => {
@@ -550,18 +568,18 @@ export default {
             id: d.id
           }
         })
-        if(type === 4){
-          this.secondTypeList = res.data;
-        }else if(type === 5){
-          this.thirdTypeList = res.data;
+        if (type === 4) {
+          this.secondTypeList = res.data
+        } else if (type === 5) {
+          this.thirdTypeList = res.data
         }
       } else {
         this.$toast(res.msg)
         this.columns = []
-        if(type === 4){
-          this.secondTypeList = [];
-        }else if(type === 5){
-          this.thirdTypeList = [];
+        if (type === 4) {
+          this.secondTypeList = []
+        } else if (type === 5) {
+          this.thirdTypeList = []
         }
       }
     },
@@ -604,10 +622,10 @@ export default {
               url: m.imgPath
             }
           })
-          if(this.isWaitEnteriseRectification){
+          if (this.isWaitEnteriseRectification) {
             this.imgList = []
-          }else {
-            this.imgList = this.fileList;
+          } else {
+            this.imgList = this.fileList
           }
         }
       } else {

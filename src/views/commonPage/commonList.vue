@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-21 13:43:10
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-08-18 10:35:10
+ * @LastEditTime: 2020-08-19 16:51:10
  * @FilePath: \project\src\views\commonPage\commonList.vue
 -->
 <template>
@@ -30,9 +30,8 @@
           </div>
           <div>
             <div class="content-info">
-              <span>{{ item.checkContext }}</span>
+              <span>{{ item.checkName }}</span>
             </div>
-            <div class="content-time">{{ item.checkName }}</div>
           </div>
         </div>
       </van-col>
