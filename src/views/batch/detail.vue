@@ -127,7 +127,7 @@ export default {
     getStatus(status) {
       switch (status) {
         case 2:
-          return '已完成'
+          return '已确认'
         default:
           return '进行中'
       }

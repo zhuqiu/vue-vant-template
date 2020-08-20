@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-08-15 10:54:59
+ * @LastEditTime: 2020-08-20 09:39:44
  * @FilePath: \project\src\views\batch\list.vue
 -->
 <template>
@@ -20,46 +20,43 @@
           <div @click="onSearch">搜索</div>
         </template>
       </van-search>
-      <van-pull-refresh
-      v-model="refreshing"
-      @refresh="onRefresh"
-    >
-      <van-empty v-if="list.length === 0" description="暂无数据" />
-      <van-list
-        v-else
-        :immediate-check="false"
-        :offset="0"
-        v-model="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-      >
-        <van-row class="common-list">
-          <van-col span="24" @click="handleClick(item)" v-for="(item,index) in list" :key="index">
-            <div class="common-content">
-              <div>
-                <div class="content-title">{{ item.corpName }}</div>
-                <div class="content-status">
-                  <img src="../../assets/images/jinxingzhong.png" alt="" v-if="item.status === 1">
-                  <img src="../../assets/images/yiwancheng.png" alt="" v-if="item.status === 2">
+      <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+        <van-empty v-if="list.length === 0" description="暂无数据" />
+        <van-list
+          v-else
+          :immediate-check="false"
+          :offset="0"
+          v-model="loading"
+          :finished="finished"
+          finished-text="没有更多了"
+          @load="onLoad"
+        >
+          <van-row class="common-list">
+            <van-col span="24" @click="handleClick(item)" v-for="(item, index) in list" :key="index">
+              <div class="common-content">
+                <div>
+                  <div class="content-title">{{ item.corpName }}</div>
+                  <div class="content-status">
+                    <img src="../../assets/images/jinxingzhong.png" alt="" v-if="item.status === 1" />
+                    <img src="../../assets/images/yiqueren.png" alt="" v-if="item.status === 2" />
+                  </div>
+                </div>
+                <div>
+                  <div class="content-info">
+                    <span>{{ item.batchNo }}</span>
+                  </div>
+                  <div class="content-time">{{ item.startTime }}</div>
+                </div>
+                <div>
+                  <div class="content-info">
+                    <span>{{ item.endTime }}</span>
+                  </div>
                 </div>
               </div>
-              <div>
-                <div class="content-info">
-                  <span>{{item.batchNo}}</span>
-                </div>
-                <div class="content-time">{{ item.startTime }}</div>
-              </div>
-              <div>
-                <div class="content-info">
-                  <span>{{item.endTime}}</span>
-                </div>
-              </div>
-            </div>
-          </van-col>
-        </van-row>
-      </van-list>
-    </van-pull-refresh>
+            </van-col>
+          </van-row>
+        </van-list>
+      </van-pull-refresh>
 
       <div class="margin">
         <div class="addBtn" @click="addBatch">
@@ -89,7 +86,7 @@ export default {
       loading: false,
       finished: false,
       refreshing: false,
-      totalSize: 0,
+      totalSize: 0
     }
   },
   created() {
@@ -127,25 +124,25 @@ export default {
           return '已完成'
       }
     },
-    onLoad(){
+    onLoad() {
       if (this.refreshing) {
-        this.list = [];
+        this.list = []
         this.params.limit = 6
-        this.refreshing = false;
+        this.refreshing = false
       }
-      this.params.limit = this.params.limit + 6;
-      this.getList(this.params);
-      if(this.params.limit >= this.totalSize){
-        this.finished = true;
+      this.params.limit = this.params.limit + 6
+      this.getList(this.params)
+      if (this.params.limit >= this.totalSize) {
+        this.finished = true
       }
     },
-    onRefresh(){
+    onRefresh() {
       // 清空列表数据
-      this.finished = false;
+      this.finished = false
       // 重新加载数据
       // 将 loading 设置为 true，表示处于加载状态
-      this.loading = true;
-      this.onLoad();
+      this.loading = true
+      this.onLoad()
     },
     async getList(params) {
       const res = await getBatchList(params)
@@ -153,7 +150,7 @@ export default {
         this.list = res.data
         this.totalSize = res.count
         // 加载状态结束
-        this.loading = false;
+        this.loading = false
       } else {
         this.$toast(res.msg)
         this.list = []

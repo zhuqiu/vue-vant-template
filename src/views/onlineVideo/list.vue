@@ -42,6 +42,8 @@
 <script>
 import { getListVideo, playVideo } from '../../api/application.apis'
 
+import { getUuid } from '@/utils/index'
+
 export default {
   name: 'VideoList',
   data() {
@@ -59,6 +61,11 @@ export default {
   },
   mounted() {
     this.getList(this.params)
+    // 生成唯一uuid
+    const uuid = getUuid()
+    if (!localStorage.getItem('uuid')) {
+      localStorage.setItem('uuid', uuid)
+    }
   },
   methods: {
     onClickLeft() {
@@ -110,7 +117,7 @@ export default {
       }
     },
     async playVideo(id) {
-      let res = await playVideo({ id: id })
+      let res = await playVideo({ id: id, uuid: localStorage.getItem('uuid') })
     }
   }
 }
