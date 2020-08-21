@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-10 09:43:26
- * @LastEditors: zhuqiu
- * @LastEditTime: 2020-08-20 13:41:41
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-08-21 17:17:55
  * @FilePath: \project\src\views\commonPage\home.vue
 -->
 <template>
@@ -77,8 +77,17 @@ export default {
       ]
     }
   },
-  async created() {
+  async mounted() {
     this.getList({ corpName: '' })
+    this.$nextTick(() => {
+      if (window.history && window.history.pushState) {
+        //防止页面后退
+        window.history.pushState(null, null, document.URL)
+        window.addEventListener('popstate', function() {
+          window.history.pushState(null, null, document.URL)
+        })
+      }
+    })
   },
   methods: {
     handleClick(path) {
