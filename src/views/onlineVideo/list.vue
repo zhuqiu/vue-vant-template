@@ -118,6 +118,12 @@ export default {
     },
     async playVideo(id) {
       let res = await playVideo({ id: id, uuid: localStorage.getItem('uuid') })
+      if (res.data === '0') {
+        this.list.forEach(l => {
+          if (l.id === id) {
+          }
+        })
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-07-21 15:14:35
+ * @LastEditTime: 2020-08-20 14:13:57
  * @FilePath: \project\src\router\router.config.js
  */
 /**
@@ -11,7 +11,7 @@
 export const constantRouterMap = [
   {
     path: '/',
-    component: () => import('@/views/layouts/index'),
+    component: () => import('@/views/commonPage/wxLogin'),
     redirect: '/wxLogin',
     meta: {
       title: '首页',

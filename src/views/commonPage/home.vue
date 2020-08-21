@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-08-18 10:33:18
+ * @LastEditTime: 2020-08-20 13:41:41
  * @FilePath: \project\src\views\commonPage\home.vue
 -->
 <template>
@@ -79,17 +79,6 @@ export default {
   },
   async created() {
     this.getList({ corpName: '' })
-    localStorage.setItem(
-      'token',
-      'eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJsb2dpbk5hbWUiOiJ0ZXN0X2NvZGUiLCJ1c2VyVHlwZSI6Ik9QRVJfQURNSU4iLCJleHAiOjE1OTgzMjI2NDIsInVzZXJJZCI6IjRjNjc2YTYzYWVkNjQyZDdiYzdlNTE3NzA2MGJlODJkIiwiaWF0IjoxNTk3NzE3ODQyfQ.fJ7iyM3ydwFCnrwZNgtzlBCxkldMfUDWuwpCDsZRUvM'
-    )
-    // let res = await wxLogin({code:"test_code"});
-    // if(res.code === "0"){
-    //   //this.$store.dispatch('setToken', res.data.token)
-    //   localStorage.setItem('token', res.data.token);
-    //   localStorage.setItem('user_type', res.data.userType);
-    //   this.getList({corpName: ''})
-    // }
   },
   methods: {
     handleClick(path) {
