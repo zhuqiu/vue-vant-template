@@ -42,7 +42,11 @@ const original = {
     ListToDoEvents: '/data/api/event/listToDoEvents',
     RemoveImg: '/data/api/event/removeImg',
     SubmitEvent: '/data/api/event/submitEvent',
-    UploadImg: '/data/api/event/uploadImg'
+    UploadImg: '/data/api/event/uploadImg',
+
+  },
+  room: {
+    FindByCorpId: '/data/api/room/findByCorpId'
   },
   checkType: {
     FindChildList: '/data/api/checkType/findChildList',

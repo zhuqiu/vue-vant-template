@@ -69,10 +69,27 @@ export default {
           path: 'WaitTodo'
         },
         {
-          icon: 'comment-circle',
+          icon: 'video',
           text: '在线培训',
           color: '#6666CC',
           path: 'VideoList'
+        },
+        {
+          icon: 'column',
+          text: '批次列表',
+          color: '#00CC33',
+          path: 'BatchList'
+        },
+        {
+          icon: 'wap-nav',
+          text: '车间列表',
+          color: '#0066FF',
+          path: 'RoomList'
+        },
+        {
+          icon: 'weapp-nav',
+          text: '敬请期待',
+          color: '#6666CC'
         }
       ]
     }
@@ -91,6 +108,10 @@ export default {
   },
   methods: {
     handleClick(path) {
+      if(!path){
+        this.$toast('功能规划中，敬请期待')
+        return
+      }
       if (!localStorage.getItem('select_enterprise')) {
         this.$toast('请先选择企业')
         return

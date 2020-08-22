@@ -37,7 +37,7 @@
           <div class="content-label">状态</div>
           <div class="content-nav">{{ getStatus(params.status) }}</div>
         </li>
-        <li>
+        <!-- <li>
           <div class="content-label">签名</div>
           <div class="content-nav">
             <van-button
@@ -61,9 +61,26 @@
               <van-icon name="close" size="18" color="#ee0a24" v-if="params.status === 1" @click="deletePic(index)" />
             </div>
           </div>
-        </li>
+        </li> -->
       </ul>
-      <div style="margin: 0.32rem;" v-if="params.status === 1">
+      <div class="signature-content">
+        <div class="signature" v-if="fileList.length === 0" @click="addSignature">
+          签名提交
+        </div>
+        <div class="signature-show" v-else>
+          <van-image
+            style="margin-right: 0.32rem;"
+            width="100%"
+            height="auto"
+            v-for="(item, index) in fileList"
+            :key="index"
+            @click="previewImg(index)"
+            :src="item.url"
+          />
+          <van-icon name="close" size="18" color="#ee0a24" v-if="params.status === 1" @click="deletePic(index)" />
+        </div>
+      </div>
+      <div style="margin: 0 0.32rem;" v-if="params.status === 1">
         <van-button round block type="info" @click="submitBatch">提交</van-button>
       </div>
     </div>
@@ -76,7 +93,7 @@ import { getBatchDetail, uploadBatchSignImg, submitBatch } from '../../api/appli
 
 import Signature from '../commonPage/signature.vue'
 
-import { dataURLtoBlob, blobToFile } from '@/utils/index'
+import { dataURLtoBlob, blobToFile, rotateBase64Img } from '@/utils/index'
 
 import { ImagePreview } from 'vant'
 
@@ -135,21 +152,24 @@ export default {
     addSignature() {
       this.show = true
     },
-    async handleOk(val) {
+     handleOk(val) {
       this.show = false
-      const file = blobToFile(dataURLtoBlob(val), '签名.png')
-      const formdata = new FormData()
-      formdata.append('file', file)
-      formdata.append('batchNo', this.$route.query.id)
-      const res = await uploadBatchSignImg(formdata)
-      if (res.code === '0') {
-        this.fileList.push({
-          url: res.data
-        })
-      } else {
-        this.fileList = []
-        this.$toast(res.msg)
-      }
+      let that = this;
+      rotateBase64Img(val,270,async function(base64data){
+        const file = blobToFile(dataURLtoBlob(base64data), '签名.png')
+        const formdata = new FormData()
+        formdata.append('file', file)
+        formdata.append('batchNo', that.$route.query.id)
+        const res = await uploadBatchSignImg(formdata)
+        if (res.code === '0') {
+          that.fileList.push({
+            url: res.data
+          })
+        } else {
+          that.fileList = []
+          that.$toast(res.msg)
+        }
+      })
     },
     handleClose() {
       this.show = false
@@ -216,21 +236,30 @@ export default {
       vertical-align: middle;
       overflow: visible;
       word-wrap: break-word;
-      i {
-        position: relative;
-        top: 0.08rem;
-      }
+
     }
-    .img-view {
+  }
+  .signature-content{
+    background: white;
+    padding: 0.32rem;
+    color: #dbdb3293;
+    font-size: 0.6rem;
+    text-align: center;
+    .signature{
+      border: 1px dashed #f1f10d;
+      border-radius: 3px;
+      width: 100%;
+      height: 4rem;
+      line-height: 4rem;
+    }
+    .signature-show{
+      border: 1px dashed #f1f10d;
+      border-radius: 3px;
       position: relative;
-      width: 100px;
-      height: 100px;
-      border: 1px dotted #ebedf0;
-      border-radius: 4px;
       i {
         position: absolute;
-        top: -0.2rem;
-        right: -0.2rem;
+        top: 0;
+        right: 0;
       }
     }
   }

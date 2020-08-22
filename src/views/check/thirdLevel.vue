@@ -3,11 +3,11 @@
     <van-sticky>
       <van-nav-bar title="三级巡查类型" left-text="返回" left-arrow @click-left="onClickLeft" />
     </van-sticky>
-    <ul class="check-list" v-if="list.length > 0">
-      <li v-for="(item, index) in list" :key="index">
-        <van-cell :title="item.checkName"/>
-      </li>
-    </ul>
+    <van-collapse style="margin-top:0.32rem" v-model="activeNames" v-if="list.length > 0">
+      <van-collapse-item :title="item.checkName" :name="index" v-for="(item, index) in list" :key="index">
+        <div>{{item.remark}}</div>
+      </van-collapse-item>
+    </van-collapse>
     <van-empty v-else description="暂无数据" />
   </div>
 </template>
@@ -20,7 +20,8 @@ export default {
   name: 'thirdLevel',
   data() {
     return {
-      list: []
+      list: [],
+      activeNames: []
     }
   },
   created() {

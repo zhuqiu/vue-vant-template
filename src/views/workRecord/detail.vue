@@ -25,34 +25,25 @@
           <div class="content-label">状态</div>
           <div class="content-nav">{{ getStatus(params.status) }}</div>
         </li>
-        <li>
-          <div class="content-label">签名</div>
-          <div class="content-nav" >
-            <van-button
-              type="primary"
-              size="mini"
-              @click="addSignature"
-              style="width:60px;"
-              v-if="fileList.length === 0 && params.status !== 2"
-
-            >签名</van-button>
-            <!-- <van-icon @click="addSignature" name="add" size="24" color="#07c160" v-if="fileList.length === 0 && params.status !== 2"/> -->
-            <div :class="fileList.length > 0 ? 'img-view' : ''" v-else>
-              <van-image
-                style="margin-right: 0.32rem;"
-                width="100"
-                height="100"
-                v-for="(item, index) in fileList"
-                :key="index"
-                @click="previewImg(index)"
-                :src="item.url"
-              />
-              <van-icon v-if="params.status !== 2"  name="close" size="18" color="#ee0a24" @click="deletePic(index)"/>
-            </div>
-          </div>
-        </li>
       </ul>
-      <div style="margin: 0.32rem;">
+      <div class="signature-content">
+        <div class="signature" v-if="fileList.length === 0 && params.status !== 2" @click="addSignature">
+          签名提交
+        </div>
+        <div class="signature-show" v-else>
+          <van-image
+            style="margin-right: 0.32rem;"
+            width="100%"
+            height="auto"
+            v-for="(item, index) in fileList"
+            :key="index"
+            @click="previewImg(index)"
+            :src="item.url"
+          />
+          <van-icon name="close" size="18" color="#ee0a24" v-if="params.status !== 2" @click="deletePic(index)" />
+        </div>
+      </div>
+      <div style="margin: 0 0.32rem;">
         <van-button round block type="info" v-if="params.status !== 2" @click="submitRecord">提交</van-button>
       </div>
     </div>
@@ -104,7 +95,7 @@ import { addWorkRecord, getWorkRecord, submitWorkRecord, uploadSignImg } from '.
 
 import Signature from '../commonPage/signature.vue'
 
-import {dataURLtoBlob, blobToFile} from '@/utils/index'
+import {dataURLtoBlob, blobToFile, rotateBase64Img} from '@/utils/index'
 
 import { ImagePreview } from 'vant'
 
@@ -200,19 +191,22 @@ export default {
     },
     async handleOk(val){
       this.show = false;
-      let file = blobToFile(dataURLtoBlob(val),'签名.png');
-      const formdata = new FormData()
-      formdata.append('file', file)
-      formdata.append('workRecordId', this.$route.params.id)
-      let res = await uploadSignImg(formdata);
-      if (res.code === '0') {
-        this.fileList.push({
-          url: res.data
-        })
-      } else {
-        this.fileList = [];
-        this.$toast(res.msg)
-      }
+      let that = this;
+      rotateBase64Img(val,270,async function(base64data){
+        const file = blobToFile(dataURLtoBlob(base64data), '签名.png')
+        const formdata = new FormData()
+        formdata.append('file', file)
+        formdata.append('workRecordId', that.$route.params.id)
+        let res = await uploadSignImg(formdata);
+        if (res.code === '0') {
+          that.fileList.push({
+            url: res.data
+          })
+        } else {
+          that.fileList = [];
+          that.$toast(res.msg)
+        }
+      })
     },
     handleClose(){
       this.show = false;
@@ -272,16 +266,28 @@ export default {
         top: 0.08rem;
       }
     }
-    .img-view{
+  }
+  .signature-content{
+    background: white;
+    padding: 0.32rem;
+    color: #dbdb3293;
+    font-size: 0.6rem;
+    text-align: center;
+    .signature{
+      border: 1px dashed #f1f10d;
+      border-radius: 3px;
+      width: 100%;
+      height: 4rem;
+      line-height: 4rem;
+    }
+    .signature-show{
+      border: 1px dashed #f1f10d;
+      border-radius: 3px;
       position: relative;
-      width: 100px;
-      height: 100px;
-      border: 1px dotted #ebedf0;
-      border-radius: 4px;
-      i{
+      i {
         position: absolute;
-        top: -0.2rem;
-        right: -0.2rem;
+        top: 0;
+        right: 0;
       }
     }
   }

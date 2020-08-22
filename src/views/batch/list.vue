@@ -173,11 +173,23 @@ export default {
         this.$toast('请选择企业后再新增批次号')
         return
       }
-      const res = await createBatchNo({ corpId: this.params.corpId })
-      if (res.code === '0') {
-        this.getList(this.params)
-      } else {
-        this.$toast(res.msg)
+      let that = this
+      this.$dialog.confirm({
+        title: '新增批次提示',
+        message: '确定新增吗？',
+        beforeClose
+      })
+      async function beforeClose(action, done) {
+        if (action === 'confirm') {
+          const res = await createBatchNo({ corpId: that.params.corpId })
+          if (res.code === '0') {
+            that.getList(that.params)
+            that.$toast('新增成功')
+          } else {
+            that.$toast(res.msg)
+          }
+        }
+        done()
       }
     }
   }

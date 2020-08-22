@@ -39,13 +39,13 @@ export default {
           },
           icon: 'friends-o'
         },
-        {
-          title: '批次',
-          to: {
-            name: 'BatchList'
-          },
-          icon: 'todo-list-o'
-        },
+        // {
+        //   title: '批次',
+        //   to: {
+        //     name: 'BatchList'
+        //   },
+        //   icon: 'todo-list-o'
+        // },
         {
           title: '通知',
           to: {

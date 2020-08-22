@@ -49,6 +49,12 @@ export const constantRouterMap = [
         meta: { title: '批次详情', keepAlive: false }
       },
       {
+        path: '/roomList',
+        name: 'RoomList',
+        component: () => import('@/views/room/list'),
+        meta: { title: '车间列表', keepAlive: false }
+      },
+      {
         path: '/notification',
         name: 'Notification',
         component: () => import('@/views/commonPage/notification'),

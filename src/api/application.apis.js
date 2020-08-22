@@ -48,6 +48,14 @@ export function findRoomList(params) {
   })
 }
 
+export function findByCorpId(params) {
+  return request({
+    url: api.room.FindByCorpId,
+    method: 'get',
+    params
+  })
+}
+
 // 为车间新增巡查项目
 export function addEvent(data) {
   return request({
