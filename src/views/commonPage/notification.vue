@@ -1,18 +1,22 @@
 <!--
  * @Date: 2020-07-10 09:43:26
- * @LastEditors: zhuqiu
- * @LastEditTime: 2020-07-10 10:43:59
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-08-24 15:47:50
  * @FilePath: \project\src\views\commonPage\notification.vue
 -->
 <template>
   <div>
     <van-sticky>
-      <van-nav-bar title="消息" left-text="返回" left-arrow @click-left="onClickLeft" />
+      <van-nav-bar
+        title="消息"
+        left-text="返回"
+        :right-text="ids.length > 0 ? '批量清空' : ''"
+        left-arrow
+        @click-left="onClickLeft"
+        @click-right="batchDeleteMsg"
+      />
     </van-sticky>
-    <van-pull-refresh
-      v-model="refreshing"
-      @refresh="onRefresh"
-    >
+    <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
       <van-empty v-if="list.length === 0" description="暂无数据" />
       <van-list
         v-else
@@ -27,26 +31,25 @@
           <van-col span="24" v-for="(item, index) in list" :key="index" @click="selectMsg(item.id)">
             <div class="content">
               <div class="content-left">
-                <div class="title">消息内容： {{ item.content }}</div>
-                <div class="title">创建时间：{{ item.ctime }}</div>
-                <div class="title">创建人：{{ item.nickname }}</div>
+                <div class="title" style="font-size:0.38rem;font-weight:600">{{ item.msgType }}</div>
+                <div class="title">{{ item.ctime }}</div>
+                <div class="title">{{ item.context }}</div>
               </div>
               <div class="content-right">
-                <van-icon name="checked" size="24" color="#07c160" v-if="ids.includes(item.id)"/>
+                <van-icon name="checked" size="24" color="#07c160" v-if="ids.includes(item.id)" />
               </div>
             </div>
           </van-col>
         </van-row>
       </van-list>
     </van-pull-refresh>
-    <div style="margin: 0.32rem;" v-if="list.length > 0">
+    <!-- <div style="margin: 0.32rem;" v-if="list.length > 0">
       <van-button round block type="info" @click="batchDeleteMsg" :disabled="ids.length === 0">批量清空</van-button>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-
 import { getListMsg, batchDeleteMsg } from '../../api/application.apis'
 
 export default {
@@ -62,35 +65,35 @@ export default {
       loading: false,
       finished: false,
       refreshing: false,
-      totalSize: 0,
+      totalSize: 0
     }
   },
-  created(){
-    this.getList(this.params);
+  created() {
+    this.getList(this.params)
   },
   methods: {
     onClickLeft() {
       history.go(-1)
     },
-    onLoad(){
+    onLoad() {
       if (this.refreshing) {
-        this.list = [];
+        this.list = []
         this.params.limit = 6
-        this.refreshing = false;
+        this.refreshing = false
       }
-      this.params.limit = this.params.limit + 6;
-      this.getList(this.params);
-      if(this.params.limit >= this.totalSize){
-        this.finished = true;
+      this.params.limit = this.params.limit + 6
+      this.getList(this.params)
+      if (this.params.limit >= this.totalSize) {
+        this.finished = true
       }
     },
-    onRefresh(){
+    onRefresh() {
       // 清空列表数据
-      this.finished = false;
+      this.finished = false
       // 重新加载数据
       // 将 loading 设置为 true，表示处于加载状态
-      this.loading = true;
-      this.onLoad();
+      this.loading = true
+      this.onLoad()
     },
     async getList(params) {
       const res = await getListMsg(params)
@@ -98,24 +101,27 @@ export default {
         this.list = res.data
         this.totalSize = res.count
         // 加载状态结束
-        this.loading = false;
+        this.loading = false
       } else {
         this.$toast(res.msg)
         this.list = []
       }
     },
-    selectMsg(id){
-      if(this.ids.includes(id)){
-        let index = this.ids.findIndex((i) => i === id);
-        this.ids.splice(index,1);
-      }else{
-        this.ids.push(id);
+    selectMsg(id) {
+      if (this.ids.includes(id)) {
+        let index = this.ids.findIndex(i => i === id)
+        this.ids.splice(index, 1)
+      } else {
+        this.ids.push(id)
       }
     },
-    async batchDeleteMsg(){
+    async batchDeleteMsg() {
+      if (this.ids.length === 0) {
+        return
+      }
       const res = await batchDeleteMsg({
         idsArr: this.ids
-      });
+      })
       if (res.code === '0') {
         this.list = res.data
         this.$toast('清除成功')
@@ -127,9 +133,9 @@ export default {
 }
 </script>
 <style lang="scss">
-.msg-list{
+.msg-list {
   padding: 0.32rem;
-  .content{
+  .content {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -138,21 +144,20 @@ export default {
     background: #ffffff;
     border-radius: 0.1rem;
     margin-bottom: 0.32rem;
-    .content-left{
+    .content-left {
       flex: 8;
       text-align: left;
-      .title{
+      .title {
         font-weight: 500;
         font-size: 12px;
         margin: 0;
         margin-bottom: 0.32rem;
       }
     }
-    .content-right{
+    .content-right {
       flex: 1;
       text-align: right;
     }
   }
 }
 </style>
-

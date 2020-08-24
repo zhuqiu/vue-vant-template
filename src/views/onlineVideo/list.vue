@@ -117,10 +117,16 @@ export default {
       }
     },
     async playVideo(id) {
-      let res = await playVideo({ id: id, uuid: localStorage.getItem('uuid') })
-      if (res.data === '0') {
+      let res = await playVideo({
+        id: id,
+        uuid: localStorage.getItem('uuid'),
+        userUid: localStorage.getItem('select_enterprise').uid
+      })
+      if (res.code === '0') {
         this.list.forEach(l => {
           if (l.id === id) {
+            l.palyTimes = res.data.palyTimes
+            l.todayOnlineUsers = res.data.todayOnlineUsers
           }
         })
       }
