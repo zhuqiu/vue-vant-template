@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-08-21 12:54:59
+ * @LastEditTime: 2020-08-26 09:44:33
  * @FilePath: \project\src\router\router.config.js
  */
 /**
@@ -139,5 +139,11 @@ export const constantRouterMap = [
     name: 'Phone',
     component: () => import('@/views/commonPage/phone'),
     meta: { title: '绑定手机号', keepAlive: false }
+  },
+  {
+    path: '/videoPlay',
+    name: 'VideoPlay',
+    component: () => import('@/views/onlineVideo/playList'),
+    meta: { title: '在线培训', keepAlive: false }
   }
 ]
