@@ -118,8 +118,11 @@ export default {
         this.ids.push(id)
       }
     },
-    batchReadMsg(){
-      readAll();
+    async batchReadMsg(){
+      let res = await readAll();
+      if(res.code === '0'){
+        this.getList(this.params);
+      }
     },
     async goToDetail(id){
       let res = await readMsg({
