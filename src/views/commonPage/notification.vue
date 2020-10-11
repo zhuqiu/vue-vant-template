@@ -36,7 +36,9 @@
                 <div class="title">{{ item.context }}</div>
               </div>
               <div class="content-right">
-                <van-icon name="browsing-history" size="16" color="#07c160" v-if="!item.readTime" />
+                <!-- <van-icon name="browsing-history" size="16" color="#07c160" v-if="!item.readTime" /> -->
+                <span style="font-size: 12px; color: #1989fa" v-if="item.status === 'unread'">未读</span>
+                <span style="font-size: 12px; color: #999" v-else>已读</span>
               </div>
             </div>
           </van-col>
@@ -119,9 +121,22 @@ export default {
       }
     },
     async batchReadMsg(){
-      let res = await readAll();
-      if(res.code === '0'){
-        this.getList(this.params);
+      let that = this;
+      this.$dialog.confirm({
+        title: '全部已读提示',
+        message: '确定全部已读吗？',
+        beforeClose
+      })
+      async function beforeClose(action, done) {
+        if (action === 'confirm') {
+          let res = await readAll();
+          if(res.code === '0'){
+            that.getList(this.params);
+          }else{
+            that.$toast('设置失败')
+          }
+        }
+        done()
       }
     },
     async goToDetail(id){
