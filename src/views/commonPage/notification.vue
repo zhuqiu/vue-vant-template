@@ -10,10 +10,10 @@
       <van-nav-bar
         title="消息"
         left-text="返回"
-        :right-text="ids.length > 0 ? '批量清空' : ''"
+        :right-text="unReadMsg > 0 ? '全部已读' : ''"
         left-arrow
         @click-left="onClickLeft"
-        @click-right="batchDeleteMsg"
+        @click-right="batchReadMsg"
       />
     </van-sticky>
     <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
@@ -28,7 +28,7 @@
         @load="onLoad"
       >
         <van-row class="msg-list">
-          <van-col span="24" v-for="(item, index) in list" :key="index" @click="selectMsg(item.id)">
+          <van-col span="24" v-for="(item, index) in list" :key="index" @click="goToDetail(item.id)">
             <div class="content">
               <div class="content-left">
                 <div class="title" style="font-size:0.38rem;font-weight:600">{{ item.msgType }}</div>
@@ -36,21 +36,20 @@
                 <div class="title">{{ item.context }}</div>
               </div>
               <div class="content-right">
-                <van-icon name="checked" size="24" color="#07c160" v-if="ids.includes(item.id)" />
+                <van-icon name="browsing-history" size="16" color="#07c160" v-if="!item.readTime" />
               </div>
             </div>
           </van-col>
         </van-row>
       </van-list>
     </van-pull-refresh>
-    <!-- <div style="margin: 0.32rem;" v-if="list.length > 0">
-      <van-button round block type="info" @click="batchDeleteMsg" :disabled="ids.length === 0">批量清空</van-button>
-    </div> -->
   </div>
 </template>
 
 <script>
-import { getListMsg, batchDeleteMsg } from '../../api/application.apis'
+import { getListMsg, batchDeleteMsg, readMsg, countUnreadMsgTotal, readAll } from '../../api/application.apis'
+
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Notification',
@@ -70,6 +69,9 @@ export default {
   },
   created() {
     this.getList(this.params)
+  },
+  computed: {
+    ...mapGetters(['unReadMsg'])
   },
   methods: {
     onClickLeft() {
@@ -97,13 +99,14 @@ export default {
     },
     async getList(params) {
       const res = await getListMsg(params)
-      if (res.code === '0') {
-        this.list = res.data
-        this.totalSize = res.count
+      if (res.data.code === '0') {
+        this.list = res.data.data;
+        this.totalSize = res.data.count
         // 加载状态结束
         this.loading = false
+        this.countUnreadMsgTotal();
       } else {
-        this.$toast(res.msg)
+        this.$toast(res.data.msg)
         this.list = []
       }
     },
@@ -115,20 +118,49 @@ export default {
         this.ids.push(id)
       }
     },
-    async batchDeleteMsg() {
-      if (this.ids.length === 0) {
-        return
+    batchReadMsg(){
+      readAll();
+    },
+    async goToDetail(id){
+      let res = await readMsg({
+        context: "",
+        ctime: "",
+        idsArr: [id],
+        nickname: "",
+        readTime: "",
+        status: ""
+      });
+      if(res.code === '0'){
+        this.getList(this.params);
       }
-      const res = await batchDeleteMsg({
-        idsArr: this.ids
-      })
-      if (res.code === '0') {
-        this.list = res.data
-        this.$toast('清除成功')
-      } else {
-        this.$toast(res.msg)
+    },
+    async countUnreadMsgTotal() {
+      let res = await countUnreadMsgTotal({
+        context: "",
+        ctime: "",
+        idsArr: [],
+        nickname: "",
+        readTime: "",
+        status: ""
+      });
+      if(res.code === '0'){
+        this.$store.dispatch('setUnReadMsg', res.data);
       }
     }
+    // async batchDeleteMsg() {
+    //   if (this.ids.length === 0) {
+    //     return
+    //   }
+    //   const res = await batchDeleteMsg({
+    //     idsArr: this.ids
+    //   })
+    //   if (res.code === '0') {
+    //     this.list = res.data
+    //     this.$toast('清除成功')
+    //   } else {
+    //     this.$toast(res.msg)
+    //   }
+    // }
   }
 }
 </script>
@@ -157,6 +189,7 @@ export default {
     .content-right {
       flex: 1;
       text-align: right;
+      align-self: start;
     }
   }
 }

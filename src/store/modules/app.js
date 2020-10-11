@@ -6,7 +6,8 @@
  */ 
 const state = {
   userName: '',
-  token: ''
+  token: '',
+  unReadMsg: 0
 }
 const mutations = {
   SET_USER_NAME(state, name) {
@@ -14,6 +15,9 @@ const mutations = {
   },
   SET_TOKEN(state, token) {
     state.token = token
+  },
+  SET_UNREADMSG(state, msg){
+    state.unReadMsg = msg
   }
 }
 const actions = {
@@ -24,7 +28,10 @@ const actions = {
   //设置token
   setToken({ commit }, token){
     commit('SET_TOKEN', token)
-  }
+  },
+  setUnReadMsg({ commit }, msg){
+    commit('SET_UNREADMSG', msg)
+  },
 }
 export default {
   state,

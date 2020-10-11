@@ -20,6 +20,7 @@
 
 <script>
 import TabBar from '@/components/TabBar'
+
 export default {
   name: 'AppLayout',
   data() {

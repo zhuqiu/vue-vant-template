@@ -69,6 +69,10 @@
           <div class="content-label">实际整改时间</div>
           <div class="content-nav">{{ data.repairDate }}</div>
         </li>
+        <li v-if="data.rejectUserNickname">
+          <div class="content-label">驳回人员</div>
+          <div class="content-nav">{{ data.rejectUserNickname }}</div>
+        </li>
       </ul>
     </div>
     <van-form @submit="onSubmit">
@@ -212,7 +216,7 @@
       </van-popup>
       <div style="margin: 0.32rem;">
         <van-button round block type="info" native-type="submit" v-if="!edit" :disabled="disabled">新增</van-button>
-        <van-button round block type="info" native-type="submit" v-if="isPending && isServer" :disabled="disabled"
+        <van-button round block type="info" native-type="submit" v-if="statusNumber === '1'" :disabled="disabled"
           >提交</van-button
         >
         <van-button
@@ -220,11 +224,11 @@
           block
           type="info"
           native-type="submit"
-          v-if="isWaitEnteriseRectification && isServer"
+          v-if="statusNumber === '3'"
           :disabled="disabled"
           >确认已整改</van-button
         >
-        <van-button round block type="info" native-type="submit" v-if="isWaitSure && isAgent" :disabled="disabled"
+        <van-button round block type="info" native-type="submit" v-if="statusNumber === '2'" :disabled="disabled"
           >企业确认</van-button
         >
       </div>
@@ -250,7 +254,8 @@ import {
   finishRepair,
   getEventDetail,
   uploadImg,
-  removeImg
+  removeImg,
+  getEventControlerButton
 } from '../../api/application.apis'
 
 export default {
@@ -298,7 +303,8 @@ export default {
       btnText: '新增',
       minDate: new Date(),
       id: '',
-      role: ''
+      role: '',
+      statusNumber: ''
     }
   },
   created() {
@@ -308,6 +314,7 @@ export default {
     this.statusTypeItem = StatusTypeItem
     this.edit = !!this.id
     if (this.edit) {
+      this.getEventControlerButton();
       this.status = Number(this.$route.query.status)
       if (this.status === StatusTypeItem.Pending || this.status === StatusTypeItem.EnterpriseReject) {
         this.submitEventParam.eventId = this.id
@@ -370,6 +377,14 @@ export default {
         file.status = 'failed'
         file.message = '上传失败'
       }
+    },
+    async getEventControlerButton(){
+      let res = await getEventControlerButton({
+        eventId: this.id
+      })
+      if(res.code === '0'){
+        this.statusNumber = res.data.status;
+      }  
     },
     beforeDelete(file) {
       if (file.id) {

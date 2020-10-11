@@ -43,6 +43,7 @@ const original = {
     RemoveImg: '/data/api/event/removeImg',
     SubmitEvent: '/data/api/event/submitEvent',
     UploadImg: '/data/api/event/uploadImg',
+    GetEventControlerButton: '/data/api/event/getEventControlerButton'
 
   },
   room: {
@@ -58,7 +59,10 @@ const original = {
   },
   msg: {
     ListMsg: '/data/api/msg/listMsg',
-    BatchDeleteMsg: '/data/api/msg/batchDel'
+    BatchDeleteMsg: '/data/api/msg/batchDel',
+    CountUnreadMsgTotal: '/data/api/msg/countUnreadMsgTotal',
+    ReadMsg: '/data/api/msg/readMsg',
+    ReadAll: '/data/api/msg/readAll'
   },
   user: {
     Login: '/user/login',

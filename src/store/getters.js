@@ -7,5 +7,6 @@
 const getters = {
   userName: state => state.app.userName,
   token: state => state.app.token,
+  unReadMsg: state => state.app.unReadMsg,
 }
 export default getters

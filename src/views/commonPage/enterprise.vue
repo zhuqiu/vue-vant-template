@@ -74,8 +74,9 @@ export default {
   },
   created(){
     this.getList(this.params);
-    if(JSON.parse(localStorage.getItem('select_enterprise'))){
+    if(localStorage.getItem('select_enterprise') && JSON.parse(localStorage.getItem('select_enterprise'))){
       this.selevtionId = JSON.parse(localStorage.getItem('select_enterprise')).id;
+      document.title = JSON.parse(localStorage.getItem('select_enterprise')).corpName;
     }
   },
   computed: {
@@ -119,6 +120,12 @@ export default {
       if(res.code === "0"){
         this.list = res.data;
         this.totalSize = res.count
+        if(!localStorage.getItem('select_enterprise') && this.list.length > 0){
+          localStorage.setItem('select_enterprise',JSON.stringify(this.list[0]));
+          this.selevtionId = this.list[0].id;
+          this.title = this.list[0].corpName;
+          document.title = this.list[0].corpName;
+        }
         // 加载状态结束
         this.loading = false;
       }else{
@@ -130,6 +137,10 @@ export default {
       let source = this.list.find((l) => l.id === id);
       localStorage.setItem('select_enterprise',JSON.stringify(source));
       this.selevtionId = id;
+      document.title = source.corpName;
+      this.$router.push({
+        name: 'Home' 
+      })
     },
 
   }

@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { wxLogin, listCorp } from '../../api/application.apis'
+import { wxLogin, listCorp, countUnreadMsgTotal } from '../../api/application.apis'
 export default {
   name: 'Home',
   data() {
@@ -96,14 +96,15 @@ export default {
   },
   async mounted() {
     this.getList({ corpName: '' })
+    this.countUnreadMsgTotal()
     this.$nextTick(() => {
-      if (window.history && window.history.pushState) {
-        //防止页面后退
-        window.history.pushState(null, null, document.URL)
-        window.addEventListener('popstate', function() {
-          window.history.pushState(null, null, document.URL)
-        })
-      }
+      // if (window.history && window.history.pushState) {
+      //   //防止页面后退
+      //   window.history.pushState(null, null, document.URL)
+      //   window.addEventListener('popstate', function() {
+      //     window.history.pushState(null, null, document.URL)
+      //   })
+      // }
     })
   },
   methods: {
@@ -127,12 +128,28 @@ export default {
     },
     async getList(params) {
       let res = await listCorp(params)
-      if (res.code === '0') {
+      if (res.code === '0' && localStorage.getItem('select_enterprise')) {
+        // 判断缓存中的公司是否在当前公司列表中
         let id = JSON.parse(localStorage.getItem('select_enterprise')).id
         let source = res.data.find(d => d.id === id)
         if (!source) {
           localStorage.setItem('select_enterprise', '')
+        }else{
+          document.title = source.corpName;
         }
+      }
+    },
+    async countUnreadMsgTotal() {
+      let res = await countUnreadMsgTotal({
+        context: "",
+        ctime: "",
+        idsArr: [],
+        nickname: "",
+        readTime: "",
+        status: ""
+      });
+      if(res.code === '0'){
+        this.$store.dispatch('setUnReadMsg', res.data);
       }
     }
   }

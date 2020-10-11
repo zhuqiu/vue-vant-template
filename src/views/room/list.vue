@@ -1,8 +1,21 @@
 <template>
   <div>
-    <van-sticky>
+    <!-- <van-sticky>
       <van-nav-bar title="车间" left-text="返回" left-arrow @click-left="onClickLeft" />
-    </van-sticky>
+    </van-sticky> -->
+    <van-search
+      v-model="roomName"
+      show-action
+      placeholder="请输入搜索关键词"
+      @search="onSearch"
+      @cancel="onCancel"
+      @clear="onCancel"
+      @input="onInput"
+    >
+      <template #action>
+        <div @click="onSearch">搜索</div>
+      </template>
+    </van-search>
     <van-collapse style="margin-top:0.32rem" v-model="activeNames" v-if="list.length > 0">
       <van-collapse-item :title="item.roomName" :name="index" v-for="(item, index) in list" :key="index">
         <div>企业名称: {{item.corpName}}</div>
@@ -23,7 +36,8 @@ export default {
   data() {
     return {
       list: [],
-      activeNames: []
+      activeNames: [],
+      roomName: ''
     }
   },
   created() {
@@ -33,10 +47,24 @@ export default {
     onClickLeft() {
       history.go(-1)
     },
-    async findRoomList(id){
-      const res = await findByCorpId({ corpId: JSON.parse(localStorage.getItem('select_enterprise')).id })
-      this.list = res
-    }
+    async findRoomList(){
+      const res = await findByCorpId({ 
+        corpId: JSON.parse(localStorage.getItem('select_enterprise')).id,
+        roomName: this.roomName
+      })
+      this.list = res;
+    },
+    onSearch(){
+      this.findRoomList();
+    },
+    onCancel(){
+      this.findRoomList();
+    },
+    onInput(){
+      if(this.roomName === ''){
+        this.findRoomList();
+      }
+    },
   }
 }
 </script>

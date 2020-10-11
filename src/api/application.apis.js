@@ -119,6 +119,15 @@ export function removeImg(params) {
   })
 }
 
+// 查询事件控制按钮显示
+export function getEventControlerButton(params) {
+  return request({
+    url: api.event.GetEventControlerButton,
+    method: 'get',
+    params
+  })
+}
+
 /**
  * 批次接口服务
  */
@@ -353,6 +362,33 @@ export function batchDeleteMsg(data) {
     data
   })
 }
+
+//查阅未读消息总数
+export function countUnreadMsgTotal(data) {
+  return request({
+    url: api.msg.CountUnreadMsgTotal,
+    method: 'post',
+    data
+  })
+}
+
+//阅读消息
+export function readMsg(data) {
+  return request({
+    url: api.msg.ReadMsg,
+    method: 'post',
+    data
+  })
+}
+
+//阅读消息
+export function readAll() {
+  return request({
+    url: api.msg.ReadAll,
+    method: 'get'
+  })
+}
+
 
 //用户登录
 export function wxLogin(params) {
