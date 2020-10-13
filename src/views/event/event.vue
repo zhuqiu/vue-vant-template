@@ -25,15 +25,31 @@
           <div class="content-label">巡查内容</div>
           <div class="content-nav">{{ submitEventParam.checkContext }}</div>
         </li>
-        <li v-if="isWaitEnteriseRectification || isOverStatus || isWaitSure">
-          <div class="content-label">现场图片</div>
+        <li v-if="(isWaitEnteriseRectification || isOverStatus || isWaitSure) && fileList.filter(res => res.imgType === 1).length > 0">
+          <div class="content-label">检查图片</div>
           <div class="content-nav">
             <div>
               <van-image
                 style="margin-right: 0.32rem;"
                 width="100"
                 height="100"
-                v-for="(item, index) in fileList"
+                v-for="(item, index) in fileList.filter(res => res.imgType === 1)"
+                :key="index"
+                @click="previewImg(index)"
+                :src="item.url"
+              />
+            </div>
+          </div>
+        </li>
+        <li v-if="(isWaitEnteriseRectification || isOverStatus || isWaitSure) && fileList.filter(res => res.imgType === 2).length > 0">
+          <div class="content-label">整改图片</div>
+          <div class="content-nav">
+            <div>
+              <van-image
+                style="margin-right: 0.32rem;"
+                width="100"
+                height="100"
+                v-for="(item, index) in fileList.filter(res => res.imgType === 2)"
                 :key="index"
                 @click="previewImg(index)"
                 :src="item.url"
@@ -376,6 +392,7 @@ export default {
       } else {
         file.status = 'failed'
         file.message = '上传失败'
+        this.$toast(res.msg)
       }
     },
     async getEventControlerButton(){
@@ -384,7 +401,7 @@ export default {
       })
       if(res.code === '0'){
         this.statusNumber = res.data.status;
-      }  
+      }
     },
     beforeDelete(file) {
       if (file.id) {
@@ -634,7 +651,8 @@ export default {
               status: 'done',
               message: 'done',
               id: m.id,
-              url: m.imgPath
+              url: m.imgPath,
+              imgType: m.imgType
             }
           })
           if (this.isWaitEnteriseRectification) {

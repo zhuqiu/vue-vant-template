@@ -70,6 +70,7 @@ export default {
     }
   },
   created() {
+    this.params.corpId = JSON.parse(localStorage.getItem('select_enterprise')).id
     this.getList(this.params)
   },
   computed: {
