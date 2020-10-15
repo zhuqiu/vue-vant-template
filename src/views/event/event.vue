@@ -25,7 +25,12 @@
           <div class="content-label">巡查内容</div>
           <div class="content-nav">{{ submitEventParam.checkContext }}</div>
         </li>
-        <li v-if="(isWaitEnteriseRectification || isOverStatus || isWaitSure) && fileList.filter(res => res.imgType === 1).length > 0">
+        <li
+          v-if="
+            (isWaitEnteriseRectification || isOverStatus || isWaitSure) &&
+              fileList.filter(res => res.imgType === 1).length > 0
+          "
+        >
           <div class="content-label">检查图片</div>
           <div class="content-nav">
             <div>
@@ -35,23 +40,7 @@
                 height="100"
                 v-for="(item, index) in fileList.filter(res => res.imgType === 1)"
                 :key="index"
-                @click="previewImg(index)"
-                :src="item.url"
-              />
-            </div>
-          </div>
-        </li>
-        <li v-if="(isWaitEnteriseRectification || isOverStatus || isWaitSure) && fileList.filter(res => res.imgType === 2).length > 0">
-          <div class="content-label">整改图片</div>
-          <div class="content-nav">
-            <div>
-              <van-image
-                style="margin-right: 0.32rem;"
-                width="100"
-                height="100"
-                v-for="(item, index) in fileList.filter(res => res.imgType === 2)"
-                :key="index"
-                @click="previewImg(index)"
+                @click="previewCheckImg(index)"
                 :src="item.url"
               />
             </div>
@@ -84,6 +73,27 @@
         <li v-if="data.repairDate">
           <div class="content-label">实际整改时间</div>
           <div class="content-nav">{{ data.repairDate }}</div>
+        </li>
+        <li
+          v-if="
+            (isWaitEnteriseRectification || isOverStatus || isWaitSure) &&
+              fileList.filter(res => res.imgType === 2).length > 0
+          "
+        >
+          <div class="content-label">整改图片</div>
+          <div class="content-nav">
+            <div>
+              <van-image
+                style="margin-right: 0.32rem;"
+                width="100"
+                height="100"
+                v-for="(item, index) in fileList.filter(res => res.imgType === 2)"
+                :key="index"
+                @click="previewZgImg(index)"
+                :src="item.url"
+              />
+            </div>
+          </div>
         </li>
         <li v-if="data.rejectUserNickname">
           <div class="content-label">驳回人员</div>
@@ -235,13 +245,7 @@
         <van-button round block type="info" native-type="submit" v-if="statusNumber === '1'" :disabled="disabled"
           >提交</van-button
         >
-        <van-button
-          round
-          block
-          type="info"
-          native-type="submit"
-          v-if="statusNumber === '3'"
-          :disabled="disabled"
+        <van-button round block type="info" native-type="submit" v-if="statusNumber === '3'" :disabled="disabled"
           >确认已整改</van-button
         >
         <van-button round block type="info" native-type="submit" v-if="statusNumber === '2'" :disabled="disabled"
@@ -330,7 +334,7 @@ export default {
     this.statusTypeItem = StatusTypeItem
     this.edit = !!this.id
     if (this.edit) {
-      this.getEventControlerButton();
+      this.getEventControlerButton()
       this.status = Number(this.$route.query.status)
       if (this.status === StatusTypeItem.Pending || this.status === StatusTypeItem.EnterpriseReject) {
         this.submitEventParam.eventId = this.id
@@ -395,12 +399,12 @@ export default {
         this.$toast(res.msg)
       }
     },
-    async getEventControlerButton(){
+    async getEventControlerButton() {
       let res = await getEventControlerButton({
         eventId: this.id
       })
-      if(res.code === '0'){
-        this.statusNumber = res.data.status;
+      if (res.code === '0') {
+        this.statusNumber = res.data.status
       }
     },
     beforeDelete(file) {
@@ -665,10 +669,23 @@ export default {
         this.$toast(res.msg)
       }
     },
-    previewImg(index) {
-      const list = this.fileList.map(f => {
-        return f.url
+    previewCheckImg(index) {
+      const list = this.fileList
+        .filter(res => res.imgType === 1)
+        .map(f => {
+          return f.url
+        })
+      ImagePreview({
+        images: list,
+        startPosition: index
       })
+    },
+    previewZgImg(index) {
+      const list = this.fileList
+        .filter(res => res.imgType === 2)
+        .map(f => {
+          return f.url
+        })
       ImagePreview({
         images: list,
         startPosition: index

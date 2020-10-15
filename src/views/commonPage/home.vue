@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-10 09:43:26
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-08-21 17:17:55
+ * @LastEditors: zhuqiu
+ * @LastEditTime: 2020-10-15 13:49:25
  * @FilePath: \project\src\views\commonPage\home.vue
 -->
 <template>
@@ -109,7 +109,7 @@ export default {
   },
   methods: {
     handleClick(path) {
-      if(!path){
+      if (!path) {
         this.$toast('功能规划中，敬请期待')
         return
       }
@@ -128,28 +128,39 @@ export default {
     },
     async getList(params) {
       let res = await listCorp(params)
-      if (res.code === '0' && localStorage.getItem('select_enterprise')) {
+      if (res.code === '0') {
         // 判断缓存中的公司是否在当前公司列表中
-        let id = JSON.parse(localStorage.getItem('select_enterprise')).id
-        let source = res.data.find(d => d.id === id)
-        if (!source) {
-          localStorage.setItem('select_enterprise', '')
-        }else{
-          document.title = source.corpName;
+        if (localStorage.getItem('select_enterprise')) {
+          let id = JSON.parse(localStorage.getItem('select_enterprise')).id
+          let source = res.data.find(d => d.id === id)
+          if (!source) {
+            localStorage.setItem('select_enterprise', '')
+            if (res.data.length > 0) {
+              localStorage.setItem('select_enterprise', JSON.stringify(res.data[0]))
+              document.title = res.data[0].corpName
+            }
+          } else {
+            document.title = source.corpName
+          }
+        } else {
+          if (res.data.length > 0) {
+            localStorage.setItem('select_enterprise', JSON.stringify(res.data[0]))
+            document.title = res.data[0].corpName
+          }
         }
       }
     },
     async countUnreadMsgTotal() {
       let res = await countUnreadMsgTotal({
-        context: "",
-        ctime: "",
+        context: '',
+        ctime: '',
         idsArr: [],
-        nickname: "",
-        readTime: "",
-        status: ""
-      });
-      if(res.code === '0'){
-        this.$store.dispatch('setUnReadMsg', res.data);
+        nickname: '',
+        readTime: '',
+        status: ''
+      })
+      if (res.code === '0') {
+        this.$store.dispatch('setUnReadMsg', res.data)
       }
     }
   }
