@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-08-18 11:18:43
+ * @LastEditTime: 2020-10-30 20:27:50
  * @FilePath: \project\src\api\index.js
  */
 const original = {
@@ -43,8 +43,8 @@ const original = {
     RemoveImg: '/data/api/event/removeImg',
     SubmitEvent: '/data/api/event/submitEvent',
     UploadImg: '/data/api/event/uploadImg',
-    GetEventControlerButton: '/data/api/event/getEventControlerButton'
-
+    GetEventControlerButton: '/data/api/event/getEventControlerButton',
+    DeleteEvent: '/data/api/event/deleteEvent'
   },
   room: {
     FindByCorpId: '/data/api/room/findByCorpId'

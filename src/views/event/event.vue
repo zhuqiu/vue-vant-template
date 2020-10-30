@@ -14,7 +14,15 @@
           <div class="content-nav">{{ parmas.batchNo }}</div>
         </li>
         <li>
-          <div class="content-label">巡查类型</div>
+          <div class="content-label">一级巡查类型</div>
+          <div class="content-nav">{{ data.checkName1 }}</div>
+        </li>
+        <li>
+          <div class="content-label">二级巡查类型</div>
+          <div class="content-nav">{{ data.checkName2 }}</div>
+        </li>
+        <li>
+          <div class="content-label">三级巡查类型</div>
           <div class="content-nav">{{ checkType }}</div>
         </li>
         <li>
@@ -24,6 +32,14 @@
         <li v-if="isWaitEnteriseRectification || isOverStatus || isWaitSure">
           <div class="content-label">巡查内容</div>
           <div class="content-nav">{{ submitEventParam.checkContext }}</div>
+        </li>
+        <li v-if="data.checkSafeLevelCh">
+          <div class="content-label">风险等级</div>
+          <div class="content-nav" style="color: #ff4d4f">{{ data.checkSafeLevelCh }}</div>
+        </li>
+        <li v-if="data.statusCh">
+          <div class="content-label">状态</div>
+          <div class="content-nav">{{ data.statusCh }}</div>
         </li>
         <li
           v-if="
@@ -63,7 +79,7 @@
           <div class="content-nav">{{ data.expectRepairDate }}</div>
         </li>
         <li v-if="data.corpConfirmCheckResultTime">
-          <div class="content-label">验收时间</div>
+          <div class="content-label">企业确认时间</div>
           <div class="content-nav">{{ data.corpConfirmCheckResultTime }}</div>
         </li>
         <li v-if="data.checkTime">
@@ -178,7 +194,7 @@
       <van-field
         name="uploader"
         :label="isWaitEnteriseRectification ? '整改图片' : '现场图片'"
-        v-if="isPending || isWaitEnteriseRectification"
+        v-if="statusNumber === '1' && statusNumber === '3'"
       >
         <template #input>
           <van-uploader v-model="imgList" :after-read="afterRead" :before-delete="beforeDelete" />
@@ -196,8 +212,8 @@
       <van-field name="radio" label="检查结果" v-if="isPending">
         <template #input>
           <van-radio-group v-model="submitEventParam.checkResult" direction="horizontal">
-            <van-radio :name="3">检查合格</van-radio>
             <van-radio :name="2">检查不合格</van-radio>
+            <van-radio :name="3">检查合格</van-radio>
           </van-radio-group>
         </template>
       </van-field>
@@ -290,7 +306,7 @@ export default {
       submitEventParam: {
         checkContext: '',
         checkRemark: '',
-        checkResult: 3,
+        checkResult: 2,
         expectRepairDate: '',
         eventId: ''
       },

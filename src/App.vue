@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-08-18 10:38:58
+ * @LastEditTime: 2020-10-30 20:06:18
  * @FilePath: \project\src\App.vue
 -->
 <template>
@@ -20,6 +20,7 @@ export default {
   .common-content {
     border-radius: 4px;
     margin-bottom: 0.32rem;
+    position: relative;
     & > div {
       display: flex;
       justify-content: space-between;
@@ -57,6 +58,12 @@ export default {
         margin-left: 0.12rem;
         color: #666666;
       }
+    }
+    .content-delete {
+      position: absolute;
+      top: -9px;
+      right: -9px;
+      color: #ff4d4f;
     }
     .content-time {
       color: #999999;

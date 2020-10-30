@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-16 16:14:34
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-08-18 11:18:22
+ * @LastEditTime: 2020-10-30 20:28:49
  * @FilePath: \project\src\api\application.apis.js
  */
 import api from './index'
@@ -123,6 +123,15 @@ export function removeImg(params) {
 export function getEventControlerButton(params) {
   return request({
     url: api.event.GetEventControlerButton,
+    method: 'get',
+    params
+  })
+}
+
+// 删除巡查事项
+export function deleteEvent(params) {
+  return request({
+    url: api.event.DeleteEvent,
     method: 'get',
     params
   })
@@ -388,7 +397,6 @@ export function readAll() {
     method: 'get'
   })
 }
-
 
 //用户登录
 export function wxLogin(params) {
