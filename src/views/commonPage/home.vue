@@ -148,6 +148,8 @@ export default {
             document.title = res.data[0].corpName
           }
         }
+      }else if(res.code === '-1'){
+        localStorage.setItem('select_enterprise', '')
       }
     },
     async countUnreadMsgTotal() {
