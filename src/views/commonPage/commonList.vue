@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-21 13:43:10
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-08-19 16:51:10
+ * @LastEditTime: 2020-10-30 20:31:30
  * @FilePath: \project\src\views\commonPage\commonList.vue
 -->
 <template>
@@ -33,6 +33,13 @@
               <span>{{ item.checkName }}</span>
             </div>
           </div>
+          <van-icon
+            v-if="item.status === 1"
+            name="clear"
+            class="content-delete"
+            size="18px"
+            @click.stop="handleDelete(item)"
+          />
         </div>
       </van-col>
     </van-row>
@@ -56,10 +63,11 @@ export default {
   methods: {
     handleClick(item) {
       this.$emit('click', item)
+    },
+    handleDelete(item) {
+      this.$emit('delete', item)
     }
   }
 }
 </script>
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

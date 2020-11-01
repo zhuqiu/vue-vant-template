@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-21 15:11:05
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-08-19 17:05:56
+ * @LastEditTime: 2020-10-30 20:36:12
  * @FilePath: \project\src\views\event\allTodo.vue
 -->
 <template>
@@ -45,7 +45,7 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <common-list :data="list" @click="handleClick"></common-list>
+        <common-list :data="list" @click="handleClick" @delete="handleDelte"></common-list>
       </van-list>
     </van-pull-refresh>
     <div class="addBtn" @click="add">
@@ -59,7 +59,7 @@ import StatusTypeItem from '@/utils/status-typing'
 
 import commonList from '../commonPage/commonList.vue'
 
-import { listEvents, findRoomList } from '../../api/application.apis'
+import { listEvents, findRoomList, deleteEvent } from '../../api/application.apis'
 
 export default {
   name: 'AllTodo',
@@ -133,6 +133,26 @@ export default {
           status: val.status
         }
       })
+    },
+    handleDelte(val) {
+      this.$dialog.confirm({
+        title: '删除提示',
+        message: '确定删除此条记录吗？',
+        beforeClose
+      })
+      const that = this
+      async function beforeClose(action, done) {
+        if (action === 'confirm') {
+          const res = await deleteEvent({ eventId: val.id })
+          if (res.code === '0') {
+            that.getList(that.params)
+            that.$toast('删除成功')
+          } else {
+            that.$toast(res.msg)
+          }
+        }
+        done()
+      }
     },
     handleChange() {
       this.getList(this.params)
