@@ -175,7 +175,7 @@ export default {
       this.room = ''
     },
     handleSearch() {
-      // this.$refs.item.toggle()
+      this.$refs.item.toggle()
       this.getList(this.params)
     },
     getOptions() {
