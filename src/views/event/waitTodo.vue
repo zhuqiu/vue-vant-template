@@ -11,8 +11,16 @@
         <van-dropdown-item v-model="params.status" :options="getOptions()" @change="handleChange" />
         <van-dropdown-item title="筛选" ref="item">
           <van-form validate-first>
-            <van-field v-model="params.batchNo" placeholder="请输入批次号" label="批次号" />
-            <van-field v-model="params.checkName" label="检查类型" placeholder="请输入检查类型" />
+            <van-field
+              :value="params.batchNo"
+              readonly
+              clickable
+              name="picker"
+              placeholder="请输入批次号"
+              label="批次号"
+              @click="batchClick"
+            />
+            <!-- <van-field v-model="params.checkName" label="检查类型" placeholder="请输入检查类型" /> -->
             <van-field
               readonly
               clickable
@@ -22,15 +30,15 @@
               placeholder="点击选择巡查车间"
               @click="roomClick"
             />
-            <van-popup v-model="showPicker" position="bottom">
-              <van-picker show-toolbar :columns="columns" @confirm="onConfirm" @cancel="showPicker = false" />
-            </van-popup>
           </van-form>
           <div class="btn-content">
             <van-button class="btn-width" size="small" type="primary" @click="handleReset">重置</van-button>
             <van-button class="btn-width" size="small" type="info" @click="handleSearch">查询</van-button>
           </div>
         </van-dropdown-item>
+        <van-popup v-model="showPicker" position="bottom">
+          <van-picker show-toolbar :columns="columns" @confirm="onConfirm" @cancel="showPicker = false" />
+        </van-popup>
       </van-dropdown-menu>
     </van-sticky>
     <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
@@ -55,7 +63,7 @@ import StatusTypeItem from '@/utils/status-typing'
 
 import commonList from '../commonPage/commonList.vue'
 
-import { listToDoEvents, findRoomList } from '../../api/application.apis'
+import { listToDoEvents, findRoomList, findBatchNoList } from '../../api/application.apis'
 
 export default {
   name: 'WaitTodo',
@@ -76,6 +84,9 @@ export default {
       list: [],
       showPicker: false,
       columns: [],
+      roomList: [],
+      batchNoList: [],
+      status: 0,
       loading: false,
       finished: false,
       refreshing: false,
@@ -86,6 +97,7 @@ export default {
     this.params.corpId = JSON.parse(localStorage.getItem('select_enterprise')).id;
     this.getList(this.params)
     this.getRoomList()
+    this.getBatchNoList()
   },
   methods: {
     onLoad() {
@@ -121,11 +133,22 @@ export default {
       }
     },
     roomClick() {
+      this.columns = this.roomList
       this.showPicker = true
+      this.status = 1
+    },
+    batchClick(){
+      this.columns = this.batchNoList
+      this.showPicker = true
+      this.status = 0
     },
     onConfirm(value) {
-      this.params.roomId = value.id
-      this.room = value.text
+      if(this.status){
+        this.params.roomId = value.id
+        this.room = value.text
+      }else {
+        this.params.batchNo = value.id
+      }
       this.showPicker = false
     },
     handleReset() {
@@ -135,7 +158,8 @@ export default {
       this.room = ''
     },
     handleSearch() {
-      this.$refs.item.toggle()
+      this.$refs.item.toggle();
+      this.getList(this.params)
     },
     handleClick(val) {
       this.$router.push({
@@ -160,10 +184,27 @@ export default {
         { text: '已延期', value: StatusTypeItem.NotRectification }
       ]
     },
+    async getBatchNoList() {
+      const res = await findBatchNoList({
+        corpId: JSON.parse(localStorage.getItem('select_enterprise')).id,
+        status: 1
+      })
+      if (res.code === '0') {
+        this.batchNoList = res.data.map(d => {
+          return {
+            text: d,
+            id: d
+          }
+        })
+      } else {
+        this.$toast(res.msg)
+        this.batchNoList = []
+      }
+    },
     async getRoomList() {
       const res = await findRoomList({ corpId: JSON.parse(localStorage.getItem('select_enterprise')).id })
       if (res.code === '0') {
-        this.columns = res.data.map(d => {
+        this.roomList = res.data.map(d => {
           return {
             text: d.roomName,
             id: d.id
@@ -171,7 +212,7 @@ export default {
         })
       } else {
         this.$toast(res.msg)
-        this.columns = []
+        this.roomList = []
       }
     }
   }

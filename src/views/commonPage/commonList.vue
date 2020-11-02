@@ -19,7 +19,7 @@
               <img src="../../assets/images/daizhenggai.png" alt="" v-if="item.status === 5" />
               <img src="../../assets/images/bohui.png" alt="" v-if="item.status === 6" />
               <img src="../../assets/images/yiyanqi.png" alt="" v-if="item.status === 7" />
-              <img src="../../assets/images/yijieshu.png" alt="" v-if="item.status === 8" />
+              <img src="../../assets/images/yijiean.jpg" alt="" v-if="item.status === 8" />
             </div>
           </div>
           <div>

@@ -29,7 +29,7 @@
           <div class="content-label">巡查车间</div>
           <div class="content-nav">{{ room }}</div>
         </li>
-        <li v-if="isWaitEnteriseRectification || isOverStatus || isWaitSure">
+        <li>
           <div class="content-label">巡查内容</div>
           <div class="content-nav">{{ submitEventParam.checkContext }}</div>
         </li>
@@ -43,8 +43,8 @@
         </li>
         <li
           v-if="
-            (isWaitEnteriseRectification || isOverStatus || isWaitSure) &&
-              fileList.filter(res => res.imgType === 1).length > 0
+            (statusNumber === '0' ||  statusNumber === '2' || statusNumber === '3') &&
+            fileList.filter(res => res.imgType === 1).length > 0
           "
         >
           <div class="content-label">检查图片</div>
@@ -92,7 +92,7 @@
         </li>
         <li
           v-if="
-            (isWaitEnteriseRectification || isOverStatus || isWaitSure) &&
+              statusNumber === '0' &&
               fileList.filter(res => res.imgType === 2).length > 0
           "
         >
@@ -194,7 +194,7 @@
       <van-field
         name="uploader"
         :label="isWaitEnteriseRectification ? '整改图片' : '现场图片'"
-        v-if="statusNumber === '1' && statusNumber === '3'"
+        v-if="statusNumber === '1' || statusNumber === '3'"
       >
         <template #input>
           <van-uploader v-model="imgList" :after-read="afterRead" :before-delete="beforeDelete" />
@@ -218,7 +218,7 @@
         </template>
       </van-field>
       <van-field
-        v-if="isPending || isWaitSure"
+        v-if="statusNumber === '2'"
         readonly
         clickable
         name="datetimePicker"
@@ -424,6 +424,7 @@ export default {
       }
     },
     beforeDelete(file) {
+      const that = this
       if (file.id) {
         this.$dialog.confirm({
           title: '删除提示',
@@ -434,7 +435,11 @@ export default {
           if (action === 'confirm') {
             const res = await removeImg({ imgId: file.id })
             if (res.code === '0') {
-              location.reload()
+              that.$toast('删除成功')
+              let index = that.imgList.findIndex(f => f.id === file.id)
+              that.imgList.splice(index, 1)
+            }else{
+              that.$toast('删除失败')
             }
           }
           done()
