@@ -3,7 +3,7 @@
  * @LastEditors: zhuqiu
  * @LastEditTime: 2020-07-10 10:15:55
  * @FilePath: \project\src\views\layouts\index.vue
---> 
+-->
 <template>
   <div class="app-container">
     <div class="layout-content">
@@ -20,6 +20,7 @@
 
 <script>
 import TabBar from '@/components/TabBar'
+
 export default {
   name: 'AppLayout',
   data() {
@@ -39,13 +40,13 @@ export default {
           },
           icon: 'friends-o'
         },
-        {
-          title: '批次',
-          to: {
-            name: 'Management'
-          },
-          icon: 'todo-list-o'
-        },
+        // {
+        //   title: '批次',
+        //   to: {
+        //     name: 'BatchList'
+        //   },
+        //   icon: 'todo-list-o'
+        // },
         {
           title: '通知',
           to: {

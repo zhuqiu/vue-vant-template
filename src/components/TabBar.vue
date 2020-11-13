@@ -1,13 +1,16 @@
 <template>
   <div>
     <van-tabbar fixed route v-model="active" @change="handleChange">
-      <van-tabbar-item v-for="(item, index) in data" :to="item.to" :icon="item.icon" :key="index">
+      <van-tabbar-item v-for="(item, index) in data" :to="item.to" :icon="item.icon" :key="index" :badge="(item.to.name === 'Notification' && unReadMsg > 0) ? unReadMsg : undefined">
         {{ item.title }}
       </van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
 <script>
+
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'TabBar',
   props: {
@@ -26,6 +29,9 @@ export default {
     return {
       active: this.defaultActive
     }
+  },
+  computed: {
+    ...mapGetters(['unReadMsg'])
   },
   methods: {
     handleChange(value) {

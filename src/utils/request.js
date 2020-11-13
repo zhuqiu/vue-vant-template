@@ -1,5 +1,12 @@
+/*
+ * @Date: 2020-07-10 09:43:26
+ * @LastEditors: zhuqiu
+ * @LastEditTime: 2020-07-17 19:50:53
+ * @FilePath: \project\src\utils\request.js
+ */
 import axios from 'axios'
 import store from '@/store'
+import router from '@/router'
 import { Toast } from 'vant'
 // 根据环境不同引入不同api地址
 import { baseApi } from '@/config'
@@ -20,8 +27,8 @@ service.interceptors.request.use(
         forbidClick: true
       })
     }
-    if (store.getters.token) {
-      config.headers['X-Token'] = ''
+    if (localStorage.getItem('token')) {
+      config.headers['token'] = `${localStorage.getItem('token')}`;
     }
     return config
   },
@@ -39,12 +46,17 @@ service.interceptors.response.use(
     if (res.status && res.status !== 200) {
       // 登录超时,重新登录
       if (res.status === 401) {
-        store.dispatch('FedLogOut').then(() => {
-          location.reload()
+        router.replace({
+          path: '/wxlogin'
         })
       }
       return Promise.reject(res || 'error')
     } else {
+      if(res.code === '1001'){
+        router.replace({
+          path: '/wxlogin'
+        })
+      }
       return Promise.resolve(res)
     }
   },
