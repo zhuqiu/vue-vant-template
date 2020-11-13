@@ -1,17 +1,7 @@
-/*
- * @Date: 2020-07-10 09:43:26
- * @LastEditors: zhuqiu
- * @LastEditTime: 2020-07-24 16:41:16
- * @FilePath: \project\src\filters\filter.js
- */
-
 /**
  *格式化时间
  *yyyy-MM-dd hh:mm:ss
  */
-
-import StatusTypeItem from '@/utils/status-typing'
-
 export function formatDate(time, fmt) {
   if (time === undefined || '') {
     return
@@ -44,30 +34,4 @@ function padLeftZero(str) {
  */
 export function hidePhone(phone) {
   return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
-}
-
-/*
- * 获取状态
- */
-export function getStatus(val) {
-  switch (val) {
-    case StatusTypeItem.Pending:
-      return '进行中'
-    case StatusTypeItem.CheckNotPass:
-      return '检查不合格'
-    case StatusTypeItem.CheckPass:
-      return '检查合格'
-    case StatusTypeItem.EnterpriseConfirmed:
-      return '企业已确认(结束)'
-    case StatusTypeItem.WaitRectification:
-      return '待企业整改'
-    case StatusTypeItem.EnterpriseReject:
-      return '企业驳回'
-    case StatusTypeItem.NotRectification:
-      return '预期未整改'
-    case StatusTypeItem.EnterpriseRectified:
-      return '企业已整改(结束)'
-    default:
-      return ''
-  }
 }

@@ -1,9 +1,9 @@
 <!--
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: zhuqiu
- * @LastEditTime: 2020-07-10 10:15:55
+ * @LastEditTime: 2020-11-11 14:50:10
  * @FilePath: \project\src\views\layouts\index.vue
--->
+--> 
 <template>
   <div class="app-container">
     <div class="layout-content">
@@ -19,8 +19,7 @@
 </template>
 
 <script>
-import TabBar from '@/components/TabBar'
-
+import TabBar from './component/tabBar'
 export default {
   name: 'AppLayout',
   data() {
@@ -34,25 +33,11 @@ export default {
           icon: 'home-o'
         },
         {
-          title: '企业',
+          title: '我的',
           to: {
-            name: 'Enterprise'
+            name: 'MyInfo'
           },
           icon: 'friends-o'
-        },
-        // {
-        //   title: '批次',
-        //   to: {
-        //     name: 'BatchList'
-        //   },
-        //   icon: 'todo-list-o'
-        // },
-        {
-          title: '通知',
-          to: {
-            name: 'Notification'
-          },
-          icon: 'volume-o'
         }
       ]
     }
