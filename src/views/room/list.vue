@@ -21,6 +21,7 @@
         <div>企业名称: {{item.corpName}}</div>
         <div>车间负责人: {{item.roomManager}}</div>
         <div>巡查总数: {{item.eventTotal}}</div>
+        <div>风险等级: {{item.riskLevel}}</div>
       </van-collapse-item>
     </van-collapse>
     <van-empty v-else description="暂无数据" />
@@ -48,7 +49,7 @@ export default {
       history.go(-1)
     },
     async findRoomList(){
-      const res = await findByCorpId({ 
+      const res = await findByCorpId({
         corpId: JSON.parse(localStorage.getItem('select_enterprise')).id,
         roomName: this.roomName
       })

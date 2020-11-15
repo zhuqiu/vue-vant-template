@@ -21,17 +21,25 @@
           <div class="content-label">结束时间</div>
           <div class="content-nav">{{ params.endTime }}</div>
         </li>
-        <li>
+        <li v-if="params.eventTotal">
           <div class="content-label">巡查总数</div>
           <div class="content-nav">{{ params.eventTotal }}</div>
         </li>
-        <li>
+        <li v-if="params.heGeTotal">
           <div class="content-label">合格数</div>
-          <div class="content-nav">{{ params.closedTotal }}</div>
+          <div class="content-nav">{{ params.heGeTotal }}</div>
         </li>
-        <li>
-          <div class="content-label">待处理数</div>
-          <div class="content-nav">{{ params.notCloseTotal }}</div>
+        <li v-if="params.notHeGeTotal">
+          <div class="content-label">不合格数</div>
+          <div class="content-nav">{{ params.notHeGeTotal }}</div>
+        </li>
+        <li v-if="params.notRepairTotal">
+          <div class="content-label">待整改</div>
+          <div class="content-nav">{{ params.notRepairTotal }}</div>
+        </li>
+        <li v-if="params.closedTotal">
+          <div class="content-label">已结案</div>
+          <div class="content-nav">{{ params.closedTotal }}</div>
         </li>
         <li>
           <div class="content-label">状态</div>
@@ -63,6 +71,15 @@
           </div>
         </li> -->
       </ul>
+      <van-field
+
+        v-model="params.retinue"
+        rows="2"
+        autosize
+        label="检查人员"
+        type="text"
+        placeholder="请输入检查人员名称"
+      />
       <div class="signature-content">
         <div class="signature" v-if="fileList.length === 0" @click="addSignature">
           签名提交

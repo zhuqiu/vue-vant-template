@@ -131,6 +131,18 @@ export const constantRouterMap = [
         name: 'ThirdLevel',
         component: () => import('@/views/check/thirdLevel'),
         meta: { title: '三级巡查累心列表', keepAlive: false }
+      },
+      {
+        path: '/networkDisk',
+        name: 'NetworkDisk',
+        component: () => import('@/views/networkDisk/index'),
+        meta: { title: '公共网盘', keepAlive: false }
+      },
+      {
+        path: '/accountRecord',
+        name: 'AccountRecord',
+        component: () => import('@/views/accountRecord/index'),
+        meta: { title: '台账记录', keepAlive: false }
       }
     ]
   },

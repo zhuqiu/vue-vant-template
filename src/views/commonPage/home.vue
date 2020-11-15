@@ -44,24 +44,24 @@ export default {
           color: '#00FF99',
           path: 'MeetingList'
         },
-        {
-          icon: 'label',
-          text: '驻场登记',
-          color: '#9933FF',
-          path: 'WorkRecordList'
-        },
+        // {
+        //   icon: 'label',
+        //   text: '驻场登记',
+        //   color: '#9933FF',
+        //   path: 'WorkRecordList'
+        // },
         {
           icon: 'todo-list',
           text: '巡查记录',
           color: '#6699FF',
           path: 'AllTodo'
         },
-        {
-          icon: 'underway',
-          text: '巡查类型',
-          color: '#66CCFF',
-          path: 'OneLevel'
-        },
+        // {
+        //   icon: 'underway',
+        //   text: '巡查类型',
+        //   color: '#66CCFF',
+        //   path: 'OneLevel'
+        // },
         {
           icon: 'todo-list',
           text: '待处理',
@@ -85,6 +85,18 @@ export default {
           text: '车间列表',
           color: '#0066FF',
           path: 'RoomList'
+        },
+        {
+          icon: 'card',
+          text: '公共网盘',
+          color: '#0066FF',
+          path: 'NetworkDisk'
+        },
+        {
+          icon: 'bars',
+          text: '台账记录',
+          color: '#66CCFF',
+          path: 'AccountRecord'
         },
         {
           icon: 'weapp-nav',
