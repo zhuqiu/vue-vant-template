@@ -71,6 +71,12 @@ const original = {
     GetWxLoginUrl: '/data/api/user/getWxLoginUrl',
     BindPhone: '/data/api/user/bindPhone',
     GetPhoneCode: '/data/api/user/getPhoneCode'
+  },
+  publicNetDisk: {
+    ListMsg: '/data/api/publicNetDisk/listMsg'
+  },
+  corpDisk: {
+    List: '/data/api/corpDisk/list'
   }
 }
 

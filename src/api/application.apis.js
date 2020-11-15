@@ -430,3 +430,21 @@ export function getPhoneCode(params) {
     params
   })
 }
+
+//分页查询公共网盘
+export function getPublicNetDisk(params) {
+  return request({
+    url: api.publicNetDisk.ListMsg,
+    method: 'get',
+    params
+  })
+}
+
+//分页查询公共网盘
+export function getCorpDisk(params) {
+  return request({
+    url: api.corpDisk.List,
+    method: 'get',
+    params
+  })
+}

@@ -139,11 +139,23 @@ export const constantRouterMap = [
         meta: { title: '公共网盘', keepAlive: false }
       },
       {
+        path: '/networkDiskDetail',
+        name: 'NetworkDiskDetail',
+        component: () => import('@/views/networkDisk/detail'),
+        meta: { title: '公共网盘详情', keepAlive: false }
+      },
+      {
         path: '/accountRecord',
         name: 'AccountRecord',
         component: () => import('@/views/accountRecord/index'),
         meta: { title: '台账记录', keepAlive: false }
-      }
+      },
+      {
+        path: '/accountRecordDetail',
+        name: 'AccountRecordDetail',
+        component: () => import('@/views/accountRecord/detail'),
+        meta: { title: '公共网盘详情', keepAlive: false }
+      },
     ]
   },
   {
