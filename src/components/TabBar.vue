@@ -1,14 +1,23 @@
+<!--
+ * @Date: 2020-11-16 09:45:07
+ * @LastEditors: zhuqiu
+-->
 <template>
   <div>
     <van-tabbar fixed route v-model="active" @change="handleChange">
-      <van-tabbar-item v-for="(item, index) in data" :to="item.to" :icon="item.icon" :key="index" :badge="(item.to.name === 'Notification' && unReadMsg > 0) ? unReadMsg : undefined">
+      <van-tabbar-item
+        v-for="(item, index) in data"
+        :to="item.to"
+        :icon="item.icon"
+        :key="index"
+        :badge="item.to.name === 'Notification' && unReadMsg > 0 ? unReadMsg : undefined"
+      >
         {{ item.title }}
       </van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
 <script>
-
 import { mapGetters } from 'vuex'
 
 export default {
