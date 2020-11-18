@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-08-26 09:44:33
+ * @LastEditTime: 2020-11-18 10:16:34
  * @FilePath: \project\src\router\router.config.js
  */
 /**
@@ -148,14 +148,14 @@ export const constantRouterMap = [
         path: '/accountRecord',
         name: 'AccountRecord',
         component: () => import('@/views/accountRecord/index'),
-        meta: { title: '台账记录', keepAlive: false }
+        meta: { title: '应急管理', keepAlive: false }
       },
       {
         path: '/accountRecordDetail',
         name: 'AccountRecordDetail',
         component: () => import('@/views/accountRecord/detail'),
-        meta: { title: '公共网盘详情', keepAlive: false }
-      },
+        meta: { title: '应急管理详情', keepAlive: false }
+      }
     ]
   },
   {

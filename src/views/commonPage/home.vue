@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-10 09:43:26
- * @LastEditors: zhuqiu
- * @LastEditTime: 2020-10-15 13:49:25
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-11-18 10:17:44
  * @FilePath: \project\src\views\commonPage\home.vue
 -->
 <template>
@@ -94,7 +94,7 @@ export default {
         },
         {
           icon: 'bars',
-          text: '台账记录',
+          text: '应急管理',
           color: '#66CCFF',
           path: 'AccountRecord'
         },
@@ -160,7 +160,7 @@ export default {
             document.title = res.data[0].corpName
           }
         }
-      }else if(res.code === '-1'){
+      } else if (res.code === '-1') {
         localStorage.setItem('select_enterprise', '')
       }
     },
