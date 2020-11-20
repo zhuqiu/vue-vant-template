@@ -1,6 +1,6 @@
 <!--
  * @Date: 2020-11-16 09:45:44
- * @LastEditors: zhuqiu
+ * @LastEditors: Please set LastEditors
 -->
 <template>
   <div>
@@ -9,10 +9,16 @@
     </van-sticky>
     <ul class="file-content">
       <li v-for="(source, index) in this.item.list" :key="index" @click="preview(source)">
-        <div class="file-label">
+        <div class="file-label" v-if="!isRadioFile(source.fileName)">
           <van-icon name="card" size="30" color="#6666CC" />
         </div>
-        <div class="file-nav">{{ source.fileName }}</div>
+        <div class="file-nav" v-if="!isRadioFile(source.fileName)">{{ source.fileName }}</div>
+        <div v-else>
+          <video controls="controls" :id="'videoControls' + index">
+            <source type="video/mp4" :src="source.filePath" />
+          </video>
+          {{ source.fileName }}
+        </div>
       </li>
     </ul>
 
@@ -60,12 +66,18 @@ export default {
         this.pdfSrc = data.filePath
         this.fileType = suffix
         this.show = true
+      } else if (suffix === 'mp4' || suffix === 'avi' || suffix === 'mov' || suffix === 'mov') {
+        return
       } else {
         this.$toast('该文件不支持预览')
       }
     },
     getFileSuffix(name) {
       return name.substring(name.lastIndexOf('.') + 1).toLocaleLowerCase()
+    },
+    isRadioFile(name) {
+      let suffix = this.getFileSuffix(name)
+      return suffix === 'mp4' || suffix === 'avi' || suffix === 'mov' || suffix === 'mov'
     }
   }
 }
@@ -87,6 +99,10 @@ export default {
     }
     .file-nav {
       margin-left: 0.4rem;
+    }
+    video {
+      width: 100%;
+      height: 4rem;
     }
   }
 }
