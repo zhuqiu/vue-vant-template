@@ -1,14 +1,14 @@
 <template>
   <div>
     <van-sticky>
-      <van-nav-bar title="台账记录" left-text="返回" left-arrow @click-left="onClickLeft" />
+      <van-nav-bar title="应急管理" left-text="返回" left-arrow @click-left="onClickLeft" />
     </van-sticky>
     <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
       <van-empty v-if="list.length === 0" description="暂无数据" />
       <van-grid :column-num="3" class="margin-top" style="padding: 0 0.32rem">
         <van-grid-item v-for="(item, index) in list" :key="index" :use-slot="true" @click="handleClick(item)">
           <van-icon name="card" size="30" color="#FF9900" />
-          <span class="margin-top">{{ item.dir.length > 5 ? item.dir.substring(0,5) + '...' : item.dir }}</span>
+          <span class="margin-top">{{ item.dir.length > 5 ? item.dir.substring(0, 5) + '...' : item.dir }}</span>
         </van-grid-item>
       </van-grid>
     </van-pull-refresh>
@@ -30,7 +30,7 @@ export default {
         limit: 6,
         page: 1,
         corpId: ''
-      },
+      }
     }
   },
   created() {
@@ -75,7 +75,7 @@ export default {
     onClickLeft() {
       history.go(-1)
     },
-    handleClick(item){
+    handleClick(item) {
       this.$router.push({
         name: 'NetworkDiskDetail',
         query: {
@@ -83,19 +83,19 @@ export default {
         }
       })
     },
-    convertData(item){
-      let obj = new Object();
-      if(item.length === 0) return [];
+    convertData(item) {
+      let obj = new Object()
+      if (item.length === 0) return []
       item.forEach(res => {
-        if(!obj[res.dir]){
-          obj[res.dir] = true;
+        if (!obj[res.dir]) {
+          obj[res.dir] = true
         }
       })
-      let dataList = [];
-      for(let key in obj){
+      let dataList = []
+      for (let key in obj) {
         let list = []
         item.forEach(res => {
-          if(key === res.dir){
+          if (key === res.dir) {
             list.push({
               filePath: res.filePath,
               fileName: res.fileName
@@ -107,11 +107,9 @@ export default {
           list
         })
       }
-      return dataList;
+      return dataList
     }
   }
 }
 </script>
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

@@ -45,31 +45,6 @@
           <div class="content-label">状态</div>
           <div class="content-nav">{{ getStatus(params.status) }}</div>
         </li>
-        <!-- <li>
-          <div class="content-label">签名</div>
-          <div class="content-nav">
-            <van-button
-              type="primary"
-              size="mini"
-              @click="addSignature"
-              style="width:60px;"
-              v-if="fileList.length === 0 && params.status === 1"
-              >签名</van-button
-            >
-            <div :class="fileList.length > 0 ? 'img-view' : ''" v-if="fileList.length > 0">
-              <van-image
-                style="margin-right: 0.32rem;"
-                width="100"
-                height="100"
-                v-for="(item, index) in fileList"
-                :key="index"
-                @click="previewImg(index)"
-                :src="item.url"
-              />
-              <van-icon name="close" size="18" color="#ee0a24" v-if="params.status === 1" @click="deletePic(index)" />
-            </div>
-          </div>
-        </li> -->
       </ul>
       <van-field
         v-model="params.retinue"
@@ -203,7 +178,10 @@ export default {
       this.fileList.splice(index, 1)
     },
     async submitBatch() {
-      let res = await submitBatch({ batchNo: this.$route.query.id })
+      let res = await submitBatch({
+        batchNo: this.$route.query.id,
+        retinue: this.params.retinue
+      })
       if (res.code === '0') {
         setTimeout(() => {
           this.$router.push({
