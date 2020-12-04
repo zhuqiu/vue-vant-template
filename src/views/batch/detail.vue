@@ -72,7 +72,6 @@
         </li> -->
       </ul>
       <van-field
-
         v-model="params.retinue"
         rows="2"
         autosize
@@ -169,10 +168,10 @@ export default {
     addSignature() {
       this.show = true
     },
-     handleOk(val) {
+    handleOk(val) {
       this.show = false
-      let that = this;
-      rotateBase64Img(val,270,async function(base64data){
+      let that = this
+      rotateBase64Img(val, 270, async function(base64data) {
         const file = blobToFile(dataURLtoBlob(base64data), '签名.png')
         const formdata = new FormData()
         formdata.append('file', file)
@@ -242,8 +241,8 @@ export default {
       transform: scaleY(0.5);
     }
     .content-label {
-      width: 3rem;
-      margin-right: 0.42rem;
+      width: 3.5rem;
+      margin-right: 0.3rem;
       color: #646566;
       text-align: left;
       word-wrap: break-word;
@@ -253,23 +252,22 @@ export default {
       vertical-align: middle;
       overflow: visible;
       word-wrap: break-word;
-
     }
   }
-  .signature-content{
+  .signature-content {
     background: white;
     padding: 0.32rem;
     color: #dbdb3293;
     font-size: 0.6rem;
     text-align: center;
-    .signature{
+    .signature {
       border: 1px dashed #f1f10d;
       border-radius: 3px;
       width: 100%;
       height: 4rem;
       line-height: 4rem;
     }
-    .signature-show{
+    .signature-show {
       border: 1px dashed #f1f10d;
       border-radius: 3px;
       position: relative;

@@ -17,11 +17,23 @@
       </template>
     </van-search>
     <van-collapse style="margin-top:0.32rem" v-model="activeNames" v-if="list.length > 0">
-      <van-collapse-item :title="item.roomName" :name="index" v-for="(item, index) in list" :key="index">
-        <div>企业名称: {{item.corpName}}</div>
-        <div>车间负责人: {{item.roomManager}}</div>
-        <div>巡查总数: {{item.eventTotal}}</div>
-        <div>风险等级: {{item.riskLevel}}</div>
+      <van-collapse-item :name="index" v-for="(item, index) in list" :key="index">
+        <template #title>
+          <div v-if="item.riskLevel === '较大风险' || item.riskLevel === '重大风险'">
+            {{ item.roomName }}
+            <span style="color: #ee0a24">（{{ item.riskLevel }}）</span>
+          </div>
+          <div v-else-if="item.riskLevel === '一般风险'">
+            {{ item.roomName }}
+            <span style="color: #ff976a">（{{ item.riskLevel }}）</span>
+          </div>
+          <div v-else>{{ item.roomName }}（暂无等级）</div>
+        </template>
+        <div>企业名称: {{ item.corpName }}</div>
+        <div>车间负责人: {{ item.roomManager }}</div>
+        <div>巡查总数: {{ item.eventTotal }}</div>
+        <div>风险等级: {{ item.riskLevel }}</div>
+        <div>车间简介: {{ item.roomDesc }}</div>
       </van-collapse-item>
     </van-collapse>
     <van-empty v-else description="暂无数据" />
@@ -29,7 +41,6 @@
 </template>
 
 <script>
-
 import { findByCorpId } from '../../api/application.apis'
 
 export default {
@@ -48,27 +59,25 @@ export default {
     onClickLeft() {
       history.go(-1)
     },
-    async findRoomList(){
+    async findRoomList() {
       const res = await findByCorpId({
         corpId: JSON.parse(localStorage.getItem('select_enterprise')).id,
         roomName: this.roomName
       })
-      this.list = res;
+      this.list = res
     },
-    onSearch(){
-      this.findRoomList();
+    onSearch() {
+      this.findRoomList()
     },
-    onCancel(){
-      this.findRoomList();
+    onCancel() {
+      this.findRoomList()
     },
-    onInput(){
-      if(this.roomName === ''){
-        this.findRoomList();
+    onInput() {
+      if (this.roomName === '') {
+        this.findRoomList()
       }
-    },
+    }
   }
 }
 </script>
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

@@ -94,7 +94,7 @@ export default {
     }
   },
   created() {
-    this.params.corpId = JSON.parse(localStorage.getItem('select_enterprise')).id;
+    this.params.corpId = JSON.parse(localStorage.getItem('select_enterprise')).id
     this.getList(this.params)
     this.getRoomList()
     this.getBatchNoList()
@@ -137,16 +137,16 @@ export default {
       this.showPicker = true
       this.status = 1
     },
-    batchClick(){
+    batchClick() {
       this.columns = this.batchNoList
       this.showPicker = true
       this.status = 0
     },
     onConfirm(value) {
-      if(this.status){
+      if (this.status) {
         this.params.roomId = value.id
         this.room = value.text
-      }else {
+      } else {
         this.params.batchNo = value.id
       }
       this.showPicker = false
@@ -158,7 +158,7 @@ export default {
       this.room = ''
     },
     handleSearch() {
-      this.$refs.item.toggle();
+      this.$refs.item.toggle()
       this.getList(this.params)
     },
     handleClick(val) {

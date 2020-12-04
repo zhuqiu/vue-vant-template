@@ -15,8 +15,6 @@ import { Toast } from 'vant'
 import { Dialog } from 'vant'
 import moment from 'moment' //导入文件
 
-
-
 // 设置 js中可以访问 $cdn
 import { $cdn } from '@/config'
 Vue.prototype.$cdn = $cdn
@@ -41,7 +39,7 @@ import './filters'
 Vue.config.productionTip = false
 
 // 进入时清理token ,让每一次进入页面都先去访问登录页
-localStorage.removeItem('token')
+// localStorage.removeItem('token')
 
 new Vue({
   el: '#app',

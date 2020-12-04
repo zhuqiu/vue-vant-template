@@ -79,6 +79,12 @@ export const constantRouterMap = [
         meta: { title: '代办事件', keepAlive: false }
       },
       {
+        path: '/highTodo',
+        name: 'HighTodo',
+        component: () => import('@/views/event/highTodo'),
+        meta: { title: '高风险事件', keepAlive: false }
+      },
+      {
         path: '/eventDetail',
         name: 'EventDetail',
         component: () => import('@/views/event/eventDetail'),
@@ -155,7 +161,7 @@ export const constantRouterMap = [
         name: 'AccountRecordDetail',
         component: () => import('@/views/accountRecord/detail'),
         meta: { title: '公共网盘详情', keepAlive: false }
-      },
+      }
     ]
   },
   {

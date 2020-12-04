@@ -39,6 +39,15 @@ export function listToDoEvents(params) {
   })
 }
 
+// 查询高风险事件
+export function listHighEvents(params) {
+  return request({
+    url: api.event.ListHighEvents,
+    method: 'get',
+    params
+  })
+}
+
 // 查询企业下的车间列表
 export function findRoomList(params) {
   return request({
@@ -391,10 +400,11 @@ export function readMsg(data) {
 }
 
 //阅读消息
-export function readAll() {
+export function readAll(params) {
   return request({
     url: api.msg.ReadAll,
-    method: 'get'
+    method: 'get',
+    params
   })
 }
 

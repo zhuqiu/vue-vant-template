@@ -40,6 +40,7 @@ const original = {
     ListEvents: '/data/api/event/listEvents',
     ListCorp: '/data/api/event/listCorp',
     ListToDoEvents: '/data/api/event/listToDoEvents',
+    ListHighEvents: '/data/api/event/listHighRiskEvents',
     RemoveImg: '/data/api/event/removeImg',
     SubmitEvent: '/data/api/event/submitEvent',
     UploadImg: '/data/api/event/uploadImg',

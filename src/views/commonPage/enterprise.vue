@@ -19,10 +19,7 @@
         <div @click="onSearch">搜索</div>
       </template>
     </van-search>
-    <van-pull-refresh
-      v-model="refreshing"
-      @refresh="onRefresh"
-    >
+    <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
       <van-empty v-if="list.length === 0" description="暂无数据" />
       <van-list
         v-else
@@ -39,9 +36,12 @@
               <div class="content-left">
                 <p class="title">公司名称：</p>
                 <span class="name">{{ item.corpName }}</span>
+                <div class="name" v-if="item.monthServiceTimes">
+                  进场次数：<span style="#07c160">{{ item.monthServiceTimes }}</span>
+                </div>
               </div>
               <div class="content-right">
-                <van-icon name="checked" size="24" color="#07c160" v-if="selevtionId === item.id"/>
+                <van-icon name="checked" size="24" color="#07c160" v-if="selevtionId === item.id" />
               </div>
             </div>
           </van-col>
@@ -52,7 +52,6 @@
 </template>
 
 <script>
-
 import { listCorp } from '../../api/application.apis'
 
 export default {
@@ -69,87 +68,83 @@ export default {
       loading: false,
       finished: false,
       refreshing: false,
-      totalSize: 0,
+      totalSize: 0
     }
   },
-  created(){
-    this.getList(this.params);
-    if(localStorage.getItem('select_enterprise') && JSON.parse(localStorage.getItem('select_enterprise'))){
-      this.selevtionId = JSON.parse(localStorage.getItem('select_enterprise')).id;
-      document.title = JSON.parse(localStorage.getItem('select_enterprise')).corpName;
+  created() {
+    this.getList(this.params)
+    if (localStorage.getItem('select_enterprise') && JSON.parse(localStorage.getItem('select_enterprise'))) {
+      this.selevtionId = JSON.parse(localStorage.getItem('select_enterprise')).id
+      document.title = JSON.parse(localStorage.getItem('select_enterprise')).corpName
     }
   },
-  computed: {
-
-  },
+  computed: {},
   methods: {
-
-    onSearch(){
-      this.getList(this.params);
+    onSearch() {
+      this.getList(this.params)
     },
-    onCancel(){
-      this.getList(this.params);
+    onCancel() {
+      this.getList(this.params)
     },
-    onInput(){
-      if(this.params.corpName === ''){
-        this.getList(this.params);
+    onInput() {
+      if (this.params.corpName === '') {
+        this.getList(this.params)
       }
     },
-    onLoad(){
+    onLoad() {
       if (this.refreshing) {
-        this.list = [];
+        this.list = []
         this.params.limit = 6
-        this.refreshing = false;
+        this.refreshing = false
       }
-      this.params.limit = this.params.limit + 6;
-      this.getList(this.params);
-      if(this.params.limit >= this.totalSize){
-        this.finished = true;
+      this.params.limit = this.params.limit + 6
+      this.getList(this.params)
+      if (this.params.limit >= this.totalSize) {
+        this.finished = true
       }
     },
-    onRefresh(){
+    onRefresh() {
       // 清空列表数据
-      this.finished = false;
+      this.finished = false
       // 重新加载数据
       // 将 loading 设置为 true，表示处于加载状态
-      this.loading = true;
-      this.onLoad();
+      this.loading = true
+      this.onLoad()
     },
-    async getList(params){
-      let res = await listCorp(params);
-      if(res.code === "0"){
-        this.list = res.data;
+    async getList(params) {
+      let res = await listCorp(params)
+      if (res.code === '0') {
+        this.list = res.data
         this.totalSize = res.count
-        if(!localStorage.getItem('select_enterprise') && this.list.length > 0){
-          localStorage.setItem('select_enterprise',JSON.stringify(this.list[0]));
-          this.selevtionId = this.list[0].id;
-          this.title = this.list[0].corpName;
-          document.title = this.list[0].corpName;
+        if (!localStorage.getItem('select_enterprise') && this.list.length > 0) {
+          localStorage.setItem('select_enterprise', JSON.stringify(this.list[0]))
+          this.selevtionId = this.list[0].id
+          this.title = this.list[0].corpName
+          document.title = this.list[0].corpName
         }
         // 加载状态结束
-        this.loading = false;
-      }else{
-        this.$toast(res.msg);
-        this.list = [];
+        this.loading = false
+      } else {
+        this.$toast(res.msg)
+        this.list = []
       }
     },
-    enterpriseChange(id){
-      let source = this.list.find((l) => l.id === id);
-      localStorage.setItem('select_enterprise',JSON.stringify(source));
-      this.selevtionId = id;
-      document.title = source.corpName;
+    enterpriseChange(id) {
+      let source = this.list.find(l => l.id === id)
+      localStorage.setItem('select_enterprise', JSON.stringify(source))
+      this.selevtionId = id
+      document.title = source.corpName
       this.$router.push({
-        name: 'Home' 
+        name: 'Home'
       })
-    },
-
+    }
   }
 }
 </script>
 <style lang="scss">
-.enterprise-list{
+.enterprise-list {
   padding: 0.32rem;
-  .content{
+  .content {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -158,21 +153,20 @@ export default {
     background: #ffffff;
     border-radius: 0.1rem;
     margin-bottom: 0.32rem;
-    .content-left{
+    .content-left {
       flex: 8;
       text-align: left;
-      .title{
+      .title {
         font-weight: 500;
         font-size: 16px;
         margin: 0;
         margin-bottom: 0.32rem;
       }
     }
-    .content-right{
+    .content-right {
       flex: 1;
       text-align: right;
     }
   }
 }
 </style>
-

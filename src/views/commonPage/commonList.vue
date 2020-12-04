@@ -24,7 +24,18 @@
           </div>
           <div>
             <div class="content-info">
-              <span>{{ item.batchNo }}</span>
+              <div>
+                <span>{{ item.batchNo }}</span>
+                <span
+                  v-if="item.checkSafeLevelCh === '重大风险' || item.checkSafeLevelCh === '较大风险'"
+                  style="color: #ee0a24"
+                  >（{{ item.checkSafeLevelCh }}）</span
+                >
+                <span v-else-if="item.checkSafeLevelCh === '一般风险'" style="color: #ff976a"
+                  >（{{ item.checkSafeLevelCh }}）</span
+                >
+                <span v-else>（暂无风险）</span>
+              </div>
             </div>
             <div class="content-time">{{ item.createTime }}</div>
           </div>

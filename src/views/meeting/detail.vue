@@ -80,8 +80,13 @@
 </template>
 
 <script>
-
-import { getMeetingDetail, meetingFinish, meetingAuditor,meetingUploadImg,meetingRemoveImg } from '../../api/application.apis';
+import {
+  getMeetingDetail,
+  meetingFinish,
+  meetingAuditor,
+  meetingUploadImg,
+  meetingRemoveImg
+} from '../../api/application.apis'
 
 import { ImagePreview } from 'vant'
 
@@ -96,28 +101,28 @@ export default {
       id: ''
     }
   },
-  created(){
-    this.id = Number(this.$route.query.id);
-    this.getMeetingDetail({id: this.id})
+  created() {
+    this.id = Number(this.$route.query.id)
+    this.getMeetingDetail({ id: this.id })
     this.status = Number(this.$route.query.status)
   },
   methods: {
-    onClickLeft(){
+    onClickLeft() {
       history.go(-1)
     },
-    async getMeetingDetail(params){
-      let res = await getMeetingDetail(params);
-      if(res.code === '0'){
-        this.params = res.data;
-        if(res.data.imgs.length > 0){
-          this.fileList = res.data.imgs.map((d) => {
+    async getMeetingDetail(params) {
+      let res = await getMeetingDetail(params)
+      if (res.code === '0') {
+        this.params = res.data
+        if (res.data.imgs.length > 0) {
+          this.fileList = res.data.imgs.map(d => {
             return {
               id: d.id,
               url: d.imgPath
             }
           })
         }
-      }else{
+      } else {
         this.$toast(res.msg)
       }
     },
@@ -132,7 +137,7 @@ export default {
       formdata.append('meetingId', this.id)
       const res = await meetingUploadImg(formdata)
       if (res.code === '0') {
-        file.id = res.data.id;
+        file.id = res.data.id
         file.status = 'done'
         file.message = 'done'
       } else {
@@ -161,13 +166,13 @@ export default {
         return true
       }
     },
-    async onSubmit(){
-      this.disabled = true;
-      let res = '';
-      if(this.status === 1){
-        res = await meetingFinish({id: this.id});
-      }else if(this.status === 2){
-        res = await meetingAuditor({id: this.id});
+    async onSubmit() {
+      this.disabled = true
+      let res = ''
+      if (this.status === 1) {
+        res = await meetingFinish({ id: this.id })
+      } else if (this.status === 2) {
+        res = await meetingAuditor({ id: this.id })
       }
       if (res.code === '0') {
         this.$toast('提交成功')
@@ -177,15 +182,15 @@ export default {
         this.$toast(res.msg)
       }
     },
-    goToMeetingList(){
+    goToMeetingList() {
       setTimeout(() => {
         this.$router.push({
           name: 'MeetingList'
         })
       }, 1000)
     },
-    getStatus(status){
-      switch(status){
+    getStatus(status) {
+      switch (status) {
         case 1:
           return '发起'
         case 2:
@@ -205,8 +210,8 @@ export default {
         startPosition: index
       })
     },
-    deletePic(index){
-      this.fileList.splice(index,1)
+    deletePic(index) {
+      this.fileList.splice(index, 1)
     }
   }
 }
@@ -223,20 +228,20 @@ export default {
     align-items: center;
     position: relative;
     &::after {
-    position: absolute;
-    box-sizing: border-box;
-    content: ' ';
-    pointer-events: none;
-    right: 0.42667rem;
-    bottom: 0;
-    left: 0.42667rem;
-    border-bottom: 0.02667rem solid #ebedf0;
-    -webkit-transform: scaleY(0.5);
-    transform: scaleY(0.5);
-  }
+      position: absolute;
+      box-sizing: border-box;
+      content: ' ';
+      pointer-events: none;
+      right: 0.42667rem;
+      bottom: 0;
+      left: 0.42667rem;
+      border-bottom: 0.02667rem solid #ebedf0;
+      -webkit-transform: scaleY(0.5);
+      transform: scaleY(0.5);
+    }
     .content-label {
-      width: 3rem;
-      margin-right: 0.32rem;
+      width: 3.5rem;
+      margin-right: 0.3rem;
       color: #646566;
       text-align: left;
       word-wrap: break-word;
@@ -246,18 +251,18 @@ export default {
       vertical-align: middle;
       overflow: visible;
       word-wrap: break-word;
-      i{
+      i {
         position: relative;
         top: 0.08rem;
       }
     }
-    .img-view{
+    .img-view {
       position: relative;
       width: 100px;
       height: 100px;
       border: 1px dotted #ebedf0;
       border-radius: 4px;
-      i{
+      i {
         position: absolute;
         top: -0.2rem;
         right: -0.2rem;

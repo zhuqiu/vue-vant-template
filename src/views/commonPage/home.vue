@@ -64,9 +64,9 @@ export default {
         // },
         {
           icon: 'todo-list',
-          text: '待处理',
+          text: '高风险',
           color: '#CC3399',
-          path: 'WaitTodo'
+          path: 'HighTodo'
         },
         {
           icon: 'video',
@@ -160,7 +160,7 @@ export default {
             document.title = res.data[0].corpName
           }
         }
-      }else if(res.code === '-1'){
+      } else if (res.code === '-1') {
         localStorage.setItem('select_enterprise', '')
       }
     },

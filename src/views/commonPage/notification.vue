@@ -103,11 +103,11 @@ export default {
     async getList(params) {
       const res = await getListMsg(params)
       if (res.data.code === '0') {
-        this.list = res.data.data;
+        this.list = res.data.data
         this.totalSize = res.data.count
         // 加载状态结束
         this.loading = false
-        this.countUnreadMsgTotal();
+        this.countUnreadMsgTotal()
       } else {
         this.$toast(res.data.msg)
         this.list = []
@@ -121,8 +121,8 @@ export default {
         this.ids.push(id)
       }
     },
-    async batchReadMsg(){
-      let that = this;
+    async batchReadMsg() {
+      let that = this
       this.$dialog.confirm({
         title: '全部已读提示',
         message: '确定全部已读吗？',
@@ -130,40 +130,42 @@ export default {
       })
       async function beforeClose(action, done) {
         if (action === 'confirm') {
-          let res = await readAll();
-          if(res.code === '0'){
-            that.getList(this.params);
-          }else{
+          let res = await readAll({
+            corpId: JSON.parse(localStorage.getItem('select_enterprise')).id
+          })
+          if (res.code === '0') {
+            that.getList(this.params)
+          } else {
             that.$toast('设置失败')
           }
         }
         done()
       }
     },
-    async goToDetail(id){
+    async goToDetail(id) {
       let res = await readMsg({
-        context: "",
-        ctime: "",
+        context: '',
+        ctime: '',
         idsArr: [id],
-        nickname: "",
-        readTime: "",
-        status: ""
-      });
-      if(res.code === '0'){
-        this.getList(this.params);
+        nickname: '',
+        readTime: '',
+        status: ''
+      })
+      if (res.code === '0') {
+        this.getList(this.params)
       }
     },
     async countUnreadMsgTotal() {
       let res = await countUnreadMsgTotal({
-        context: "",
-        ctime: "",
+        context: '',
+        ctime: '',
         idsArr: [],
-        nickname: "",
-        readTime: "",
-        status: ""
-      });
-      if(res.code === '0'){
-        this.$store.dispatch('setUnReadMsg', res.data);
+        nickname: '',
+        readTime: '',
+        status: ''
+      })
+      if (res.code === '0') {
+        this.$store.dispatch('setUnReadMsg', res.data)
       }
     }
     // async batchDeleteMsg() {

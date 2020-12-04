@@ -43,8 +43,8 @@
         </li>
         <li
           v-if="
-            (statusNumber === '0' ||  statusNumber === '2' || statusNumber === '3') &&
-            fileList.filter(res => res.imgType === 1).length > 0
+            (statusNumber === '0' || statusNumber === '2' || statusNumber === '3') &&
+              fileList.filter(res => res.imgType === 1).length > 0
           "
         >
           <div class="content-label">检查图片</div>
@@ -66,10 +66,10 @@
           <div class="content-label">企业驳回原因</div>
           <div class="content-nav">{{ confirmEventParam.rejectReason }}</div>
         </li>
-        <li>
+        <!-- <li>
           <div class="content-label">创建时间</div>
           <div class="content-nav">{{ data.createTime }}</div>
-        </li>
+        </li> -->
         <li>
           <div class="content-label">检查人</div>
           <div class="content-nav">{{ data.nickname }}</div>
@@ -79,7 +79,7 @@
           <div class="content-nav">{{ data.expectRepairDate }}</div>
         </li>
         <li v-if="data.corpConfirmCheckResultTime">
-          <div class="content-label">企业确认时间</div>
+          <div class="content-label">结果确认时间</div>
           <div class="content-nav">{{ data.corpConfirmCheckResultTime }}</div>
         </li>
         <li v-if="data.checkTime">
@@ -90,12 +90,7 @@
           <div class="content-label">实际整改时间</div>
           <div class="content-nav">{{ data.repairDate }}</div>
         </li>
-        <li
-          v-if="
-              statusNumber === '0' &&
-              fileList.filter(res => res.imgType === 2).length > 0
-          "
-        >
+        <li v-if="statusNumber === '0' && fileList.filter(res => res.imgType === 2).length > 0">
           <div class="content-label">整改图片</div>
           <div class="content-nav">
             <div>
@@ -117,7 +112,7 @@
         </li>
       </ul>
     </div>
-    <van-form @submit="onSubmit">
+    <van-form @submit="onSubmit" label-width="6.5em">
       <div class="content-view" v-if="!edit">
         <ul class="content-detail">
           <li>
@@ -169,6 +164,8 @@
         :value="thirdName"
         label=" "
         placeholder="点击选择三级巡查类型"
+        autosize
+        type="textarea"
         @click="handleClick(5)"
       />
       <van-field
@@ -182,7 +179,7 @@
         placeholder="点击选择巡查车间"
         @click="handleClick(3)"
       />
-      <van-field
+      <!-- <van-field
         v-if="isPending"
         v-model="submitEventParam.checkContext"
         rows="2"
@@ -190,7 +187,7 @@
         label="巡查内容"
         type="textarea"
         placeholder="请输入巡查内容"
-      />
+      /> -->
       <van-field
         name="uploader"
         :label="isWaitEnteriseRectification ? '整改图片' : '现场图片'"
@@ -223,8 +220,8 @@
         clickable
         name="datetimePicker"
         :value="submitEventParam.expectRepairDate"
-        label="企业预估整改时间"
-        placeholder="请选择企业预估整改时间"
+        label="限期整改日期"
+        placeholder="请选择限期整改日期"
         @click="timeClick"
       />
       <van-popup v-model="showTime" position="bottom">
@@ -265,7 +262,7 @@
           >确认已整改</van-button
         >
         <van-button round block type="info" native-type="submit" v-if="statusNumber === '2'" :disabled="disabled"
-          >企业确认</van-button
+          >确认</van-button
         >
       </div>
     </van-form>
@@ -438,7 +435,7 @@ export default {
               that.$toast('删除成功')
               let index = that.imgList.findIndex(f => f.id === file.id)
               that.imgList.splice(index, 1)
-            }else{
+            } else {
               that.$toast('删除失败')
             }
           }
@@ -739,8 +736,8 @@ export default {
       transform: scaleY(0.5);
     }
     .content-label {
-      width: 3rem;
-      margin-right: 0.42rem;
+      width: 3.5rem;
+      margin-right: 0.3rem;
       color: #646566;
       text-align: left;
       word-wrap: break-word;
