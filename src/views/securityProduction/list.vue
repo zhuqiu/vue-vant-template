@@ -7,7 +7,7 @@
   <div>
     <div>
       <van-sticky>
-        <van-nav-bar title="安全生产培训" left-arrow @click-left="onClickLeft" />
+        <van-nav-bar title="安全生产培训" left-arrow @click-left="onClickLeft" left-text="返回" />
       </van-sticky>
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-empty v-if="list.length === 0" description="暂无数据" />
@@ -31,7 +31,7 @@
                   <div class="content-info">
                     <span>{{ item.teacher }}</span>
                   </div>
-                  <div class="content-time">{{ item.trainDate }}{{ item.beginTime }}至{{ item.endTime }}</div>
+                  <div class="content-time">{{ item.trainDate }} :{{ item.beginTime }}至{{ item.endTime }}</div>
                 </div>
                 <div>
                   <div class="content-info">

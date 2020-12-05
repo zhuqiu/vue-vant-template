@@ -86,6 +86,14 @@ const original = {
     RemoveImg: '/data/api/train/removeImg',
     SaveOrUpdate: '/data/api/train/saveOrUpdate',
     UploadImg: '/data/api/train/uploadImg'
+  },
+  fireExercise: {
+    SaveOrUpdate: '/data/api/show/saveOrUpdate',
+    Delete: '/data/api/show/delete',
+    Get: '/data/api/show/get',
+    List: '/data/api/show/list',
+    UploadImg: '/data/api/show/uploadImg',
+    RemoveImg: '/data/api/show/removeImg'
   }
 }
 

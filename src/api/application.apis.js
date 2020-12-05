@@ -512,3 +512,57 @@ export function deleteTrain(params) {
     params
   })
 }
+
+//分页消防演练培训
+export function getFireList(params) {
+  return request({
+    url: api.fireExercise.List,
+    method: 'get',
+    params
+  })
+}
+
+//查询消防演练培训详情
+export function getFireDetail(params) {
+  return request({
+    url: api.fireExercise.Get,
+    method: 'get',
+    params
+  })
+}
+
+//消防演练培训保存
+export function saveOrUpdateFire(data) {
+  return request({
+    url: api.fireExercise.SaveOrUpdate,
+    method: 'post',
+    data
+  })
+}
+
+//消防演练培训上传附件
+export function uploadImgFire(data) {
+  return request({
+    url: api.fireExercise.UploadImg,
+    method: 'post',
+    data
+  })
+}
+
+//消防演练培训删除附件
+export function removeImgFire(params) {
+  return request({
+    url: api.fireExercise.RemoveImg,
+    method: 'get',
+    params
+  })
+}
+
+//消防演练培训删除
+export function deleteFire(params) {
+  return request({
+    url: api.fireExercise.Delete,
+    method: 'get',
+    params
+  })
+}

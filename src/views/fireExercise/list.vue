@@ -7,7 +7,7 @@
   <div>
     <div>
       <van-sticky>
-        <van-nav-bar title="消防演练培训" left-arrow @click-left="onClickLeft" />
+        <van-nav-bar title="消防演习培训" left-arrow @click-left="onClickLeft" left-text="返回" />
       </van-sticky>
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-empty v-if="list.length === 0" description="暂无数据" />
@@ -31,7 +31,7 @@
                   <div class="content-info">
                     <span>{{ item.teacher }}</span>
                   </div>
-                  <div class="content-time">{{ item.trainTime }}</div>
+                  <div class="content-time">{{ item.showDate }} :{{ item.beginTime }}至{{ item.endTime }}</div>
                 </div>
                 <div>
                   <div class="content-info">
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { getTrainList } from '../../api/application.apis'
+import { getFireList } from '../../api/application.apis'
 
 export default {
   name: 'fireExercise',
@@ -84,7 +84,7 @@ export default {
     },
     handleClick(val) {
       this.$router.push({
-        name: 'DireExerciseDetail',
+        name: 'FireExerciseDetail',
         query: {
           id: val.id
         }
@@ -111,7 +111,7 @@ export default {
       this.onLoad()
     },
     async getList(params) {
-      const res = await getTrainList(params)
+      const res = await getFireList(params)
       if (res.code === '0') {
         this.list = res.data
         this.totalSize = res.count

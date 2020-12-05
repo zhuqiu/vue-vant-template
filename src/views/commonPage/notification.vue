@@ -134,7 +134,7 @@ export default {
             corpId: JSON.parse(localStorage.getItem('select_enterprise')).id
           })
           if (res.code === '0') {
-            that.getList(this.params)
+            that.getList(that.params)
           } else {
             that.$toast('设置失败')
           }

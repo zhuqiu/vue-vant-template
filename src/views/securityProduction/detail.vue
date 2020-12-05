@@ -6,42 +6,24 @@
 <template>
   <div>
     <van-sticky>
-      <van-nav-bar title="安全生产详情" left-text="返回" left-arrow @click-left="onClickLeft" />
+      <van-nav-bar
+        :title="id ? '编辑安全生产培训' : '新增安全生产培训'"
+        left-arrow
+        @click-left="onClickLeft"
+        :right-text="id ? '删除' : ''"
+        left-text="返回"
+        @click-right="handleDelete"
+      />
     </van-sticky>
-    <div class="content-view" v-if="edit">
-      <ul class="content-detail">
-        <li>
-          <div class="content-label">培训对象</div>
-          <div class="content-nav">{{ params.trainObj }}</div>
-        </li>
-        <li>
-          <div class="content-label">培训内容</div>
-          <div class="content-nav">{{ params.content }}</div>
-        </li>
-        <li>
-          <div class="content-label">培训人数</div>
-          <div class="content-nav">{{ params.persionAmount }}</div>
-        </li>
-        <li>
-          <div class="content-label">培训地点</div>
-          <div class="content-nav">{{ params.address }}</div>
-        </li>
-        <li></li>
-        <li>
-          <div class="content-label">培训单位</div>
-          <div class="content-nav">{{ corpName }}</div>
-        </li>
-        <li>
-          <div class="content-label">授课老师</div>
-          <div class="content-nav">{{ params.teacher }}</div>
-        </li>
-        <li>
-          <div class="content-label">培训时间</div>
-          <div class="content-nav">{{ params.trainTime }}</div>
-        </li>
-      </ul>
-    </div>
-    <van-form @submit="handleSubmit" label-width="6.5em" v-else>
+    <van-form @submit="handleSubmit" label-width="6.5em">
+      <div class="content-view">
+        <ul class="content-detail">
+          <li>
+            <div class="content-label">培训单位</div>
+            <div class="content-nav">{{ corpName }}</div>
+          </li>
+        </ul>
+      </div>
       <van-field
         rows="2"
         autosize
@@ -58,7 +40,7 @@
         placeholder="请输入培训内容"
         type="textarea"
       />
-      <van-field v-model="params.persionAmount" label="培训人数" placeholder="请输入培训人数" />
+      <van-field v-model="params.persionAmount" label="培训人数" type="digit" placeholder="请输入培训人数" />
       <van-field
         rows="2"
         autosize
@@ -67,50 +49,43 @@
         placeholder="请输入培训地点"
         type="textarea"
       />
-      <div class="content-view">
-        <ul class="content-detail">
-          <li>
-            <div class="content-label">培训单位</div>
-            <div class="content-nav">{{ corpName }}</div>
-          </li>
-        </ul>
-      </div>
       <van-field v-model="params.teacher" label="授课老师" placeholder="请输入授课老师" />
       <van-field
         readonly
         clickable
         name="datetimePicker"
-        v-model="params.trainTime"
+        v-model="params.trainDate"
         label="培训时间"
         placeholder="请选择培训时间"
         @click="timeClick('date')"
       />
       <van-field
-        v-if="params.trainTime"
+        v-if="params.trainDate"
         readonly
         clickable
         name="datetimePicker"
         v-model="params.beginTime"
-        label="培训时间"
-        placeholder="请选择培训时间"
+        label="开始时间"
+        placeholder="请选择开始时间"
         @click="timeClick('start-time')"
       />
       <van-field
-        v-if="params.trainTime"
+        v-if="params.trainDate"
         readonly
         clickable
         name="datetimePicker"
         v-model="params.endTime"
-        label="培训时间"
-        placeholder="请选择培训时间"
+        label="结束时间"
+        placeholder="请选择结束时间"
         @click="timeClick('end-time')"
       />
+      <van-field name="uploader" label="现场图片" v-if="id">
+        <template #input>
+          <van-uploader v-model="imgList" :after-read="afterRead" :before-delete="beforeDelete" />
+        </template>
+      </van-field>
     </van-form>
-    <van-field name="uploader" label="现场图片" v-if="id">
-      <template #input>
-        <van-uploader v-model="imgList" :after-read="afterRead" :before-delete="beforeDelete" />
-      </template>
-    </van-field>
+
     <van-popup v-model="showTime" position="bottom">
       <van-datetime-picker
         :type="dataType === 'date' ? 'date' : 'time'"
@@ -123,13 +98,22 @@
       />
     </van-popup>
     <div style="margin: 0.32rem;">
-      <van-button round block type="info" @click="handleSubmit">提交</van-button>
+      <van-button round block type="info" @click="handleSubmit">
+        <span v-if="!id">提交</span>
+        <span v-else>编辑</span>
+      </van-button>
     </div>
   </div>
 </template>
 
 <script>
-import { getTrainDetail, saveOrUpdateTrain, uploadImgTrain, removeImgTrain } from '../../api/application.apis'
+import {
+  getTrainDetail,
+  saveOrUpdateTrain,
+  uploadImgTrain,
+  removeImgTrain,
+  deleteTrain
+} from '../../api/application.apis'
 
 import { ImagePreview } from 'vant'
 
@@ -144,7 +128,7 @@ export default {
         persionAmount: '',
         teacher: '',
         trainObj: '',
-        trainTime: '',
+        trainDate: '',
         beginTime: '',
         endTime: ''
       },
@@ -161,7 +145,7 @@ export default {
     this.params.corpId = JSON.parse(localStorage.getItem('select_enterprise')).id
     this.corpName = JSON.parse(localStorage.getItem('select_enterprise')).corpName
     if (this.edit) {
-      this.getTrainDetail({ id: this.$route.query.id })
+      this.getTrainDetail({ trainId: this.id })
     }
   },
   methods: {
@@ -172,7 +156,7 @@ export default {
       const res = await getTrainDetail(params)
       if (res.code === '0') {
         this.params = res.data
-        this.params.cropId = JSON.parse(localStorage.getItem('select_enterprise')).id
+        this.params.corpId = JSON.parse(localStorage.getItem('select_enterprise')).id
         if (res.data.imgs) {
           this.imgList = res.data.imgs.map(m => {
             return {
@@ -189,8 +173,21 @@ export default {
       }
     },
     async handleSubmit() {
-      let res = await saveOrUpdateTrain(this.params)
+      let params = {
+        address: this.params.address,
+        content: this.params.content,
+        persionAmount: this.params.persionAmount,
+        teacher: this.params.teacher,
+        trainObj: this.params.trainObj,
+        trainDate: this.params.trainDate,
+        beginTime: this.params.beginTime,
+        endTime: this.params.endTime,
+        id: this.id ? this.id : null,
+        corpId: this.params.corpId
+      }
+      let res = await saveOrUpdateTrain(params)
       if (res.code === '0') {
+        this.$toast(this.id ? '编辑成功' : '新增成功')
         this.id = res.data.id
       } else {
         this.$toast(res.msg)
@@ -245,21 +242,10 @@ export default {
       this.showTime = true
       this.dataType = type
     },
-    // previewImg(index) {
-    //   const list = this.fileList
-    //     .filter(res => res.imgType === 1)
-    //     .map(f => {
-    //       return f.url
-    //     })
-    //   ImagePreview({
-    //     images: list,
-    //     startPosition: index
-    //   })
-    // },
     onTimeConfirm(time) {
       switch (this.dataType) {
         case 'date':
-          this.params.trainTime = this.$moment(time).format('YYYY-MM-DD')
+          this.params.trainDate = this.$moment(time).format('YYYY-MM-DD')
           break
         case 'start-time':
           this.params.beginTime = time
@@ -269,6 +255,32 @@ export default {
           break
       }
       this.showTime = false
+    },
+    async handleDelete() {
+      const that = this
+      this.$dialog.confirm({
+        title: '删除提示',
+        message: '确定删除吗？',
+        beforeClose
+      })
+      async function beforeClose(action, done) {
+        if (action === 'confirm') {
+          const res = await deleteTrain({
+            trainId: that.id
+          })
+          if (res.code === '0') {
+            that.$toast('删除成功')
+            setTimeout(() => {
+              that.$router.push({
+                name: 'SecurityProduction'
+              })
+            }, 1000)
+          } else {
+            that.$toast(res.msg)
+          }
+        }
+        done()
+      }
     }
   }
 }
