@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-10 09:43:26
- * @LastEditors: zhuqiu
- * @LastEditTime: 2020-10-30 20:27:50
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-12-05 12:38:22
  * @FilePath: \project\src\api\index.js
  */
 const original = {
@@ -78,6 +78,14 @@ const original = {
   },
   corpDisk: {
     List: '/data/api/corpDisk/list'
+  },
+  train: {
+    List: '/data/api/train/list',
+    Delete: '/data/api/train/delete',
+    Get: '/data/api/train/get',
+    RemoveImg: '/data/api/train/removeImg',
+    SaveOrUpdate: '/data/api/train/saveOrUpdate',
+    UploadImg: '/data/api/train/uploadImg'
   }
 }
 

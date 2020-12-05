@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-10 09:43:26
- * @LastEditors: zhuqiu
- * @LastEditTime: 2020-07-16 20:20:56
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-12-05 11:29:20
  * @FilePath: \project\src\views\commonPage\enterprise.vue
 -->
 <template>
@@ -34,11 +34,15 @@
           <van-col span="24" v-for="(item, index) in list" :key="index" @click="enterpriseChange(item.id)">
             <div class="content">
               <div class="content-left">
-                <p class="title">公司名称：</p>
+                <p class="title">公司名称：
+                  <span v-if="item.monthServiceTimes" style="font-size: 12px">进场
+                    <span v-if="item.monthServiceTimes === 3" style="color: #07c160">{{item.monthServiceTimes}}</span>
+                    <span v-else-if="item.monthServiceTimes < 3" style="color: #ee0a24">{{item.monthServiceTimes}}</span>
+                    <span v-else>{{item.monthServiceTimes}}</span>
+                    次
+                  </span>
+                </p>
                 <span class="name">{{ item.corpName }}</span>
-                <div class="name" v-if="item.monthServiceTimes">
-                  进场次数：<span style="#07c160">{{ item.monthServiceTimes }}</span>
-                </div>
               </div>
               <div class="content-right">
                 <van-icon name="checked" size="24" color="#07c160" v-if="selevtionId === item.id" />

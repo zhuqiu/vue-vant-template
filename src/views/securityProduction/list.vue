@@ -1,25 +1,14 @@
 <!--
- * @Date: 2020-07-10 09:43:26
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-12-05 11:33:07
- * @FilePath: \project\src\views\batch\list.vue
+ * @Author: zhuqiu
+ * @since: 2020-12-05 10:57:20
+ * @Description: 
 -->
 <template>
   <div>
     <div>
-      <van-search
-        v-model="params.batchNo"
-        show-action
-        placeholder="请输入批次号"
-        @search="onSearch"
-        @cancel="onCancel"
-        @clear="onCancel"
-        @input="onInput"
-      >
-        <template #action>
-          <div @click="onSearch">搜索</div>
-        </template>
-      </van-search>
+      <van-sticky>
+        <van-nav-bar title="安全生产培训" left-arrow @click-left="onClickLeft" />
+      </van-sticky>
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-empty v-if="list.length === 0" description="暂无数据" />
         <van-list
@@ -35,21 +24,18 @@
             <van-col span="24" @click="handleClick(item)" v-for="(item, index) in list" :key="index">
               <div class="common-content">
                 <div>
-                  <div class="content-title">{{ item.corpName }}</div>
-                  <div class="content-status">
-                    <img src="../../assets/images/jinxingzhong.png" alt="" v-if="item.status === 1" />
-                    <img src="../../assets/images/yiqueren.png" alt="" v-if="item.status === 2" />
-                  </div>
+                  <div class="content-title">{{ item.corpName }}（{{ item.persionAmount }}人）</div>
+                  <div class="content-status"></div>
                 </div>
                 <div>
                   <div class="content-info">
-                    <span>{{ item.batchNo }}（{{item.eventTotal}}项）</span>
+                    <span>{{ item.teacher }}</span>
                   </div>
-                  <div class="content-time">{{ item.startTime }}</div>
+                  <div class="content-time">{{ item.trainDate }}{{ item.beginTime }}至{{ item.endTime }}</div>
                 </div>
                 <div>
                   <div class="content-info">
-                    <span>{{ item.endTime }}</span>
+                    <span>{{ item.content }}</span>
                   </div>
                 </div>
               </div>
@@ -59,7 +45,7 @@
       </van-pull-refresh>
 
       <div class="margin">
-        <div class="addBtn" @click="addBatch">
+        <div class="addBtn" @click="handleAddInfo">
           <van-icon name="plus" size="22" color="#ffffff" />
         </div>
       </div>
@@ -68,21 +54,18 @@
 </template>
 
 <script>
-import { createBatchNo, getBatchList, getBatchDetail } from '../../api/application.apis'
+import { getTrainList } from '../../api/application.apis'
 
 export default {
-  name: 'Management',
+  name: 'securityProduction',
   data() {
     return {
       params: {
-        batchNo: '',
         corpId: '',
         limit: 6,
         page: 1
       },
-      activeName: '',
       list: [],
-      batchInfo: {},
       loading: false,
       finished: false,
       refreshing: false,
@@ -96,33 +79,16 @@ export default {
     this.getList(this.params)
   },
   methods: {
-    onSearch() {
-      this.getList(this.params)
-    },
-    onCancel() {
-      this.getList(this.params)
-    },
-    onInput() {
-      if (this.params.batchNo === '') {
-        this.getList(this.params)
-      }
+    onClickLeft() {
+      history.go(-1)
     },
     handleClick(val) {
       this.$router.push({
-        name: 'BatchDetail',
+        name: 'SecurityProductionDetail',
         query: {
-          id: val.batchNo,
-          status: val.status
+          id: val.id
         }
       })
-    },
-    getStatus(status) {
-      switch (status) {
-        case 1:
-          return '进行中'
-        case 2:
-          return '已完成'
-      }
     },
     onLoad() {
       if (this.refreshing) {
@@ -145,7 +111,7 @@ export default {
       this.onLoad()
     },
     async getList(params) {
-      const res = await getBatchList(params)
+      const res = await getTrainList(params)
       if (res.code === '0') {
         this.list = res.data
         this.totalSize = res.count
@@ -156,41 +122,11 @@ export default {
         this.list = []
       }
     },
-    async collapseChange(val) {
-      if (!val) {
-        return
-      }
-      const res = await getBatchDetail({ batchNo: val })
-      if (res.code === '0') {
-        this.batchInfo = res.data
-      } else {
-        this.$toast(res.msg)
-        this.batchInfo = {}
-      }
-    },
-    async addBatch() {
-      if (!this.params.corpId) {
-        this.$toast('请选择企业后再新增批次号')
-        return
-      }
-      let that = this
-      this.$dialog.confirm({
-        title: '新增批次提示',
-        message: '确定新增吗？',
-        beforeClose
+
+    async handleAddInfo() {
+      this.$router.push({
+        name: 'SecurityProductionDetail'
       })
-      async function beforeClose(action, done) {
-        if (action === 'confirm') {
-          const res = await createBatchNo({ corpId: that.params.corpId })
-          if (res.code === '0') {
-            that.getList(that.params)
-            that.$toast('新增成功')
-          } else {
-            that.$toast(res.msg)
-          }
-        }
-        done()
-      }
     }
   }
 }

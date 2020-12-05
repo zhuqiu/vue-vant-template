@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-10 09:43:26
- * @LastEditors: zhuqiu
- * @LastEditTime: 2020-10-30 20:06:18
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-12-05 17:00:08
  * @FilePath: \project\src\App.vue
 -->
 <template>
@@ -54,6 +54,13 @@ export default {
       flex-direction: row;
       justify-content: flex-start;
       align-items: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -o-text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      /*! autoprefixer: ignore next */
+      -webkit-box-orient: vertical;
       span {
         margin-left: 0.12rem;
         color: #666666;

@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-11-18 10:16:34
+ * @LastEditTime: 2020-12-05 11:58:33
  * @FilePath: \project\src\router\router.config.js
  */
 /**
@@ -161,6 +161,30 @@ export const constantRouterMap = [
         name: 'AccountRecordDetail',
         component: () => import('@/views/accountRecord/detail'),
         meta: { title: '应急管理详情', keepAlive: false }
+      },
+      {
+        path: '/securityProduction',
+        name: 'SecurityProduction',
+        component: () => import('@/views/securityProduction/list'),
+        meta: { title: '安全生产', keepAlive: false }
+      },
+      {
+        path: '/securityProductionDetail',
+        name: 'SecurityProductionDetail',
+        component: () => import('@/views/securityProduction/detail'),
+        meta: { title: '安全生产详情', keepAlive: false }
+      },
+      {
+        path: '/fireExercise',
+        name: 'FireExercise',
+        component: () => import('@/views/fireExercise/list'),
+        meta: { title: '消防演练', keepAlive: false }
+      },
+      {
+        path: '/fireExerciseDetail',
+        name: 'FireExerciseDetail',
+        component: () => import('@/views/fireExercise/detail'),
+        meta: { title: '消防演练详情', keepAlive: false }
       }
     ]
   },

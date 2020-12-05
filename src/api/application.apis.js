@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-16 16:14:34
- * @LastEditors: zhuqiu
- * @LastEditTime: 2020-10-30 20:28:49
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-12-05 16:50:23
  * @FilePath: \project\src\api\application.apis.js
  */
 import api from './index'
@@ -382,11 +382,11 @@ export function batchDeleteMsg(data) {
 }
 
 //查阅未读消息总数
-export function countUnreadMsgTotal(data) {
+export function countUnreadMsgTotal(params) {
   return request({
     url: api.msg.CountUnreadMsgTotal,
-    method: 'post',
-    data
+    method: 'get',
+    params
   })
 }
 
@@ -454,6 +454,60 @@ export function getPublicNetDisk(params) {
 export function getCorpDisk(params) {
   return request({
     url: api.corpDisk.List,
+    method: 'get',
+    params
+  })
+}
+
+//分页查询安全生产培训
+export function getTrainList(params) {
+  return request({
+    url: api.train.List,
+    method: 'get',
+    params
+  })
+}
+
+//查询安全生产培训详情
+export function getTrainDetail(params) {
+  return request({
+    url: api.train.Get,
+    method: 'get',
+    params
+  })
+}
+
+//安全生产培训保存
+export function saveOrUpdateTrain(data) {
+  return request({
+    url: api.train.SaveOrUpdate,
+    method: 'post',
+    data
+  })
+}
+
+//安全生产培训上传附件
+export function uploadImgTrain(data) {
+  return request({
+    url: api.train.UploadImg,
+    method: 'post',
+    data
+  })
+}
+
+//安全生产培训删除附件
+export function removeImgTrain(params) {
+  return request({
+    url: api.train.RemoveImg,
+    method: 'get',
+    params
+  })
+}
+
+//安全生产培训删除
+export function deleteTrain(params) {
+  return request({
+    url: api.train.Delete,
     method: 'get',
     params
   })

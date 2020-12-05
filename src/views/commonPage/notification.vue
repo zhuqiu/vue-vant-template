@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-08-24 15:47:50
+ * @LastEditTime: 2020-12-05 16:52:03
  * @FilePath: \project\src\views\commonPage\notification.vue
 -->
 <template>
@@ -162,7 +162,8 @@ export default {
         idsArr: [],
         nickname: '',
         readTime: '',
-        status: ''
+        status: 'unread',
+        corpId: JSON.parse(localStorage.getItem('select_enterprise')).id
       })
       if (res.code === '0') {
         this.$store.dispatch('setUnReadMsg', res.data)

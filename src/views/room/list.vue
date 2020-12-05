@@ -1,3 +1,8 @@
+<!--
+ * @Author: zhuqiu
+ * @since: 2020-12-04 14:10:14
+ * @Description: 
+-->
 <template>
   <div>
     <!-- <van-sticky>
@@ -27,7 +32,9 @@
             {{ item.roomName }}
             <span style="color: #ff976a">（{{ item.riskLevel }}）</span>
           </div>
-          <div v-else>{{ item.roomName }}（暂无等级）</div>
+          <div v-else>{{ item.roomName }}
+            <span>（暂无等级）</span>
+          </div>
         </template>
         <div>企业名称: {{ item.corpName }}</div>
         <div>车间负责人: {{ item.roomManager }}</div>
