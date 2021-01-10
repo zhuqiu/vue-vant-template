@@ -11,7 +11,7 @@
         <van-dropdown-item v-model="params.status" :options="getOptions()" @change="handleChange" />
         <van-dropdown-item title="筛选" ref="item">
           <van-form>
-            <van-field
+            <!-- <van-field
               :value="params.batchNo"
               readonly
               clickable
@@ -19,8 +19,8 @@
               placeholder="请输入批次号"
               label="批次号"
               @click="batchClick"
-            />
-            <!-- <van-field v-model="params.checkName" label="检查类型" placeholder="请输入检查类型" /> -->
+            /> -->
+            <van-field v-model="params.keyword" label="关键字" placeholder="请输入关键字" />
             <van-field
               readonly
               clickable
@@ -77,7 +77,7 @@ export default {
     return {
       params: {
         batchNo: '',
-        checkName: '',
+        keyword: '',
         corpId: '',
         limit: 6,
         page: 1,
@@ -184,7 +184,7 @@ export default {
         { text: '新建', value: StatusTypeItem.Pending },
         { text: '不合格', value: StatusTypeItem.CheckNotPass },
         { text: '合格', value: StatusTypeItem.CheckPass },
-        { text: '已结束', value: StatusTypeItem.EnterpriseConfirmed },
+        { text: '已结案', value: StatusTypeItem.EnterpriseConfirmed },
         { text: '待整改', value: StatusTypeItem.WaitRectification },
         { text: '驳回', value: StatusTypeItem.EnterpriseReject },
         { text: '已延期', value: StatusTypeItem.NotRectification },
@@ -196,16 +196,16 @@ export default {
       this.showPicker = true
       this.status = 1
     },
-    batchClick(){
+    batchClick() {
       this.columns = this.batchNoList
       this.showPicker = true
       this.status = 0
     },
     onConfirm(value) {
-      if(this.status){
+      if (this.status) {
         this.params.roomId = value.id
         this.room = value.text
-      }else {
+      } else {
         this.params.batchNo = value.id
       }
       this.showPicker = false
@@ -273,5 +273,4 @@ export default {
     font-weight: 600;
   }
 }
-
 </style>

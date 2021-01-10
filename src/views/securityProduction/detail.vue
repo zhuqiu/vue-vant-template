@@ -7,7 +7,7 @@
   <div>
     <van-sticky>
       <van-nav-bar
-        :title="id ? '编辑安全生产培训' : '新增安全生产培训'"
+        :title="id ? '编辑培训演练培训' : '新增培训演练培训'"
         left-arrow
         @click-left="onClickLeft"
         :right-text="id ? '删除' : ''"
@@ -88,6 +88,7 @@
 
     <van-popup v-model="showTime" position="bottom">
       <van-datetime-picker
+        :min-date="minDate"
         :type="dataType === 'date' ? 'date' : 'time'"
         @confirm="
           time => {
@@ -132,6 +133,7 @@ export default {
         beginTime: '',
         endTime: ''
       },
+      minDate: new Date(),
       showTime: false,
       imgList: [],
       corpName: '',

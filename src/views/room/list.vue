@@ -32,15 +32,22 @@
             {{ item.roomName }}
             <span style="color: #ff976a">（{{ item.riskLevel }}）</span>
           </div>
-          <div v-else>{{ item.roomName }}
+          <div v-else>
+            {{ item.roomName }}
             <span>（暂无等级）</span>
           </div>
         </template>
-        <div>企业名称: {{ item.corpName }}</div>
-        <div>车间负责人: {{ item.roomManager }}</div>
-        <div>巡查总数: {{ item.eventTotal }}</div>
-        <div>风险等级: {{ item.riskLevel }}</div>
-        <div>车间简介: {{ item.roomDesc }}</div>
+        <div style="margin-bottom:5px; color: black">
+          <span style="font-weight: 600">企业名称: </span>{{ item.corpName }}
+        </div>
+        <div style="margin-bottom:5px; color: black">
+          <span style="font-weight: 600">车间负责人: </span>{{ item.roomManager }}
+        </div>
+        <div style="margin-bottom:5px; color: black">
+          <span style="font-weight: 600">巡查总数: </span>{{ item.eventTotal }} 项
+        </div>
+        <div style="color: black"><span style="font-weight: 600">车间简介: </span></div>
+        <div style="color: black">{{ item.roomDesc }}</div>
       </van-collapse-item>
     </van-collapse>
     <van-empty v-else description="暂无数据" />

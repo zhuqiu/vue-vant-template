@@ -40,13 +40,13 @@ export const constantRouterMap = [
         path: '/batchList',
         name: 'BatchList',
         component: () => import('@/views/batch/list'),
-        meta: { title: '批次列表', keepAlive: false }
+        meta: { title: '入场登记', keepAlive: false }
       },
       {
         path: '/batchDetail',
         name: 'BatchDetail',
         component: () => import('@/views/batch/detail'),
-        meta: { title: '批次详情', keepAlive: false }
+        meta: { title: '入场登记详情', keepAlive: false }
       },
       {
         path: '/roomList',
@@ -82,7 +82,7 @@ export const constantRouterMap = [
         path: '/highTodo',
         name: 'HighTodo',
         component: () => import('@/views/event/highTodo'),
-        meta: { title: '高风险事件', keepAlive: false }
+        meta: { title: '风险管控事件', keepAlive: false }
       },
       {
         path: '/eventDetail',
@@ -166,25 +166,31 @@ export const constantRouterMap = [
         path: '/securityProduction',
         name: 'SecurityProduction',
         component: () => import('@/views/securityProduction/list'),
-        meta: { title: '安全生产', keepAlive: false }
+        meta: { title: '培训演练', keepAlive: false }
       },
       {
         path: '/securityProductionDetail',
         name: 'SecurityProductionDetail',
         component: () => import('@/views/securityProduction/detail'),
-        meta: { title: '安全生产详情', keepAlive: false }
+        meta: { title: '培训演练详情', keepAlive: false }
       },
       {
         path: '/fireExercise',
         name: 'FireExercise',
         component: () => import('@/views/fireExercise/list'),
-        meta: { title: '消防演练', keepAlive: false }
+        meta: { title: '危险作业', keepAlive: false }
       },
       {
         path: '/fireExerciseDetail',
         name: 'FireExerciseDetail',
         component: () => import('@/views/fireExercise/detail'),
-        meta: { title: '消防演练详情', keepAlive: false }
+        meta: { title: '危险作业详情', keepAlive: false }
+      },
+      {
+        path: '/trainDrill',
+        name: 'TrainDrill',
+        component: () => import('@/views/trainDrill/list'),
+        meta: { title: '培训演练', keepAlive: false }
       }
     ]
   },

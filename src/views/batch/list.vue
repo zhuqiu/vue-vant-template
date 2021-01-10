@@ -43,7 +43,7 @@
                 </div>
                 <div>
                   <div class="content-info">
-                    <span>{{ item.batchNo }}（{{item.eventTotal}}项）</span>
+                    <span>{{ item.batchNo }}（{{item.eventTotal === null ? 0 : item.eventTotal}}项）</span>
                   </div>
                   <div class="content-time">{{ item.startTime }}</div>
                 </div>

@@ -64,7 +64,7 @@ export default {
         // },
         {
           icon: 'todo-list',
-          text: '高风险',
+          text: '风险管控',
           color: '#CC3399',
           path: 'HighTodo'
         },
@@ -76,7 +76,7 @@ export default {
         },
         {
           icon: 'column',
-          text: '批次列表',
+          text: '入场登记',
           color: '#00CC33',
           path: 'BatchList'
         },
@@ -100,16 +100,16 @@ export default {
         },
         {
           icon: 'underway',
-          text: '安全生产',
+          text: '培训演练',
           color: '#66CCFF',
-          path: 'SecurityProduction'
-        },
-        {
-          icon: 'comment',
-          text: '消防演练',
-          color: '#00FF99',
-          path: 'FireExercise'
+          path: 'TrainDrill'
         }
+        // {
+        //   icon: 'comment',
+        //   text: '危险作业',
+        //   color: '#00FF99',
+        //   path: 'FireExercise'
+        // }
         // {
         //   icon: 'weapp-nav',
         //   text: '敬请期待',

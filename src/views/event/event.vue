@@ -29,11 +29,19 @@
           <div class="content-label">巡查车间</div>
           <div class="content-nav">{{ room }}</div>
         </li>
-        <li>
+        <li class="no-border-line">
           <div class="content-label">巡查内容</div>
-          <div class="content-nav">{{ submitEventParam.checkContext }}</div>
+          <!-- <div class="content-nav">{{ submitEventParam.checkContext }}</div> -->
         </li>
-        <li v-if="data.checkSafeLevelCh">
+        <van-field
+          v-model="submitEventParam.checkContext"
+          rows="2"
+          autosize
+          label=""
+          type="textarea"
+          placeholder="请输入巡查内容"
+        />
+        <li v-if="data.checkSafeLevelCh && statusNumber !== '1'">
           <div class="content-label">风险等级</div>
           <div class="content-nav" style="color: #ff4d4f">{{ data.checkSafeLevelCh }}</div>
         </li>
@@ -179,12 +187,21 @@
         placeholder="点击选择巡查车间"
         @click="handleClick(3)"
       />
+      <van-field
+        v-if="statusNumber === '1'"
+        readonly
+        clickable
+        name="picker"
+        :value="checkSafeLevelName"
+        label="风险等级"
+        placeholder="点击选择风险等级"
+        @click="handleClick(6)"
+      />
       <!-- <van-field
-        v-if="isPending"
         v-model="submitEventParam.checkContext"
         rows="2"
         autosize
-        label="巡查内容"
+        label=""
         type="textarea"
         placeholder="请输入巡查内容"
       /> -->
@@ -305,7 +322,8 @@ export default {
         checkRemark: '',
         checkResult: 2,
         expectRepairDate: '',
-        eventId: ''
+        eventId: '',
+        checkSafeLevel: ''
       },
       confirmEventParam: {
         replyStatus: 1,
@@ -337,7 +355,31 @@ export default {
       minDate: new Date(),
       id: '',
       role: '',
-      statusNumber: ''
+      statusNumber: '',
+      checkSafeLevelName: '', //风险等级
+      checkSafeLevelId: '',
+      safeLevelList: [
+        {
+          id: 1,
+          text: '重大风险'
+        },
+        {
+          id: 2,
+          text: '较大风险'
+        },
+        {
+          id: 3,
+          text: '一般风险'
+        },
+        {
+          id: 4,
+          text: '低风险'
+        },
+        {
+          id: 5,
+          text: '可忽略风险'
+        }
+      ]
     }
   },
   created() {
@@ -446,7 +488,7 @@ export default {
       }
     },
     handleClick(val) {
-      if (this.edit) {
+      if (this.edit && val !== 6) {
         return
       }
       this.showPicker = true
@@ -466,6 +508,9 @@ export default {
           break
         case 5:
           this.findChildList(this.secondId, 5)
+          break
+        case 6:
+          this.columns = this.safeLevelList
           break
       }
     },
@@ -496,6 +541,10 @@ export default {
           this.thirdId = value.id
           this.thirdName = value.text
           break
+        case 6:
+          this.checkSafeLevelId = value.id
+          this.checkSafeLevelName = value.text
+          break
       }
       this.showPicker = false
     },
@@ -520,6 +569,7 @@ export default {
         }
       } else {
         if (this.isPending) {
+          this.submitEventParam.checkSafeLevel = this.checkSafeLevelId
           const res = await submitEvent(this.submitEventParam)
           if (res.code === '0') {
             this.$toast('提交成功')
@@ -662,6 +712,8 @@ export default {
         this.checkType = res.data.checkName
         this.room = res.data.roomName
         this.corpName = res.data.corpName
+        this.checkSafeLevelId = res.data.checkSafeLevel
+        this.checkSafeLevelName = res.data.checkSafeLevelCh
         this.data = res.data
         this.submitEventParam.expectRepairDate = res.data.expectRepairDate
         this.submitEventParam.checkContext = res.data.checkContext
@@ -734,6 +786,12 @@ export default {
       border-bottom: 0.02667rem solid #ebedf0;
       -webkit-transform: scaleY(0.5);
       transform: scaleY(0.5);
+    }
+    &.no-border-line {
+      padding-bottom: 0;
+    }
+    &.no-border-line::after {
+      border: none;
     }
     .content-label {
       width: 3.5rem;

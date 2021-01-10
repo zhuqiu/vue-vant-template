@@ -6,9 +6,22 @@
 -->
 <template>
   <div>
-    <van-sticky>
-      <van-nav-bar title="高风险列表" left-text="返回" left-arrow @click-left="onClickLeft" />
-    </van-sticky>
+    <!-- <van-sticky>
+      <van-nav-bar title="风险管控列表" left-text="返回" left-arrow @click-left="onClickLeft" />
+    </van-sticky> -->
+    <van-search
+      v-model="params.keyword"
+      show-action
+      placeholder="请输入关键字"
+      @search="onSearch"
+      @cancel="onCancel"
+      @clear="onCancel"
+      @input="onInput"
+    >
+      <template #action>
+        <div @click="onSearch">搜索</div>
+      </template>
+    </van-search>
     <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
       <van-empty v-if="list.length === 0" description="暂无数据" />
       <van-list
@@ -42,7 +55,8 @@ export default {
     return {
       params: {
         limit: 6,
-        page: 1
+        page: 1,
+        keyword: ''
       },
       room: '',
       list: [],
@@ -62,6 +76,17 @@ export default {
     this.getList(this.params)
   },
   methods: {
+    onSearch() {
+      this.getList(this.params)
+    },
+    onCancel() {
+      this.getList(this.params)
+    },
+    onInput() {
+      if (this.params.keyword === '') {
+        this.getList(this.params)
+      }
+    },
     onClickLeft() {
       history.go(-1)
     },

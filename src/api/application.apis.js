@@ -39,7 +39,7 @@ export function listToDoEvents(params) {
   })
 }
 
-// 查询高风险事件
+// 查询风险管控事件
 export function listHighEvents(params) {
   return request({
     url: api.event.ListHighEvents,
@@ -459,7 +459,7 @@ export function getCorpDisk(params) {
   })
 }
 
-//分页查询安全生产培训
+//分页查询培训演练培训
 export function getTrainList(params) {
   return request({
     url: api.train.List,
@@ -468,7 +468,7 @@ export function getTrainList(params) {
   })
 }
 
-//查询安全生产培训详情
+//查询培训演练培训详情
 export function getTrainDetail(params) {
   return request({
     url: api.train.Get,
@@ -477,7 +477,7 @@ export function getTrainDetail(params) {
   })
 }
 
-//安全生产培训保存
+//培训演练培训保存
 export function saveOrUpdateTrain(data) {
   return request({
     url: api.train.SaveOrUpdate,
@@ -486,7 +486,7 @@ export function saveOrUpdateTrain(data) {
   })
 }
 
-//安全生产培训上传附件
+//培训演练培训上传附件
 export function uploadImgTrain(data) {
   return request({
     url: api.train.UploadImg,
@@ -495,7 +495,7 @@ export function uploadImgTrain(data) {
   })
 }
 
-//安全生产培训删除附件
+//培训演练培训删除附件
 export function removeImgTrain(params) {
   return request({
     url: api.train.RemoveImg,
@@ -504,7 +504,7 @@ export function removeImgTrain(params) {
   })
 }
 
-//安全生产培训删除
+//培训演练培训删除
 export function deleteTrain(params) {
   return request({
     url: api.train.Delete,
@@ -513,7 +513,7 @@ export function deleteTrain(params) {
   })
 }
 
-//分页消防演练培训
+//分页危险作业培训
 export function getFireList(params) {
   return request({
     url: api.fireExercise.List,
@@ -522,7 +522,7 @@ export function getFireList(params) {
   })
 }
 
-//查询消防演练培训详情
+//查询危险作业培训详情
 export function getFireDetail(params) {
   return request({
     url: api.fireExercise.Get,
@@ -531,7 +531,7 @@ export function getFireDetail(params) {
   })
 }
 
-//消防演练培训保存
+//危险作业培训保存
 export function saveOrUpdateFire(data) {
   return request({
     url: api.fireExercise.SaveOrUpdate,
@@ -540,7 +540,7 @@ export function saveOrUpdateFire(data) {
   })
 }
 
-//消防演练培训上传附件
+//危险作业培训上传附件
 export function uploadImgFire(data) {
   return request({
     url: api.fireExercise.UploadImg,
@@ -549,7 +549,7 @@ export function uploadImgFire(data) {
   })
 }
 
-//消防演练培训删除附件
+//危险作业培训删除附件
 export function removeImgFire(params) {
   return request({
     url: api.fireExercise.RemoveImg,
@@ -558,7 +558,7 @@ export function removeImgFire(params) {
   })
 }
 
-//消防演练培训删除
+//危险作业培训删除
 export function deleteFire(params) {
   return request({
     url: api.fireExercise.Delete,
