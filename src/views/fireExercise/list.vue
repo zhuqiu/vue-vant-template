@@ -1,7 +1,7 @@
 <!--
  * @Author: zhuqiu
  * @since: 2020-12-05 10:57:20
- * @Description: 
+ * @Description:
 -->
 <template>
   <div>
@@ -25,7 +25,7 @@
               <div class="common-content">
                 <div>
                   <div class="content-title">{{ item.corpName }}（{{ item.persionAmount }}人）</div>
-                  <div class="content-status"></div>
+                  <div class="content-status">{{item.statusCh}}</div>
                 </div>
                 <div>
                   <div class="content-info">

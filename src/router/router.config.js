@@ -117,8 +117,14 @@ export const constantRouterMap = [
       {
         path: '/videoList',
         name: 'VideoList',
-        component: () => import('@/views/onlineVideo/list'),
+        component: () => import('@/views/onlineVideo/newList'),
         meta: { title: '在线视频列表', keepAlive: false }
+      },
+      {
+        path: '/videoDetail',
+        name: 'VideoDetail',
+        component: () => import('@/views/onlineVideo/videoDetail'),
+        meta: { title: '在线视频详情', keepAlive: false }
       },
       {
         path: '/oneLevel',

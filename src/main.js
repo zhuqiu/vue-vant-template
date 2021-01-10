@@ -39,7 +39,7 @@ import './filters'
 Vue.config.productionTip = false
 
 // 进入时清理token ,让每一次进入页面都先去访问登录页
-localStorage.removeItem('token')
+// localStorage.removeItem('token')
 
 new Vue({
   el: '#app',

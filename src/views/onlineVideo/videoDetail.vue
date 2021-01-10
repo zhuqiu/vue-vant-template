@@ -1,13 +1,13 @@
 <template>
   <div>
     <van-sticky>
-      <van-nav-bar title="在线培训" />
+      <van-nav-bar title="在线培训详情" left-text="返回" left-arrow @click-left="onClickLeft"/>
     </van-sticky>
-    <ul class="video-list">
+    <ul class="video-detail">
       <li>
         <div class="video-content">
-          <video controls="controls">
-            <source type="video/*" :src="data.url" />
+          <video controls="controls" :src="data.url">
+            <!-- <source type="video/*" :src="data.url" /> -->
           </video>
         </div>
         <div class="video-title">
@@ -46,7 +46,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.video-list {
+.video-detail {
   li {
     border-radius: 0.12rem;
     background: white;
@@ -70,7 +70,7 @@ export default {
     .video-dec {
       padding: 0.32rem;
       font-size: 0.32rem;
-      text-indent: 0.46rem;
+      // text-indent: 0.46rem;
     }
   }
 }

@@ -1,7 +1,7 @@
 <!--
  * @Author: zhuqiu
  * @since: 2020-12-05 10:57:32
- * @Description: 
+ * @Description:
 -->
 <template>
   <div>
@@ -79,11 +79,29 @@
         placeholder="请选择结束时间"
         @click="timeClick('end-time')"
       />
-      <van-field name="uploader" label="现场图片" v-if="id">
+      <van-field
+        name="uploader"
+        label="现场图片"
+        v-if="btnPermission.finishBtn || params.status === 5 || params.status === 4">
         <template #input>
-          <van-uploader v-model="imgList" :after-read="afterRead" :before-delete="beforeDelete" />
+          <van-uploader
+            v-model="imgList"
+            :after-read="afterRead"
+            :before-delete="beforeDelete"
+            :show-upload="params.status !== 5 && params.status !== 4"
+            :deletable="params.status !== 5 && params.status !== 4"
+          />
         </template>
       </van-field>
+      <van-field
+        v-if="btnPermission.auditoAndRejectBtn || params.status === 4"
+        rows="2"
+        autosize
+        v-model="params.auditorFailReason"
+        label="驳回原因"
+        placeholder="请输入驳回原因"
+        type="textarea"
+      />
     </van-form>
     <van-popup v-model="showTime" position="bottom">
       <van-datetime-picker
@@ -98,16 +116,47 @@
       />
     </van-popup>
     <div style="margin: 0.32rem;">
-      <van-button round block type="info" @click="handleSubmit">
-        <span v-if="!id">提交</span>
-        <span v-else>编辑</span>
+      <van-button v-if="!id" round block type="info" @click="handleClick(0)">
+        新增
+      </van-button>
+      <van-button style="margin-bottom: 8px;" v-if="btnPermission.saveBtn" round block type="info" @click="handleClick(1)">
+        保存
+      </van-button>
+      <van-button
+        v-if="btnPermission.submitBtn"
+        round block
+        type="info"
+        @click="handleClick(2)"
+      >
+        提交
+      </van-button>
+
+      <van-button style="margin-bottom: 8px;" v-if="btnPermission.auditoAndRejectBtn" round block type="info" @click="handleClick(3)">
+        审核通过
+      </van-button>
+      <van-button v-if="btnPermission.auditoAndRejectBtn" round block type="info" @click="handleClick(4)">
+        驳回
+      </van-button>
+      <van-button v-if="btnPermission.finishBtn" round block type="info" @click="handleClick(5)">
+        完成
       </van-button>
     </div>
   </div>
 </template>
 
 <script>
-import { getFireDetail, saveOrUpdateFire, uploadImgFire, removeImgFire, deleteFire } from '../../api/application.apis'
+import {
+  getFireDetail,
+  saveOrUpdateFire,
+  uploadImgFire,
+  removeImgFire,
+  deleteFire,
+  getFireControllerButton,
+  fireSubmit,
+  fireReject,
+  fireFinish,
+  fireAuditor
+  } from '../../api/application.apis'
 
 import { ImagePreview } from 'vant'
 
@@ -131,7 +180,8 @@ export default {
       imgList: [],
       corpName: '',
       dataType: '',
-      id: ''
+      id: '',
+      btnPermission: ''
     }
   },
   created() {
@@ -141,6 +191,7 @@ export default {
     this.corpName = JSON.parse(localStorage.getItem('select_enterprise')).corpName
     if (this.edit) {
       this.getFireDetail({ showId: this.id })
+      this.getControllerButton();
     }
   },
   methods: {
@@ -184,6 +235,107 @@ export default {
       if (res.code === '0') {
         this.$toast(this.id ? '编辑成功' : '新增成功')
         this.id = res.data.id
+      } else {
+        this.$toast(res.msg)
+      }
+    },
+    async handleClick(type) {
+      switch(type){
+        case 0:
+        case 1:
+          this.saveOrUpdateTrain()
+          break;
+        case 2:
+          this.fireSubmit()
+          break;
+        case 3:
+          this.fireAuditor()
+          break;
+        case 4:
+          this.fireReject()
+          break;
+        case 5:
+          this.fireFinish()
+          break;
+      }
+
+    },
+    async saveOrUpdateTrain(){
+      let params = {
+        address: this.params.address,
+        content: this.params.content,
+        persionAmount: this.params.persionAmount,
+        teacher: this.params.teacher,
+        showObj: this.params.showObj,
+        showDate: this.params.showDate,
+        beginTime: this.params.beginTime,
+        endTime: this.params.endTime,
+        id: this.id ? this.id : null,
+        corpId: this.params.corpId
+      }
+      let res = await saveOrUpdateFire(params)
+      if (res.code === '0') {
+        this.$toast(this.id ? '保存成功' : '新增成功')
+        setTimeout(() => {
+          this.$router.push({
+            name: 'FireExercise'
+          })
+        }, 1000)
+      } else {
+        this.$toast(res.msg)
+      }
+    },
+    async fireAuditor(){
+      const res = await fireAuditor({ showId: this.id })
+      if (res.code === '0') {
+        this.$toast('审核成功')
+        setTimeout(() => {
+          this.$router.push({
+            name: 'FireExercise'
+          })
+        }, 1000)
+      } else {
+        this.$toast(res.msg)
+      }
+    },
+    async fireFinish(){
+      const res = await fireFinish({ showId: this.id })
+      if (res.code === '0') {
+        this.$toast('完成成功')
+        setTimeout(() => {
+          this.$router.push({
+            name: 'FireExercise'
+          })
+        }, 1000)
+      } else {
+        this.$toast(res.msg)
+      }
+    },
+    async fireReject(){
+      const res = await fireReject({
+        id: this.id,
+        auditorFailReason: this.params.auditorFailReason
+       })
+      if (res.code === '0') {
+        this.$toast('驳回成功')
+        setTimeout(() => {
+          this.$router.push({
+            name: 'FireExercise'
+          })
+        }, 1000)
+      } else {
+        this.$toast(res.msg)
+      }
+    },
+    async fireSubmit(){
+      const res = await fireSubmit({ showId: this.id })
+      if (res.code === '0') {
+        this.$toast('提交成功')
+        setTimeout(() => {
+          this.$router.push({
+            name: 'FireExercise'
+          })
+        }, 1000)
       } else {
         this.$toast(res.msg)
       }
@@ -275,6 +427,16 @@ export default {
           }
         }
         done()
+      }
+    },
+    async getControllerButton(){
+      const res = await getFireControllerButton({
+        showId: this.id
+      });
+      if(res.code === '0'){
+        this.btnPermission = res.data;
+      }else{
+        this.$toast(res.msg)
       }
     }
   }

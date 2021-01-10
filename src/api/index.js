@@ -85,7 +85,12 @@ const original = {
     Get: '/data/api/train/get',
     RemoveImg: '/data/api/train/removeImg',
     SaveOrUpdate: '/data/api/train/saveOrUpdate',
-    UploadImg: '/data/api/train/uploadImg'
+    UploadImg: '/data/api/train/uploadImg',
+    GetControllerButton: '/data/api/train/getControllerButton',
+    Submit: '/data/api/train/submit',
+    Reject: '/data/api/train/reject',
+    Finish: '/data/api/train/finish',
+    Auditor: '/data/api/train/auditor'
   },
   fireExercise: {
     SaveOrUpdate: '/data/api/show/saveOrUpdate',
@@ -93,7 +98,12 @@ const original = {
     Get: '/data/api/show/get',
     List: '/data/api/show/list',
     UploadImg: '/data/api/show/uploadImg',
-    RemoveImg: '/data/api/show/removeImg'
+    RemoveImg: '/data/api/show/removeImg',
+    GetControllerButton: '/data/api/show/getControllerButton',
+    Submit: '/data/api/show/submit',
+    Reject: '/data/api/show/reject',
+    Finish: '/data/api/show/finish',
+    Auditor: '/data/api/show/auditor'
   }
 }
 

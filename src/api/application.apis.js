@@ -477,6 +477,51 @@ export function getTrainDetail(params) {
   })
 }
 
+//获取控制显示按钮
+export function getTrainControllerButton(params){
+  return request({
+    url: api.train.GetControllerButton,
+    method: 'get',
+    params
+  })
+}
+
+//审核通过
+export function trainAuditor(params){
+  return request({
+    url: api.train.Auditor,
+    method: 'get',
+    params
+  })
+}
+
+//完成
+export function trainFinish(params){
+  return request({
+    url: api.train.Finish,
+    method: 'get',
+    params
+  })
+}
+
+//驳回
+export function trainReject(data){
+  return request({
+    url: api.train.Reject,
+    method: 'post',
+    data
+  })
+}
+
+//提交
+export function trainSubmit(params){
+  return request({
+    url: api.train.Submit,
+    method: 'get',
+    params
+  })
+}
+
 //培训演练培训保存
 export function saveOrUpdateTrain(data) {
   return request({
@@ -526,6 +571,50 @@ export function getFireList(params) {
 export function getFireDetail(params) {
   return request({
     url: api.fireExercise.Get,
+    method: 'get',
+    params
+  })
+}
+//获取控制显示按钮
+export function getFireControllerButton(params){
+  return request({
+    url: api.fireExercise.GetControllerButton,
+    method: 'get',
+    params
+  })
+}
+
+//审核通过
+export function fireAuditor(params){
+  return request({
+    url: api.fireExercise.Auditor,
+    method: 'get',
+    params
+  })
+}
+
+//完成
+export function fireFinish(params){
+  return request({
+    url: api.fireExercise.Finish,
+    method: 'get',
+    params
+  })
+}
+
+//驳回
+export function fireReject(data){
+  return request({
+    url: api.fireExercise.Reject,
+    method: 'post',
+    data
+  })
+}
+
+//提交
+export function fireSubmit(params){
+  return request({
+    url: api.fireExercise.Submit,
     method: 'get',
     params
   })
