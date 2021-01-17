@@ -28,11 +28,13 @@ export default {
       list: [],
       params: {
         limit: 6,
-        page: 1
+        page: 1,
+        corpId: ''
       },
     }
   },
   created() {
+    this.params.corpId = JSON.parse(localStorage.getItem('select_enterprise')).id
     this.getList()
   },
   methods: {

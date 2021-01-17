@@ -63,7 +63,7 @@ export const constantRouterMap = [
       {
         path: '/event',
         name: 'Event',
-        component: () => import('@/views/event/event'),
+        component: () => import('@/views/event/eventTab'),
         meta: { title: '添加巡查记录', keepAlive: false }
       },
       {

@@ -4,7 +4,7 @@
 -->
 <template>
   <div>
-    <van-tabbar fixed route v-model="active" @change="handleChange">
+    <van-tabbar fixed route v-model="active" @change="handleChange" z-index="99">
       <van-tabbar-item
         v-for="(item, index) in data"
         :to="item.to"

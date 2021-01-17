@@ -51,7 +51,8 @@ export default {
       params: {
         limit: 6,
         page: 1,
-        keyword: ''
+        keyword: '',
+        corpId: ''
       },
       loading: false,
       finished: false,
@@ -60,12 +61,8 @@ export default {
     }
   },
   mounted() {
+    this.params.corpId = JSON.parse(localStorage.getItem('select_enterprise')).id
     this.getList(this.params)
-    // 生成唯一uuid
-    const uuid = getUuid()
-    if (!localStorage.getItem('uuid')) {
-      localStorage.setItem('uuid', uuid)
-    }
   },
   methods: {
     onClickLeft() {
@@ -109,19 +106,6 @@ export default {
         this.totalSize = res.count
         // 加载状态结束
         this.loading = false
-        this.$nextTick(() => {
-          setTimeout(() => {
-            let that = this
-            this.list.forEach((res, index) => {
-              let videoControls = document.getElementById('videoControls' + index)
-              console.log(videoControls)
-              videoControls.addEventListener('play', function() {
-                //播放开始执行的函数
-                that.playVideo(res.id)
-              })
-            }, 2000)
-          })
-        })
       } else {
         this.$toast(res.msg)
         this.list = []
@@ -135,24 +119,10 @@ export default {
           remark: item.remark,
           title: item.title,
           url: item.url,
-          todayOnlineUsers: item.todayOnlineUsers
+          todayOnlineUsers: item.todayOnlineUsers,
+          id: item.id
         }
       })
-    },
-    async playVideo(id) {
-      let res = await playVideo({
-        id: id,
-        uuid: localStorage.getItem('uuid'),
-        userUid: localStorage.getItem('select_enterprise').uid
-      })
-      if (res.code === '0') {
-        this.list.forEach(l => {
-          if (l.id === id) {
-            l.palyTimes = res.data.palyTimes
-            l.todayOnlineUsers = res.data.todayOnlineUsers
-          }
-        })
-      }
     }
   }
 }

@@ -45,7 +45,11 @@ const original = {
     SubmitEvent: '/data/api/event/submitEvent',
     UploadImg: '/data/api/event/uploadImg',
     GetEventControlerButton: '/data/api/event/getEventControlerButton',
-    DeleteEvent: '/data/api/event/deleteEvent'
+    DeleteEvent: '/data/api/event/deleteEvent',
+    FindEventAuditors: '/data/api/event/findEventAuditors',
+    EventAuditorReject: '/data/api/event/eventAuditorReject',
+    EventAuditorOk: '/data/api/event/eventAuditorOk',
+    RejectEvent: '/data/api/event/rejectEvent'
   },
   room: {
     FindByCorpId: '/data/api/room/findByCorpId'
@@ -74,7 +78,7 @@ const original = {
     GetPhoneCode: '/data/api/user/getPhoneCode'
   },
   publicNetDisk: {
-    ListMsg: '/data/api/publicNetDisk/listMsg'
+    List: '/data/api/publicNetDisk/list'
   },
   corpDisk: {
     List: '/data/api/corpDisk/list'

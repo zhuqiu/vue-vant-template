@@ -141,7 +141,8 @@ export default {
         name: 'Event',
         query: {
           id: val.id,
-          status: val.status
+          status: val.status,
+          auditorFlg: val.auditorFlg
         }
       })
     },

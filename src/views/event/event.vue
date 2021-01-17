@@ -1,8 +1,5 @@
 <template>
   <div>
-    <van-sticky>
-      <van-nav-bar :title="edit ? '巡查记录' : '新增巡查记录'" left-text="返回" left-arrow @click-left="onClickLeft" />
-    </van-sticky>
     <div class="content-view" v-if="edit">
       <ul class="content-detail">
         <li>
@@ -52,14 +49,14 @@
         <li
           v-if="
             (statusNumber === '0' || statusNumber === '2' || statusNumber === '3') &&
-              fileList.filter(res => res.imgType === 1).length > 0
+            fileList.filter(res => res.imgType === 1).length > 0
           "
         >
           <div class="content-label">检查图片</div>
           <div class="content-nav">
             <div>
               <van-image
-                style="margin-right: 0.32rem;"
+                style="margin-right: 0.32rem"
                 width="100"
                 height="100"
                 v-for="(item, index) in fileList.filter(res => res.imgType === 1)"
@@ -83,7 +80,7 @@
           <div class="content-nav">{{ data.nickname }}</div>
         </li>
         <li v-if="data.expectRepairDate">
-          <div class="content-label">预期整改时间</div>
+          <div class="content-label">限期期整改时间</div>
           <div class="content-nav">{{ data.expectRepairDate }}</div>
         </li>
         <li v-if="data.corpConfirmCheckResultTime">
@@ -103,7 +100,7 @@
           <div class="content-nav">
             <div>
               <van-image
-                style="margin-right: 0.32rem;"
+                style="margin-right: 0.32rem"
                 width="100"
                 height="100"
                 v-for="(item, index) in fileList.filter(res => res.imgType === 2)"
@@ -270,7 +267,7 @@
       <van-popup v-model="showPicker" position="bottom">
         <van-picker show-toolbar :columns="columns" @confirm="onConfirm" @cancel="showPicker = false" />
       </van-popup>
-      <div style="margin: 0.32rem;">
+      <div style="margin: 0.32rem">
         <van-button round block type="info" native-type="submit" v-if="!edit" :disabled="disabled">新增</van-button>
         <van-button round block type="info" native-type="submit" v-if="statusNumber === '1'" :disabled="disabled"
           >提交</van-button
@@ -305,11 +302,26 @@ import {
   getEventDetail,
   uploadImg,
   removeImg,
-  getEventControlerButton
+  getEventControlerButton,
+  rejectEvent
 } from '../../api/application.apis'
 
 export default {
-  name: 'AddEvent',
+  name: 'Event',
+  props: {
+    id: {
+      type: Number,
+      default: () => {
+        return ''
+      }
+    },
+    status: {
+      type: Number,
+      default: () => {
+        return ''
+      }
+    }
+  },
   data() {
     return {
       parmas: {
@@ -346,14 +358,12 @@ export default {
       thirdName: '',
       roomList: [],
       edit: false,
-      status: '',
       fileList: [],
       imgList: [], // 当前图片组件中的文件信息
       disabled: false,
       statusTypeItem: '',
       btnText: '新增',
       minDate: new Date(),
-      id: '',
       role: '',
       statusNumber: '',
       checkSafeLevelName: '', //风险等级
@@ -385,12 +395,10 @@ export default {
   created() {
     this.role = localStorage.getItem('user_type')
     this.corpName = JSON.parse(localStorage.getItem('select_enterprise')).corpName
-    this.id = Number(this.$route.query.id)
     this.statusTypeItem = StatusTypeItem
     this.edit = !!this.id
     if (this.edit) {
       this.getEventControlerButton()
-      this.status = Number(this.$route.query.status)
       if (this.status === StatusTypeItem.Pending || this.status === StatusTypeItem.EnterpriseReject) {
         this.submitEventParam.eventId = this.id
         this.btnText = '提交'
@@ -431,9 +439,6 @@ export default {
     }
   },
   methods: {
-    onClickLeft() {
-      history.go(-1)
-    },
     afterRead(file) {
       file.status = 'uploading'
       file.message = '上传中...'
@@ -586,7 +591,7 @@ export default {
             replyStatus: this.confirmEventParam.replyStatus
           }
           if (this.status === StatusTypeItem.CheckNotPass && !this.submitEventParam.expectRepairDate) {
-            this.$toast('请选择预期整改时间')
+            this.$toast('请选择限期整改时间')
             this.disabled = false
             return
           }

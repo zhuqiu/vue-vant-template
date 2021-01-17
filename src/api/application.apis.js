@@ -146,6 +146,42 @@ export function deleteEvent(params) {
   })
 }
 
+//查询事件审核流程列表
+export function findEventAuditors(params) {
+  return request({
+    url: api.event.FindEventAuditors,
+    method: 'get',
+    params
+  })
+}
+
+//事件流程审核-同意
+export function eventAuditorOk(params) {
+  return request({
+    url: api.event.EventAuditorOk,
+    method: 'get',
+    params
+  })
+}
+
+//事件流程审核-驳回
+export function eventAuditorReject(params) {
+  return request({
+    url: api.event.EventAuditorReject,
+    method: 'get',
+    params
+  })
+}
+
+//运维巡查员可驳回企业已结案的事项
+export function rejectEvent(params) {
+  return request({
+    url: api.event.RejectEvent,
+    method: 'get',
+    params
+  })
+}
+
 /**
  * 批次接口服务
  */
@@ -444,7 +480,7 @@ export function getPhoneCode(params) {
 //分页查询公共网盘
 export function getPublicNetDisk(params) {
   return request({
-    url: api.publicNetDisk.ListMsg,
+    url: api.publicNetDisk.List,
     method: 'get',
     params
   })
