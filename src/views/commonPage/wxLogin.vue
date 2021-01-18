@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-08-14 09:57:06
- * @LastEditors: zhuqiu
- * @LastEditTime: 2020-08-20 14:12:11
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-01-18 17:44:46
  * @FilePath: \project\src\views\commonPage\wxLogin.vue
 -->
 <template>
@@ -40,8 +40,14 @@ export default {
         } else {
           localStorage.setItem('token', res.data.token)
           localStorage.setItem('user_type', res.data.userType)
+          let pathName = 'Home'
+          if (query.state !== 'null' || !query.state) {
+            pathName = 'Home'
+          } else {
+            pathName = query.state
+          }
           setTimeout(() => {
-            this.$router.push({ name: 'Home' })
+            this.$router.push({ name: pathName })
           }, 500)
         }
       } else {
