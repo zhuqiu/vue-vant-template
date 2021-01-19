@@ -40,14 +40,18 @@ export default {
         } else {
           localStorage.setItem('token', res.data.token)
           localStorage.setItem('user_type', res.data.userType)
-          let pathName = 'Home'
-          if (query.state !== 'null' || !query.state) {
-            pathName = 'Home'
+          let pathName = '/home'
+          if (query.state === 'null' || !query.state) {
+            pathName = '/home'
           } else {
-            pathName = query.state.split('/')[0]
+            let path = query.state.split('/')[0]
+            pathName = path.replace(path[0], path[0].toLowerCase())
           }
           setTimeout(() => {
-            this.$router.push({ name: pathName })
+            // this.$router.push({ name: pathName })
+            this.$router.replace({
+              path: pathName
+            })
           }, 500)
         }
       } else {

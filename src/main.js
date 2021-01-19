@@ -38,6 +38,10 @@ Vue.use(Dialog)
 import './filters'
 Vue.config.productionTip = false
 
+// import Vconsole from 'vconsole'
+// let vConsole = new Vconsole()
+// Vue.use(vConsole)
+
 // 进入时清理token ,让每一次进入页面都先去访问登录页
 localStorage.removeItem('token')
 
