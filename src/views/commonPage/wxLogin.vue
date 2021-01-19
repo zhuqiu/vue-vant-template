@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-08-14 09:57:06
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-18 17:44:46
+ * @LastEditTime: 2021-01-19 10:02:58
  * @FilePath: \project\src\views\commonPage\wxLogin.vue
 -->
 <template>
@@ -44,7 +44,7 @@ export default {
           if (query.state !== 'null' || !query.state) {
             pathName = 'Home'
           } else {
-            pathName = query.state
+            pathName = query.state.split('/')[0]
           }
           setTimeout(() => {
             this.$router.push({ name: pathName })
