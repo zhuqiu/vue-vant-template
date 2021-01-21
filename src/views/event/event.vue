@@ -48,7 +48,7 @@
         </li>
         <li
           v-if="
-            (statusNumber === '0' || statusNumber === '2' || statusNumber === '3') &&
+            (statusNumber === '0' || statusNumber === '2' || statusNumber === '3' || statusNumber === '4') &&
             fileList.filter(res => res.imgType === 1).length > 0
           "
         >
@@ -95,7 +95,7 @@
           <div class="content-label">实际整改时间</div>
           <div class="content-nav">{{ data.repairDate }}</div>
         </li>
-        <li v-if="statusNumber === '0' && fileList.filter(res => res.imgType === 2).length > 0">
+        <li v-if="(statusNumber === '0' || statusNumber === '4') && fileList.filter(res => res.imgType === 2).length > 0">
           <div class="content-label">整改图片</div>
           <div class="content-nav">
             <div>
