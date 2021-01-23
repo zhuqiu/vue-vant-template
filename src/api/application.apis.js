@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-16 16:14:34
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-12-05 16:50:23
+ * @LastEditTime: 2021-01-23 13:50:46
  * @FilePath: \project\src\api\application.apis.js
  */
 import api from './index'
@@ -174,11 +174,11 @@ export function eventAuditorReject(params) {
 }
 
 //运维巡查员可驳回企业已结案的事项
-export function rejectEvent(params) {
+export function rejectEvent(data) {
   return request({
     url: api.event.RejectEvent,
-    method: 'get',
-    params
+    method: 'post',
+    data
   })
 }
 

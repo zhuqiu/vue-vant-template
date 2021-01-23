@@ -278,8 +278,15 @@
         <van-button round block type="info" native-type="submit" v-if="statusNumber === '2'" :disabled="disabled"
           >确认</van-button
         >
+        <van-button round block type="info" native-type="submit" v-if="statusNumber === '4'" :disabled="disabled"
+          >驳回</van-button
+        >
       </div>
     </van-form>
+    <van-dialog v-model="showReject" title="驳回原因" @confirm="handleConfirm" @cancel="handleCancel" show-cancel-button>
+      <!-- <div style="font-size:12px;padding: 8px 16px;color:#ee0a24">不落实安全生产主体责任，如发生事故，将承担法律责任</div> -->
+      <van-field v-model="rejectReason" rows="3" autosize label="" type="textarea" placeholder="请输入驳回原因" />
+    </van-dialog>
   </div>
 </template>
 
@@ -389,7 +396,9 @@ export default {
           id: 5,
           text: '可忽略风险'
         }
-      ]
+      ],
+      showReject: false,
+      rejectReason: ''
     }
   },
   created() {
@@ -620,8 +629,26 @@ export default {
             this.disabled = false
             this.$toast(res.msg)
           }
+        }else if(this.statusNumber === '4'){
+          this.showReject = true
+          //const res = await finishRepair(rejectEvent)
         }
       }
+    },
+    async handleConfirm(){
+      const res = await rejectEvent({
+        eventId: this.id,
+        isTask: true,
+        rejectReason: this.rejectReason
+      })
+      if(res.code === '0'){
+        this.goToAllTodo();
+      }else{
+        this.$toast(res.msg)
+      }
+    },
+    handleCancel(){
+      this.showReject = false
     },
     goToAllTodo() {
       setTimeout(() => {
