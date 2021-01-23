@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-08-14 09:57:06
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-19 10:02:58
+ * @LastEditTime: 2021-01-21 12:56:05
  * @FilePath: \project\src\views\commonPage\wxLogin.vue
 -->
 <template>
@@ -41,16 +41,22 @@ export default {
           localStorage.setItem('token', res.data.token)
           localStorage.setItem('user_type', res.data.userType)
           let pathName = '/home'
-          if (query.state === 'null' || !query.state) {
+          let queryPath;
+          if (query.state === 'null' || query.state === '123' || !query.state) {
             pathName = '/home'
           } else {
-            let path = query.state.split('/')[0]
+            let path = query.state.split('/')[0];
+            if(path.indexOf('?') > -1){
+              path = path.split('?')[0]
+              queryPath = GetRequest(path.split('?')[1]);
+            }
             pathName = path.replace(path[0], path[0].toLowerCase())
           }
           setTimeout(() => {
             // this.$router.push({ name: pathName })
-            this.$router.replace({
-              path: pathName
+            this.$router.push({
+              path: pathName,
+              query: queryPath
             })
           }, 500)
         }

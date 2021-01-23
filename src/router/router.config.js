@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-12-05 11:58:33
+ * @LastEditTime: 2021-01-21 12:37:20
  * @FilePath: \project\src\router\router.config.js
  */
 /**
@@ -197,7 +197,14 @@ export const constantRouterMap = [
         name: 'TrainDrill',
         component: () => import('@/views/trainDrill/list'),
         meta: { title: '培训演练', keepAlive: false }
-      }
+      },
+      //匹配不到路径时跳转至登录页
+      {
+        path: '*',
+        name: 'WxLogin',
+        component: () => import('@/views/commonPage/wxLogin'),
+        meta: { title: '登录页', keepAlive: false }
+      },
     ]
   },
   {
