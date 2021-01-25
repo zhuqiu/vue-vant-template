@@ -278,7 +278,10 @@
         <van-button round block type="info" native-type="submit" v-if="statusNumber === '2'" :disabled="disabled"
           >确认</van-button
         >
-        <van-button round block type="info" native-type="submit" v-if="statusNumber === '4'" :disabled="disabled"
+        <van-button @click="endEvent = true" round block type="primary" native-type="submit" v-if="statusNumber === '4' && data.status !== 4" :disabled="disabled"
+          >结案</van-button
+        >
+        <van-button @click="endEvent = false" style="margin-top: 10px;" round block type="info" native-type="submit" v-if="statusNumber === '4' && data.status !== 4" :disabled="disabled"
           >驳回</van-button
         >
       </div>
@@ -310,7 +313,8 @@ import {
   uploadImg,
   removeImg,
   getEventControlerButton,
-  rejectEvent
+  rejectEvent,
+  endEvent
 } from '../../api/application.apis'
 
 export default {
@@ -398,7 +402,8 @@ export default {
         }
       ],
       showReject: false,
-      rejectReason: ''
+      rejectReason: '',
+      endEvent: false
     }
   },
   created() {
@@ -630,7 +635,19 @@ export default {
             this.$toast(res.msg)
           }
         }else if(this.statusNumber === '4'){
-          this.showReject = true
+          if(this.endEvent){
+            const res = await endEvent({
+              eventId: this.id
+            })
+            if(res.code === '0'){
+              this.goToAllTodo();
+            }else{
+              this.$toast(res.msg)
+            }
+          }else{
+            this.showReject = true
+          }
+          
           //const res = await finishRepair(rejectEvent)
         }
       }

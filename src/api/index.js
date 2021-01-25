@@ -49,7 +49,8 @@ const original = {
     FindEventAuditors: '/data/api/event/findEventAuditors',
     EventAuditorReject: '/data/api/event/eventAuditorReject',
     EventAuditorOk: '/data/api/event/eventAuditorOk',
-    RejectEvent: '/data/api/event/rejectEvent'
+    RejectEvent: '/data/api/event/rejectEvent',
+    EndEvent: '/data/api/event/endEvent'   
   },
   room: {
     FindByCorpId: '/data/api/room/findByCorpId'

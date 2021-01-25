@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-16 16:14:34
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-23 13:50:46
+ * @LastEditTime: 2021-01-25 22:12:11
  * @FilePath: \project\src\api\application.apis.js
  */
 import api from './index'
@@ -179,6 +179,15 @@ export function rejectEvent(data) {
     url: api.event.RejectEvent,
     method: 'post',
     data
+  })
+}
+
+//结案 事项
+export function endEvent(params) {
+  return request({
+    url: api.event.EndEvent,
+    method: 'get',
+    params
   })
 }
 
