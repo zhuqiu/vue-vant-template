@@ -10,7 +10,7 @@
         @clear="onCancel"
       >
         <template #left>
-          <van-icon name="scan" size="30" style="margin-right:10px" color="#666" />
+          <van-icon name="scan" size="30" style="margin-right:10px" color="#666" @click="scanQr" />
         </template>
         <template #action>
           <div @click="onSearch">搜索</div>
@@ -102,7 +102,6 @@ export default {
     },
     handleClick(item) {
       let that = this
-      let checkResult = item.checkResult
       let content = `确认点检${item.checkResult === 1 ? '不合格' : '合格'}吗？`
       this.$dialog.confirm({
         title: '温馨提示',

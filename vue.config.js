@@ -53,12 +53,12 @@ module.exports = {
     },
     proxy: {
       //配置跨域
-      '/api': {
+      '/data': {
         target: 'http://ac.sacc2017.com:8888',
         // ws:true,
         changOrigin: true,
         pathRewrite: {
-          '^/api': '/'
+          '^/data': '/'
         }
       }
     }

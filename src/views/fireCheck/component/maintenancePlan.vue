@@ -16,7 +16,7 @@
         @input="onInput"
       >
         <template #left>
-          <van-icon name="scan" size="30" style="margin-right:10px" color="#666" />
+          <van-icon name="scan" size="30" style="margin-right:10px" color="#666" @click="scanQr" />
         </template>
         <template #action>
           <div @click="onSearch">搜索</div>
