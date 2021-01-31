@@ -22,43 +22,43 @@
       <ul class="content-detail">
         <li>
           <div class="content-label">器材类别</div>
-          <div class="content-nav">{{ corpName }}</div>
+          <div class="content-nav">{{ data.categoryName }}</div>
         </li>
         <li>
           <div class="content-label">器材编号</div>
-          <div class="content-nav">{{ corpName }}</div>
+          <div class="content-nav">{{ data.equipmentNo }}</div>
         </li>
         <li>
           <div class="content-label">存放位置</div>
-          <div class="content-nav">{{ corpName }}</div>
+          <div class="content-nav">{{ data.location }}</div>
         </li>
         <li>
           <div class="content-label">下次保养日</div>
-          <div class="content-nav">{{ corpName }}</div>
+          <div class="content-nav">{{ data.nextKeepDate }}</div>
         </li>
-        <li>
+        <!-- <li>
           <div class="content-label">器材状态</div>
-          <div class="content-nav">{{ corpName }}</div>
-        </li>
+          <div class="content-nav">{{ data. }}</div>
+        </li> -->
         <li>
-          <div class="content-label">包养人</div>
-          <div class="content-nav">{{ corpName }}</div>
+          <div class="content-label">保养人</div>
+          <div class="content-nav">{{ data.keepPersion }}</div>
         </li>
         <li>
           <div class="content-label">建档日期</div>
-          <div class="content-nav">{{ corpName }}</div>
+          <div class="content-nav">{{ data.ctime }}</div>
         </li>
-        <li>
+        <!-- <li>
           <div class="content-label">使用部门</div>
           <div class="content-nav">{{ corpName }}</div>
-        </li>
+        </li> -->
         <li>
           <div class="content-label">生产日期</div>
-          <div class="content-nav">{{ corpName }}</div>
+          <div class="content-nav">{{ data.dayOfMake }}</div>
         </li>
         <li>
           <div class="content-label">使用年限（年）</div>
-          <div class="content-nav">{{ corpName }}</div>
+          <div class="content-nav">{{ data.userLimitYear }}</div>
         </li>
       </ul>
     </div>
@@ -100,7 +100,12 @@ export default {
         equipmentNo: this.params.keyword
       })
       if (res.code === '0') {
-        this.flag = true
+        if (res.data) {
+          this.flag = true
+          this.data = res.data
+        } else {
+          this.flag = false
+        }
       } else {
         this.flag = false
         this.$toast(res.msg)
@@ -146,7 +151,7 @@ export default {
       border: none;
     }
     .content-label {
-      width: 3.5rem;
+      width: 4.2rem;
       margin-right: 0.3rem;
       color: #646566;
       text-align: left;
