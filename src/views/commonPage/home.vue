@@ -103,6 +103,12 @@ export default {
           text: '培训演练',
           color: '#66CCFF',
           path: 'TrainDrill'
+        },
+        {
+          icon: 'comment',
+          text: '消防点检',
+          color: '#00FF99',
+          path: 'FireCheck'
         }
         // {
         //   icon: 'comment',

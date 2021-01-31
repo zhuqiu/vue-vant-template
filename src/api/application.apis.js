@@ -523,7 +523,7 @@ export function getTrainDetail(params) {
 }
 
 //获取控制显示按钮
-export function getTrainControllerButton(params){
+export function getTrainControllerButton(params) {
   return request({
     url: api.train.GetControllerButton,
     method: 'get',
@@ -532,7 +532,7 @@ export function getTrainControllerButton(params){
 }
 
 //审核通过
-export function trainAuditor(params){
+export function trainAuditor(params) {
   return request({
     url: api.train.Auditor,
     method: 'get',
@@ -541,7 +541,7 @@ export function trainAuditor(params){
 }
 
 //完成
-export function trainFinish(params){
+export function trainFinish(params) {
   return request({
     url: api.train.Finish,
     method: 'get',
@@ -550,7 +550,7 @@ export function trainFinish(params){
 }
 
 //驳回
-export function trainReject(data){
+export function trainReject(data) {
   return request({
     url: api.train.Reject,
     method: 'post',
@@ -559,7 +559,7 @@ export function trainReject(data){
 }
 
 //提交
-export function trainSubmit(params){
+export function trainSubmit(params) {
   return request({
     url: api.train.Submit,
     method: 'get',
@@ -621,7 +621,7 @@ export function getFireDetail(params) {
   })
 }
 //获取控制显示按钮
-export function getFireControllerButton(params){
+export function getFireControllerButton(params) {
   return request({
     url: api.fireExercise.GetControllerButton,
     method: 'get',
@@ -630,7 +630,7 @@ export function getFireControllerButton(params){
 }
 
 //审核通过
-export function fireAuditor(params){
+export function fireAuditor(params) {
   return request({
     url: api.fireExercise.Auditor,
     method: 'get',
@@ -639,7 +639,7 @@ export function fireAuditor(params){
 }
 
 //完成
-export function fireFinish(params){
+export function fireFinish(params) {
   return request({
     url: api.fireExercise.Finish,
     method: 'get',
@@ -648,7 +648,7 @@ export function fireFinish(params){
 }
 
 //驳回
-export function fireReject(data){
+export function fireReject(data) {
   return request({
     url: api.fireExercise.Reject,
     method: 'post',
@@ -657,7 +657,7 @@ export function fireReject(data){
 }
 
 //提交
-export function fireSubmit(params){
+export function fireSubmit(params) {
   return request({
     url: api.fireExercise.Submit,
     method: 'get',
@@ -696,6 +696,51 @@ export function removeImgFire(params) {
 export function deleteFire(params) {
   return request({
     url: api.fireExercise.Delete,
+    method: 'get',
+    params
+  })
+}
+
+//器材点检
+export function checkEquipment(params) {
+  return request({
+    url: api.fireCheck.CheckEquipment,
+    method: 'get',
+    params
+  })
+}
+
+//器材查询
+export function listNotCheckEquipmentThisMonth(params) {
+  return request({
+    url: api.fireCheck.ListNotCheckEquipmentThisMonth,
+    method: 'get',
+    params
+  })
+}
+
+//器材查询
+export function equipmentQuery(params) {
+  return request({
+    url: api.fireCheck.Query,
+    method: 'get',
+    params
+  })
+}
+
+//器材查询-点检
+export function query4Check(params) {
+  return request({
+    url: api.fireCheck.Query4Check,
+    method: 'get',
+    params
+  })
+}
+
+//微信获取基本信息
+export function initWXJSInterface(params) {
+  return request({
+    url: api.wxInfo.InitWXJSInterface,
     method: 'get',
     params
   })

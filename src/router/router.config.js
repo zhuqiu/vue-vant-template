@@ -198,6 +198,30 @@ export const constantRouterMap = [
         component: () => import('@/views/trainDrill/list'),
         meta: { title: '培训演练', keepAlive: false }
       },
+      {
+        path: '/fireCheck',
+        name: 'FireCheck',
+        component: () => import('@/views/fireCheck/list'),
+        meta: { title: '消防点检', keepAlive: false }
+      },
+      {
+        path: '/maintenancePlan',
+        name: 'MaintenancePlan',
+        component: () => import('@/views/fireCheck/component/maintenancePlan'),
+        meta: { title: '保养计划', keepAlive: false }
+      },
+      {
+        path: '/checkEquipment',
+        name: 'CheckEquipment',
+        component: () => import('@/views/fireCheck/component/checkEquipment'),
+        meta: { title: '器材点检', keepAlive: false }
+      },
+      {
+        path: '/equipmentQuery',
+        name: 'EquipmentQuery',
+        component: () => import('@/views/fireCheck/component/equipmentQuery'),
+        meta: { title: '器材查询', keepAlive: false }
+      },
       //匹配不到路径时跳转至登录页
       {
         path: '*',

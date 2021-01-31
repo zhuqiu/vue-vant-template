@@ -50,7 +50,7 @@ const original = {
     EventAuditorReject: '/data/api/event/eventAuditorReject',
     EventAuditorOk: '/data/api/event/eventAuditorOk',
     RejectEvent: '/data/api/event/rejectEvent',
-    EndEvent: '/data/api/event/endEvent'   
+    EndEvent: '/data/api/event/endEvent'
   },
   room: {
     FindByCorpId: '/data/api/room/findByCorpId'
@@ -109,6 +109,15 @@ const original = {
     Reject: '/data/api/show/reject',
     Finish: '/data/api/show/finish',
     Auditor: '/data/api/show/auditor'
+  },
+  fireCheck: {
+    ListNotCheckEquipmentThisMonth: '/data/api/equipment/listNotCheckEquipmentThisMonth',
+    CheckEquipment: '/data/api/equipment/checkEquipment',
+    Query: '/data/api/equipment/query',
+    Query4Check: '/data/api/equipment/query4Check'
+  },
+  wxInfo: {
+    InitWXJSInterface: '/data/weixin/initWXJSInterface'
   }
 }
 
