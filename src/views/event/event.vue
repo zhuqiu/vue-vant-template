@@ -49,7 +49,7 @@
         <li
           v-if="
             (statusNumber === '0' || statusNumber === '2' || statusNumber === '3' || statusNumber === '4') &&
-            fileList.filter(res => res.imgType === 1).length > 0
+              fileList.filter(res => res.imgType === 1).length > 0
           "
         >
           <div class="content-label">检查图片</div>
@@ -95,7 +95,9 @@
           <div class="content-label">实际整改时间</div>
           <div class="content-nav">{{ data.repairDate }}</div>
         </li>
-        <li v-if="(statusNumber === '0' || statusNumber === '4') && fileList.filter(res => res.imgType === 2).length > 0">
+        <li
+          v-if="(statusNumber === '0' || statusNumber === '4') && fileList.filter(res => res.imgType === 2).length > 0"
+        >
           <div class="content-label">整改图片</div>
           <div class="content-nav">
             <div>
@@ -278,15 +280,36 @@
         <van-button round block type="info" native-type="submit" v-if="statusNumber === '2'" :disabled="disabled"
           >确认</van-button
         >
-        <van-button @click="endEvent = true" round block type="primary" native-type="submit" v-if="statusNumber === '4' && data.status !== 4" :disabled="disabled"
+        <van-button
+          @click="endEvent = true"
+          round
+          block
+          type="primary"
+          native-type="submit"
+          v-if="statusNumber === '4' && data.status !== 4"
+          :disabled="disabled"
           >结案</van-button
         >
-        <van-button @click="endEvent = false" style="margin-top: 10px;" round block type="info" native-type="submit" v-if="statusNumber === '4' && data.status !== 4" :disabled="disabled"
+        <van-button
+          @click="endEvent = false"
+          style="margin-top: 10px;"
+          round
+          block
+          type="info"
+          native-type="submit"
+          v-if="statusNumber === '4' && data.status !== 4"
+          :disabled="disabled"
           >驳回</van-button
         >
       </div>
     </van-form>
-    <van-dialog v-model="showReject" title="驳回原因" @confirm="handleConfirm" @cancel="handleCancel" show-cancel-button>
+    <van-dialog
+      v-model="showReject"
+      title="驳回原因"
+      @confirm="handleConfirm"
+      @cancel="handleCancel"
+      show-cancel-button
+    >
       <!-- <div style="font-size:12px;padding: 8px 16px;color:#ee0a24">不落实安全生产主体责任，如发生事故，将承担法律责任</div> -->
       <van-field v-model="rejectReason" rows="3" autosize label="" type="textarea" placeholder="请输入驳回原因" />
     </van-dialog>
@@ -634,37 +657,37 @@ export default {
             this.disabled = false
             this.$toast(res.msg)
           }
-        }else if(this.statusNumber === '4'){
-          if(this.endEvent){
+        } else if (this.statusNumber === '4') {
+          if (this.endEvent) {
             const res = await endEvent({
               eventId: this.id
             })
-            if(res.code === '0'){
-              this.goToAllTodo();
-            }else{
+            if (res.code === '0') {
+              this.goToAllTodo()
+            } else {
               this.$toast(res.msg)
             }
-          }else{
+          } else {
             this.showReject = true
           }
-          
+
           //const res = await finishRepair(rejectEvent)
         }
       }
     },
-    async handleConfirm(){
+    async handleConfirm() {
       const res = await rejectEvent({
         eventId: this.id,
         isTask: true,
         rejectReason: this.rejectReason
       })
-      if(res.code === '0'){
-        this.goToAllTodo();
-      }else{
+      if (res.code === '0') {
+        this.goToAllTodo()
+      } else {
         this.$toast(res.msg)
       }
     },
-    handleCancel(){
+    handleCancel() {
       this.showReject = false
     },
     goToAllTodo() {
@@ -697,7 +720,9 @@ export default {
       }
     },
     async getCheckTypeList() {
-      const res = await findRootList({ checkName: '' })
+      const res = await findRootList({
+        corpId: JSON.parse(localStorage.getItem('select_enterprise')).id
+      })
       if (res.code === '0') {
         this.columns = res.data.map(d => {
           return {

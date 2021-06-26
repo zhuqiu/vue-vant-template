@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-sticky>
-      <van-nav-bar title="培训演练" left-text="返回" left-arrow @click-left="onClickLeft" />
+      <van-nav-bar title="应急救援" left-text="返回" left-arrow @click-left="onClickLeft" />
     </van-sticky>
     <div class="margin">
       <van-grid :column-num="3">
@@ -22,15 +22,13 @@ export default {
       gridList: [
         {
           icon: 'underway',
-          text: '安全培训',
-          color: '#66CCFF',
-          path: 'SecurityProduction'
+          text: '应急救援队伍',
+          color: '#66CCFF'
         },
         {
           icon: 'comment',
-          text: '应急演练',
-          color: '#00FF99',
-          path: 'FireExercise'
+          text: '应急救援物资',
+          color: '#00FF99'
         }
       ]
     }
@@ -41,6 +39,10 @@ export default {
       history.go(-1)
     },
     handleClick(path) {
+      if (!path) {
+        this.$toast('功能正在开发中...')
+        return
+      }
       this.$router.push({
         name: path
       })

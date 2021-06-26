@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-sticky>
-      <van-nav-bar title="培训演练" left-text="返回" left-arrow @click-left="onClickLeft" />
+      <van-nav-bar title="巡查事项" left-text="返回" left-arrow @click-left="onClickLeft" />
     </van-sticky>
     <div class="margin">
       <van-grid :column-num="3">
@@ -22,15 +22,15 @@ export default {
       gridList: [
         {
           icon: 'underway',
-          text: '安全培训',
+          text: '入场登记',
           color: '#66CCFF',
-          path: 'SecurityProduction'
+          path: 'AllTodo'
         },
         {
           icon: 'comment',
-          text: '应急演练',
+          text: '巡查记录',
           color: '#00FF99',
-          path: 'FireExercise'
+          path: 'BatchList'
         }
       ]
     }

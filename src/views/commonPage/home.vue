@@ -1,23 +1,14 @@
 <!--
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-12-05 16:51:45
+ * @LastEditTime: 2021-06-26 18:15:42
  * @FilePath: \project\src\views\commonPage\home.vue
 -->
 <template>
   <div>
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-      <van-swipe-item>
-        <img src="../../assets/images/banner01.png" style="width:100%" alt="" />
-      </van-swipe-item>
-      <van-swipe-item>
-        <img src="../../assets/images/banner02.png" style="width:100%" alt="" />
-      </van-swipe-item>
-      <van-swipe-item>
-        <img src="../../assets/images/banner03.png" style="width:100%" alt="" />
-      </van-swipe-item>
-      <van-swipe-item>
-        <img src="../../assets/images/banner04.png" style="width:100%" alt="" />
+      <van-swipe-item v-for="item in imgList" :key="item.id">
+        <img :src="item.imgUrl" style="width:100%" alt="" />
       </van-swipe-item>
     </van-swipe>
     <div class="margin-top">
@@ -32,53 +23,35 @@
 </template>
 
 <script>
-import { wxLogin, listCorp, countUnreadMsgTotal } from '../../api/application.apis'
+import { wxLogin, listCorp, countUnreadMsgTotal, listCorpAdImg } from '../../api/application.apis'
 export default {
   name: 'Home',
   data() {
     return {
       gridList: [
-        // {
-        //   icon: 'comment',
-        //   text: '会议培训',
-        //   color: '#00FF99',
-        //   path: 'MeetingList'
-        // },
-        // {
-        //   icon: 'label',
-        //   text: '驻场登记',
-        //   color: '#9933FF',
-        //   path: 'WorkRecordList'
-        // },
         {
           icon: 'todo-list',
-          text: '巡查记录',
+          text: '巡查事项',
           color: '#6699FF',
-          path: 'AllTodo'
+          path: 'AllList'
         },
-        // {
-        //   icon: 'underway',
-        //   text: '巡查类型',
-        //   color: '#66CCFF',
-        //   path: 'OneLevel'
-        // },
         {
-          icon: 'todo-list',
+          icon: 'wap-nav',
           text: '风险管控',
           color: '#CC3399',
-          path: 'HighTodo'
+          path: 'HighManagement'
         },
         {
           icon: 'video',
           text: '在线培训',
           color: '#6666CC',
-          path: 'VideoList'
+          path: 'OnLineList'
         },
         {
           icon: 'column',
-          text: '入场登记',
+          text: '设施管理',
           color: '#00CC33',
-          path: 'BatchList'
+          path: 'FireCheckList'
         },
         {
           icon: 'wap-nav',
@@ -94,9 +67,9 @@ export default {
         },
         {
           icon: 'bars',
-          text: '应急管理',
+          text: '应急救援',
           color: '#9933FF',
-          path: 'AccountRecord'
+          path: 'RescueList'
         },
         {
           icon: 'underway',
@@ -106,22 +79,12 @@ export default {
         },
         {
           icon: 'comment',
-          text: '消防点检',
+          text: '危险作业',
           color: '#00FF99',
-          path: 'FireCheck'
+          path: 'FireIndex'
         }
-        // {
-        //   icon: 'comment',
-        //   text: '危险作业',
-        //   color: '#00FF99',
-        //   path: 'FireExercise'
-        // }
-        // {
-        //   icon: 'weapp-nav',
-        //   text: '敬请期待',
-        //   color: '#6666CC'
-        // }
-      ]
+      ],
+      imgList: []
     }
   },
   async mounted() {
@@ -177,6 +140,7 @@ export default {
             document.title = res.data[0].corpName
           }
         }
+        this.listCorpAdImg()
         this.countUnreadMsgTotal()
       } else if (res.code === '-1') {
         localStorage.setItem('select_enterprise', '')
@@ -195,6 +159,15 @@ export default {
       if (res.code === '0') {
         this.$store.dispatch('setUnReadMsg', res.data)
       }
+    },
+    async listCorpAdImg() {
+      let res = await listCorpAdImg({
+        corpId: JSON.parse(localStorage.getItem('select_enterprise')).id
+      }).then(res => {
+        if(res.code === '0') {
+          this.imgList = res.data;
+        }
+      })
     }
   }
 }

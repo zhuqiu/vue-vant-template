@@ -13,7 +13,6 @@
 </template>
 
 <script>
-
 import { findRootList } from '../../api/application.apis'
 
 export default {
@@ -31,15 +30,17 @@ export default {
       history.go(-1)
     },
     async getCheckTypeList() {
-      const res = await findRootList({ checkName: '' })
+      const res = await findRootList({
+        corpId: JSON.parse(localStorage.getItem('select_enterprise')).id
+      })
       if (res.code === '0') {
-        this.list = res.data;
+        this.list = res.data
       } else {
         this.$toast(res.msg)
         this.list = []
       }
     },
-    handleClick(item){
+    handleClick(item) {
       this.$router.push({
         name: 'SecondLevel',
         query: {
@@ -51,8 +52,8 @@ export default {
 }
 </script>
 <style lang="scss">
-.check-list{
-  li{
+.check-list {
+  li {
     margin: 0.32rem 0;
   }
 }

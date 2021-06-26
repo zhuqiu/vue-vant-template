@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-12-05 12:38:22
+ * @LastEditTime: 2021-06-25 13:03:21
  * @FilePath: \project\src\api\index.js
  */
 const original = {
@@ -50,7 +50,8 @@ const original = {
     EventAuditorReject: '/data/api/event/eventAuditorReject',
     EventAuditorOk: '/data/api/event/eventAuditorOk',
     RejectEvent: '/data/api/event/rejectEvent',
-    EndEvent: '/data/api/event/endEvent'
+    EndEvent: '/data/api/event/endEvent',
+    ListCorpAdImg: '/data/api/event/listCorpAdImg'
   },
   room: {
     FindByCorpId: '/data/api/room/findByCorpId'
@@ -61,7 +62,8 @@ const original = {
   },
   onlineVideo: {
     ListVideo: '/data/api/onlineVideo/listVideo',
-    Play: '/data/api/onlineVideo/play'
+    Play: '/data/api/onlineVideo/play',
+    FindCategory: '/data/api/onlineVideo/findCategory'
   },
   msg: {
     ListMsg: '/data/api/msg/listMsg',

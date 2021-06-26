@@ -2,18 +2,18 @@
   <div>
     <van-sticky>
       <van-search
-      v-model="params.keyword"
-      show-action
-      placeholder="请输入关键字"
-      @search="onSearch"
-      @cancel="onCancel"
-      @clear="onCancel"
-      @input="onInput"
-    >
-      <template #action>
-        <div @click="onSearch">搜索</div>
-      </template>
-    </van-search>
+        v-model="params.keyword"
+        show-action
+        placeholder="请输入关键字"
+        @search="onSearch"
+        @cancel="onCancel"
+        @clear="onCancel"
+        @input="onInput"
+      >
+        <template #action>
+          <div @click="onSearch">搜索</div>
+        </template>
+      </van-search>
     </van-sticky>
     <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
       <van-empty v-if="list.length === 0" description="暂无数据" />
@@ -28,9 +28,9 @@
       >
         <ul class="video-list">
           <li v-for="(item, index) in list" :key="index" @click="handleClick(item)">
-            <img :src="item.imgUrl"/>
-            <div class="title">{{item.title}}</div>
-            <div class="dec">{{item.remark}}</div>
+            <img :src="item.imgUrl" />
+            <div class="title">{{ item.title }}</div>
+            <div class="dec">{{ item.remark }}</div>
           </li>
         </ul>
       </van-list>
@@ -51,6 +51,7 @@ export default {
       params: {
         limit: 6,
         page: 1,
+        categoryId: '',
         keyword: '',
         corpId: ''
       },
@@ -62,6 +63,7 @@ export default {
   },
   mounted() {
     this.params.corpId = JSON.parse(localStorage.getItem('select_enterprise')).id
+    this.params.categoryId = this.$route.query.id
     this.getList(this.params)
   },
   methods: {
@@ -111,7 +113,7 @@ export default {
         this.list = []
       }
     },
-    handleClick(item){
+    handleClick(item) {
       this.$router.push({
         name: 'VideoDetail',
         query: {
@@ -137,7 +139,7 @@ export default {
       width: 100%;
       height: 120px;
     }
-    .title{
+    .title {
       font-size: 14px;
       font-weight: 600;
       padding: 0 4px;
@@ -145,7 +147,7 @@ export default {
       white-space: nowrap;
       text-overflow: ellipsis;
     }
-    .dec{
+    .dec {
       padding: 0 4px;
       color: #999;
       overflow: hidden;
@@ -153,7 +155,7 @@ export default {
       text-overflow: ellipsis;
     }
   }
-  li:nth-child(2n){
+  li:nth-child(2n) {
     margin-left: 2%;
   }
 }

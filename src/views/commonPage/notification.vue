@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-12-05 16:52:03
+ * @LastEditTime: 2021-06-26 19:49:49
  * @FilePath: \project\src\views\commonPage\notification.vue
 -->
 <template>
@@ -40,6 +40,7 @@
                 <span style="font-size: 12px; color: #1989fa" v-if="item.status === 'unread'">未读</span>
                 <span style="font-size: 12px; color: #999" v-else>已读</span>
               </div>
+              <van-icon name="clear" class="delete-icon" @click.stop="handleDeleteMsg(item.id)"/>
             </div>
           </van-col>
         </van-row>
@@ -168,21 +169,30 @@ export default {
       if (res.code === '0') {
         this.$store.dispatch('setUnReadMsg', res.data)
       }
+    },
+    async handleDeleteMsg(id) {
+      let that = this
+      this.$dialog.confirm({
+        title: '温馨提示',
+        message: '确定删除消息吗？',
+        beforeClose
+      })
+      async function beforeClose(action, done) {
+        if (action === 'confirm') {
+          const res = await batchDeleteMsg({
+            idsArr: [id]
+          })
+          if (res.code === '0') {
+            that.$toast('删除成功')
+            that.getList(that.params)
+          } else {
+            that.$toast(res.msg)
+          }
+        }
+        done()
+      }
+      
     }
-    // async batchDeleteMsg() {
-    //   if (this.ids.length === 0) {
-    //     return
-    //   }
-    //   const res = await batchDeleteMsg({
-    //     idsArr: this.ids
-    //   })
-    //   if (res.code === '0') {
-    //     this.list = res.data
-    //     this.$toast('清除成功')
-    //   } else {
-    //     this.$toast(res.msg)
-    //   }
-    // }
   }
 }
 </script>
@@ -198,6 +208,7 @@ export default {
     background: #ffffff;
     border-radius: 0.1rem;
     margin-bottom: 0.32rem;
+    position: relative;
     .content-left {
       flex: 8;
       text-align: left;
@@ -212,6 +223,13 @@ export default {
       flex: 1;
       text-align: right;
       align-self: start;
+    }
+    .delete-icon {
+      position: absolute;
+      right: -4px;
+      top: -8px;
+      color: red;
+      font-size: 18px;
     }
   }
 }

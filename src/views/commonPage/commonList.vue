@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-07-21 13:43:10
- * @LastEditors: zhuqiu
- * @LastEditTime: 2020-10-30 20:31:30
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-26 19:44:53
  * @FilePath: \project\src\views\commonPage\commonList.vue
 -->
 <template>
@@ -34,14 +34,14 @@
                 <span v-else-if="item.checkSafeLevelCh === '一般风险'" style="color: #ff976a"
                   >（{{ item.checkSafeLevelCh }}）</span
                 >
-                <span v-else>（暂无风险）</span>
+                <span v-else>（较低风险）</span>
               </div>
             </div>
             <div class="content-time">{{ item.createTime }}</div>
           </div>
           <div>
             <div class="content-info">
-              <span>{{ item.checkName }}</span>
+              <span>{{ item.checkContext }}</span>
             </div>
           </div>
           <van-icon

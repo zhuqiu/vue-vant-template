@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-16 16:14:34
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-25 22:12:11
+ * @LastEditTime: 2021-06-26 18:09:55
  * @FilePath: \project\src\api\application.apis.js
  */
 import api from './index'
@@ -186,6 +186,14 @@ export function rejectEvent(data) {
 export function endEvent(params) {
   return request({
     url: api.event.EndEvent,
+    method: 'get',
+    params
+  })
+}
+
+export function listCorpAdImg(params) {
+  return request({
+    url: api.event.ListCorpAdImg,
     method: 'get',
     params
   })
@@ -399,6 +407,14 @@ export function getListVideo(params) {
 export function playVideo(params) {
   return request({
     url: api.onlineVideo.Play,
+    method: 'get',
+    params
+  })
+}
+
+export function findCategory(params) {
+  return request({
+    url: api.onlineVideo.FindCategory,
     method: 'get',
     params
   })

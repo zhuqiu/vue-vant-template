@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-07-10 09:43:26
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-21 12:37:20
+ * @LastEditTime: 2021-06-26 15:27:07
  * @FilePath: \project\src\router\router.config.js
  */
 /**
@@ -73,6 +73,12 @@ export const constantRouterMap = [
         meta: { title: '巡查记录', keepAlive: false }
       },
       {
+        path: '/allList',
+        name: 'AllList',
+        component: () => import('@/views/event/index'),
+        meta: { title: '巡查事项', keepAlive: false }
+      },
+      {
         path: '/waitTodo',
         name: 'WaitTodo',
         component: () => import('@/views/event/waitTodo'),
@@ -83,6 +89,12 @@ export const constantRouterMap = [
         name: 'HighTodo',
         component: () => import('@/views/event/highTodo'),
         meta: { title: '风险管控事件', keepAlive: false }
+      },
+      {
+        path: '/highManagement',
+        name: 'HighManagement',
+        component: () => import('@/views/event/list'),
+        meta: { title: '风险管控', keepAlive: false }
       },
       {
         path: '/eventDetail',
@@ -119,6 +131,12 @@ export const constantRouterMap = [
         name: 'VideoList',
         component: () => import('@/views/onlineVideo/newList'),
         meta: { title: '在线视频列表', keepAlive: false }
+      },
+      {
+        path: '/onLineList',
+        name: 'OnLineList',
+        component: () => import('@/views/onlineVideo/index'),
+        meta: { title: '在线培训', keepAlive: false }
       },
       {
         path: '/videoDetail',
@@ -163,6 +181,12 @@ export const constantRouterMap = [
         meta: { title: '应急管理', keepAlive: false }
       },
       {
+        path: '/rescueList',
+        name: 'RescueList',
+        component: () => import('@/views/accountRecord/list'),
+        meta: { title: '应急救援', keepAlive: false }
+      },
+      {
         path: '/accountRecordDetail',
         name: 'AccountRecordDetail',
         component: () => import('@/views/accountRecord/detail'),
@@ -187,6 +211,12 @@ export const constantRouterMap = [
         meta: { title: '危险作业', keepAlive: false }
       },
       {
+        path: '/fireIndex',
+        name: 'FireIndex',
+        component: () => import('@/views/fireExercise/index'),
+        meta: { title: '危险作业', keepAlive: false }
+      },
+      {
         path: '/fireExerciseDetail',
         name: 'FireExerciseDetail',
         component: () => import('@/views/fireExercise/detail'),
@@ -203,6 +233,12 @@ export const constantRouterMap = [
         name: 'FireCheck',
         component: () => import('@/views/fireCheck/list'),
         meta: { title: '消防点检', keepAlive: false }
+      },
+      {
+        path: '/fireCheckList',
+        name: 'FireCheckList',
+        component: () => import('@/views/fireCheck/index'),
+        meta: { title: '设施管理', keepAlive: false }
       },
       {
         path: '/maintenancePlan',
