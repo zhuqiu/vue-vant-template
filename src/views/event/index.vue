@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: 'train',
+  name: 'EventIndex',
   data() {
     return {
       gridList: [
@@ -24,13 +24,13 @@ export default {
           icon: 'underway',
           text: '入场登记',
           color: '#66CCFF',
-          path: 'AllTodo'
+          path: 'BatchList'
         },
         {
           icon: 'comment',
           text: '巡查记录',
           color: '#00FF99',
-          path: 'BatchList'
+          path: 'AllTodo'
         }
       ]
     }

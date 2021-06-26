@@ -16,6 +16,7 @@
         label="短信验证码"
         placeholder="请输入短信验证码"
         :error-message="errorData.errPhoneCode"
+        maxlength="6"
         required
       >
         <van-button slot="button" size="small" type="primary" :disabled ="disabled" @click="sendPhoneCode">{{ sendText }}</van-button>
