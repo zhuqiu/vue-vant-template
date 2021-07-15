@@ -7,7 +7,7 @@
   <div>
     <van-sticky>
       <van-nav-bar
-        :title="id ? '编辑危险作业培训' : '新增危险作业培训'"
+        :title="id ? '编辑应急演练' : '新增应急演练'"
         left-arrow
         left-text="返回"
         @click-left="onClickLeft"

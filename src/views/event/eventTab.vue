@@ -41,6 +41,9 @@ export default {
     if(this.id){
       this.findEventAuditors()
     }
+    if(location.href.indexOf('code=') > -1){
+      this.active = 1;
+    }
   },
   methods: {
     onClickLeft() {

@@ -15,7 +15,7 @@
               <img src="../../assets/images/xinjian.png" alt="" v-if="item.status === 1" />
               <img src="../../assets/images/buhege.png" alt="" v-if="item.status === 2" />
               <img src="../../assets/images/hege.png" alt="" v-if="item.status === 3" />
-              <img src="../../assets/images/yiwancheng.png" alt="" v-if="item.status === 4" />
+              <img src="../../assets/images/yijiean.jpg" alt="" v-if="item.status === 4" />
               <img src="../../assets/images/daizhenggai.png" alt="" v-if="item.status === 5" />
               <img src="../../assets/images/bohui.png" alt="" v-if="item.status === 6" />
               <img src="../../assets/images/yiyanqi.png" alt="" v-if="item.status === 7" />

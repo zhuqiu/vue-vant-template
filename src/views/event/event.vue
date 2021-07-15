@@ -236,14 +236,14 @@
         clickable
         name="datetimePicker"
         :value="submitEventParam.expectRepairDate"
-        label="限期整改日期"
-        placeholder="请选择限期整改日期"
+        label="限整改日期"
+        placeholder="请选择限整改日期"
         @click="timeClick"
       />
       <van-popup v-model="showTime" position="bottom">
         <van-datetime-picker
           :disabled="isOverStatus"
-          type="date"
+          type="datetime"
           :min-date="minDate"
           @confirm="onTimeConfirm"
           @cancel="showTime = false"
@@ -267,7 +267,11 @@
         placeholder="请输入驳回原因"
       />
       <van-popup v-model="showPicker" position="bottom">
-        <van-picker show-toolbar :columns="columns" @confirm="onConfirm" @cancel="showPicker = false" />
+        <van-picker show-toolbar :columns="getColumnsValue" @confirm="onConfirm" @cancel="showPicker = false">
+          <template #title>
+            <van-search v-model="pickerWord" placeholder="请输入搜索关键词" style="width: 180px"/>
+          </template>
+        </van-picker>
       </van-popup>
       <div style="margin: 0.32rem">
         <van-button round block type="info" native-type="submit" v-if="!edit" :disabled="disabled">新增</van-button>
@@ -310,7 +314,6 @@
       @cancel="handleCancel"
       show-cancel-button
     >
-      <!-- <div style="font-size:12px;padding: 8px 16px;color:#ee0a24">不落实安全生产主体责任，如发生事故，将承担法律责任</div> -->
       <van-field v-model="rejectReason" rows="3" autosize label="" type="textarea" placeholder="请输入驳回原因" />
     </van-dialog>
   </div>
@@ -381,6 +384,7 @@ export default {
       room: '',
       columns: [],
       showPicker: false,
+      pickerWord: '',
       showTime: false,
       currentSelect: 1,
       checkTypeList: [],
@@ -473,6 +477,13 @@ export default {
     //获取用户角色 -- 企业用户
     isAgent() {
       return this.role === UserType.AGENT_ADMIN || this.role === UserType.AGENT_XUNCHAYUAN
+    },
+    getColumnsValue() {
+      if(!this.pickerWord){
+        return this.columns;
+      }else {
+        return this.columns.filter(res => res.text.indexOf(this.pickerWord) > -1);
+      }
     }
   },
   methods: {
@@ -533,6 +544,7 @@ export default {
       if (this.edit && val !== 6) {
         return
       }
+      this.pickerWord = ''
       this.showPicker = true
       this.currentSelect = val
       switch (val) {
@@ -588,7 +600,8 @@ export default {
           this.checkSafeLevelName = value.text
           break
       }
-      this.showPicker = false
+      this.showPicker = false;
+      this.pickerWord = '';
     },
     async onSubmit() {
       // if(!this.thirdId){
@@ -704,7 +717,7 @@ export default {
       this.showTime = true
     },
     onTimeConfirm(time) {
-      this.submitEventParam.expectRepairDate = this.$moment(time).format('YYYY-MM-DD')
+      this.submitEventParam.expectRepairDate = this.$moment(time).format('YYYY-MM-DD HH:mm:ss')
       this.showTime = false
     },
     async getBatchNoList() {

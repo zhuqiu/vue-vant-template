@@ -89,14 +89,17 @@ export default {
   },
   async mounted() {
     this.getList({ corpName: '' })
+    let that = this;
     this.$nextTick(() => {
-      // if (window.history && window.history.pushState) {
-      //   //防止页面后退
-      //   window.history.pushState(null, null, document.URL)
-      //   window.addEventListener('popstate', function() {
-      //     window.history.pushState(null, null, document.URL)
-      //   })
-      // }
+      if (window.history && window.history.pushState) {
+        //防止页面后退
+        window.history.pushState(null, null, document.URL)
+        window.addEventListener('popstate', () => {
+          that.$router.push({
+            path: '/home'
+          })
+        })
+      }
     })
   },
   methods: {

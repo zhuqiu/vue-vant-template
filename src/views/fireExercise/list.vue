@@ -7,7 +7,7 @@
   <div>
     <div>
       <van-sticky>
-        <van-nav-bar title="危险作业培训" left-arrow @click-left="onClickLeft" left-text="返回" />
+        <van-nav-bar title="应急演练" left-arrow @click-left="onClickLeft" left-text="返回" />
       </van-sticky>
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-empty v-if="list.length === 0" description="暂无数据" />

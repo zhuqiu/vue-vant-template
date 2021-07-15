@@ -7,7 +7,7 @@
   <div>
     <van-sticky>
       <van-nav-bar
-        :title="id ? '编辑演练培训' : '新增演练培训'"
+        :title="id ? '编辑安全培训' : '新增安全培训'"
         left-arrow
         @click-left="onClickLeft"
         :right-text="btnPermission.deleteBtn ? '删除' : ''"

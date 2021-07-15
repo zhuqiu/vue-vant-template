@@ -12,7 +12,7 @@
         <p v-if="item.rejectReason">驳回原因：{{ item.rejectReason }}</p>
         <p v-if="item.auditorTime">审批时间：{{ item.auditorTime }}</p>
         <p v-if="item.displayOperBtn">过期时间：{{item.expireTime}}</p>
-        <p v-if="item.auditorResult === 2" style="color:#ff976a">不落实安全生产主体责任，如发生事故，将承担法律责任</p>
+        <p v-if="item.auditorResult === 2" style="color:#ff976a">未落实安全生产主体责任，将承担法律责任。</p>
         <div style="text-align: right" v-if="item.displayOperBtn">
           <van-button plain type="primary" size="small" style="margin-right: 10px" @click="handleReject(item.id)"
             >驳回</van-button
@@ -22,7 +22,7 @@
       </van-step>
     </van-steps>
     <van-dialog v-model="show" title="驳回原因" @confirm="handleConfirm" @cancel="handleCancel" show-cancel-button>
-      <div style="font-size:12px;padding: 8px 16px;color:#ee0a24">不落实安全生产主体责任，如发生事故，将承担法律责任</div>
+      <div style="font-size:12px;padding: 8px 16px;color:#ee0a24">未落实安全生产主体责任，将承担法律责任。</div>
       <van-field v-model="rejectReason" rows="3" autosize label="" type="textarea" placeholder="请输入驳回原因" />
     </van-dialog>
   </div>
