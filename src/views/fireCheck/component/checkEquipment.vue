@@ -85,7 +85,8 @@ export default {
     },
     async query4Check() {
       const res = await query4Check({
-        equipmentNo: this.params.keyword
+        equipmentNo: this.params.keyword,
+        corpId: JSON.parse(localStorage.getItem('select_enterprise')).id
       })
       if (res.code === '0') {
         if (res.data) {

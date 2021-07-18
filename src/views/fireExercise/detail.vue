@@ -15,7 +15,7 @@
         @click-right="handleDelete"
       />
     </van-sticky>
-    <van-form @submit="handleSubmit" label-width="6.5em">
+    <van-form label-width="6.5em">
       <div class="content-view">
         <ul class="content-detail">
           <li>
@@ -80,6 +80,15 @@
         @click="timeClick('end-time')"
       />
       <van-field
+        readonly
+        clickable
+        name="picker"
+        :value="getName"
+        label="审核人"
+        placeholder="请选择审核人"
+        @click="showPicker = true"
+      />
+      <van-field
         name="uploader"
         label="现场图片"
         v-if="btnPermission.finishBtn || params.status === 5 || params.status === 4">
@@ -114,6 +123,14 @@
         "
         @cancel="showTime = false"
       />
+    </van-popup>
+
+    <van-popup v-model="showPicker" position="bottom">
+      <van-picker show-toolbar :columns="getColumnsValue" @confirm="onConfirm" @cancel="showPicker = false">
+        <template #title>
+          <van-search v-model="pickerWord" placeholder="请输入搜索关键词" style="width: 180px"/>
+        </template>
+      </van-picker>
     </van-popup>
     <div style="margin: 0.32rem;">
       <van-button v-if="!id" round block type="info" @click="handleClick(0)">
@@ -155,7 +172,8 @@ import {
   fireSubmit,
   fireReject,
   fireFinish,
-  fireAuditor
+  fireAuditor,
+  findFireCorpUser
   } from '../../api/application.apis'
 
 import { ImagePreview } from 'vant'
@@ -173,7 +191,8 @@ export default {
         showObj: '',
         showDate: '',
         beginTime: '',
-        endTime: ''
+        endTime: '',
+        auditorUserUid: ''
       },
       minDate: new Date(),
       showTime: false,
@@ -181,10 +200,14 @@ export default {
       corpName: '',
       dataType: '',
       id: '',
-      btnPermission: ''
+      btnPermission: '',
+      userList: [],
+      showPicker: false,
+      pickerWord: '',
     }
   },
   created() {
+    this.findFireCorpUser()
     this.edit = !!this.$route.query.id
     this.id = this.$route.query.id
     this.params.corpId = JSON.parse(localStorage.getItem('select_enterprise')).id
@@ -192,6 +215,22 @@ export default {
     if (this.edit) {
       this.getFireDetail({ showId: this.id })
       this.getControllerButton();
+    }
+  },
+  computed: {
+    getColumnsValue() {
+      if(!this.pickerWord){
+        return this.userList;
+      }else {
+        return this.userList.filter(res => res.text.indexOf(this.pickerWord) > -1);
+      }
+    },
+    getName() {
+      let source = this.userList.find(res => res.id === this.params.auditorUserUid)
+      if(source){
+        return source.text;
+      }
+      return '';
     }
   },
   methods: {
@@ -218,32 +257,30 @@ export default {
         this.$toast(res.msg)
       }
     },
-    async handleSubmit() {
-      let params = {
-        address: this.params.address,
-        content: this.params.content,
-        persionAmount: this.params.persionAmount,
-        teacher: this.params.teacher,
-        showObj: this.params.showObj,
-        showDate: this.params.showDate,
-        beginTime: this.params.beginTime,
-        endTime: this.params.endTime,
-        id: this.id ? this.id : null,
-        corpId: this.params.corpId
-      }
-      let res = await saveOrUpdateFire(params)
+    async findFireCorpUser() {
+      let res = await findFireCorpUser({
+        corpId: JSON.parse(localStorage.getItem('select_enterprise')).id
+      });
       if (res.code === '0') {
-        this.$toast(this.id ? '编辑成功' : '新增成功')
-        this.id = res.data.id
+        this.userList = res.data.map(d => {
+          return {
+            text: d.nickname,
+            id: d.uid,
+          }
+        });
       } else {
         this.$toast(res.msg)
       }
+    },
+    onConfirm(value) {
+      this.params.auditorUserUid = value.id;
+      this.showPicker = false
     },
     async handleClick(type) {
       switch(type){
         case 0:
         case 1:
-          this.saveOrUpdateTrain()
+          this.saveOrUpdateFire()
           break;
         case 2:
           this.fireSubmit()
@@ -260,7 +297,7 @@ export default {
       }
 
     },
-    async saveOrUpdateTrain(){
+    async saveOrUpdateFire(){
       let params = {
         address: this.params.address,
         content: this.params.content,
@@ -271,7 +308,8 @@ export default {
         beginTime: this.params.beginTime,
         endTime: this.params.endTime,
         id: this.id ? this.id : null,
-        corpId: this.params.corpId
+        corpId: this.params.corpId,
+        auditorUserUid: this.params.auditorUserUid
       }
       let res = await saveOrUpdateFire(params)
       if (res.code === '0') {

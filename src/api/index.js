@@ -97,7 +97,8 @@ const original = {
     Submit: '/data/api/train/submit',
     Reject: '/data/api/train/reject',
     Finish: '/data/api/train/finish',
-    Auditor: '/data/api/train/auditor'
+    Auditor: '/data/api/train/auditor',
+    FindCorpUser: '/data/api/train/findCorpUser'
   },
   fireExercise: {
     SaveOrUpdate: '/data/api/show/saveOrUpdate',
@@ -110,7 +111,8 @@ const original = {
     Submit: '/data/api/show/submit',
     Reject: '/data/api/show/reject',
     Finish: '/data/api/show/finish',
-    Auditor: '/data/api/show/auditor'
+    Auditor: '/data/api/show/auditor',
+    FindCorpUser: '/data/api/show/findCorpUser'
   },
   fireCheck: {
     ListNotCheckEquipmentThisMonth: '/data/api/equipment/listNotCheckEquipmentThisMonth',

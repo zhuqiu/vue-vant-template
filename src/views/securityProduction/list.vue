@@ -37,6 +37,7 @@
                   <div class="content-info">
                     <span>{{ item.content }}</span>
                   </div>
+                  <div class="content-info" v-if="item.auditorName">审核人：{{ item.auditorName }}</div>
                 </div>
               </div>
             </van-col>

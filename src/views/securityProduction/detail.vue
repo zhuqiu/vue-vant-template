@@ -80,6 +80,15 @@
         @click="timeClick('end-time')"
       />
       <van-field
+        readonly
+        clickable
+        name="picker"
+        :value="getName"
+        label="审核人"
+        placeholder="请选择审核人"
+        @click="showPicker = true"
+      />
+      <van-field
         name="uploader"
         label="现场图片"
         v-if="btnPermission.finishBtn || params.status === 5 || params.status === 4">
@@ -115,6 +124,14 @@
         "
         @cancel="showTime = false"
       />
+    </van-popup>
+
+    <van-popup v-model="showPicker" position="bottom">
+      <van-picker show-toolbar :columns="getColumnsValue" @confirm="onConfirm" @cancel="showPicker = false">
+        <template #title>
+          <van-search v-model="pickerWord" placeholder="请输入搜索关键词" style="width: 180px"/>
+        </template>
+      </van-picker>
     </van-popup>
     <div style="margin: 0.32rem;">
       <van-button v-if="!id" round block type="info" @click="handleClick(0)">
@@ -156,7 +173,8 @@ import {
   trainSubmit,
   trainReject,
   trainFinish,
-  trainAuditor
+  trainAuditor,
+  findTrainCorpUser,
 } from '../../api/application.apis'
 
 import { ImagePreview } from 'vant'
@@ -175,7 +193,8 @@ export default {
         trainDate: '',
         beginTime: '',
         endTime: '',
-        auditorFailReason: ''
+        auditorFailReason: '',
+        auditorUserUid: ''
       },
       minDate: new Date(),
       showTime: false,
@@ -183,10 +202,14 @@ export default {
       corpName: '',
       dataType: '',
       id: '',
-      btnPermission: ''
+      btnPermission: '',
+      userList: [],
+      showPicker: false,
+      pickerWord: '',
     }
   },
   created() {
+    this.findTrainCorpUser();
     this.edit = !!this.$route.query.id
     this.id = this.$route.query.id
     this.params.corpId = JSON.parse(localStorage.getItem('select_enterprise')).id
@@ -194,6 +217,22 @@ export default {
     if (this.edit) {
       this.getTrainDetail({ trainId: this.id })
       this.getControllerButton();
+    }
+  },
+  computed: {
+    getColumnsValue() {
+      if(!this.pickerWord){
+        return this.userList;
+      }else {
+        return this.userList.filter(res => res.text.indexOf(this.pickerWord) > -1);
+      }
+    },
+    getName() {
+      let source = this.userList.find(res => res.id === this.params.auditorUserUid)
+      if(source){
+        return source.text;
+      }
+      return '';
     }
   },
   methods: {
@@ -220,6 +259,25 @@ export default {
         this.$toast(res.msg)
       }
     },
+    async findTrainCorpUser() {
+      let res = await findTrainCorpUser({
+        corpId: JSON.parse(localStorage.getItem('select_enterprise')).id
+      });
+      if (res.code === '0') {
+        this.userList = res.data.map(d => {
+          return {
+            text: d.nickname,
+            id: d.uid,
+          }
+        });
+      } else {
+        this.$toast(res.msg)
+      }
+    },
+    onConfirm(value) {
+      this.params.auditorUserUid = value.id;
+      this.showPicker = false
+    },
     async handleClick(type) {
       switch(type){
         case 0:
@@ -239,7 +297,6 @@ export default {
           this.trainFinish()
           break;
       }
-
     },
     async saveOrUpdateTrain(){
       let params = {
@@ -252,7 +309,8 @@ export default {
         beginTime: this.params.beginTime,
         endTime: this.params.endTime,
         id: this.id ? this.id : null,
-        corpId: this.params.corpId
+        corpId: this.params.corpId,
+        auditorUserUid: this.params.auditorUserUid,
       }
       let res = await saveOrUpdateTrain(params)
       if (res.code === '0') {

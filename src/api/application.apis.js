@@ -619,6 +619,14 @@ export function deleteTrain(params) {
   })
 }
 
+export function findTrainCorpUser(params) {
+  return request({
+    url: api.train.FindCorpUser,
+    method: 'get',
+    params
+  })
+}
+
 //分页危险作业培训
 export function getFireList(params) {
   return request({
@@ -712,6 +720,14 @@ export function removeImgFire(params) {
 export function deleteFire(params) {
   return request({
     url: api.fireExercise.Delete,
+    method: 'get',
+    params
+  })
+}
+
+export function findFireCorpUser(params) {
+  return request({
+    url: api.fireExercise.FindCorpUser,
     method: 'get',
     params
   })
